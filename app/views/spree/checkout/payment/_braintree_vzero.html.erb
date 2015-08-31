@@ -1,1 +1,19 @@
-braintree v.zero
+<div id="payment-form"></div>
+<%= submit_tag Spree.t(:save_and_continue), class: 'btn btn-lg btn-success primary' %>
+
+<hr />
+<br />
+
+<script src="https://js.braintreegateway.com/v2/braintree.js"></script>
+<script>
+  // We generated a client token for you so you can test out this code
+  // immediately. In a production-ready integration, you will need to
+  // generate a client token on your server (see section below).
+  var clientToken = "<%= payment_method.client_token %>";
+
+  braintree.setup(clientToken, "dropin", {
+    container: "payment-form"
+  });
+
+  SpreeBraintreeVzero.paymentMethodID = "<%= payment_method.id %>"
+</script>
