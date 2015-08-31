@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'spree_braintree_vzero'
   s.version     = SpreeBraintreeVzero.version
-  s.summary     = 'Spre Braintree v.zero'
+  s.summary     = 'Spree Braintree v.zero'
   s.description = 'Braintree v.zero extension for Spree Commerce'
   s.required_ruby_version = '>= 2.0.0'
 
@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
   s.requirements << 'none'
 
   s.add_dependency 'spree_core', '~> 3.0.4'
+  s.add_dependency 'braintree'
 
   s.add_development_dependency 'capybara', '~> 2.4'
   s.add_development_dependency 'coffee-rails'
