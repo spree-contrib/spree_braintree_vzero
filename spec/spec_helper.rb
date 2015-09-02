@@ -33,6 +33,8 @@ require 'spree/testing_support/url_helpers'
 # Requires factories defined in lib/spree_braintree_vzero/factories.rb
 require 'spree_braintree_vzero/factories'
 
+require 'pry'
+
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
 

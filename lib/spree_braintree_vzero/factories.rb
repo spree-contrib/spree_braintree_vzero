@@ -3,4 +3,9 @@ FactoryGirl.define do
   #
   # Example adding this to your spec_helper will load these Factories for use:
   # require 'spree_braintree_vzero/factories'
+
+  Dir[Dir.pwd + '/spec/factories/**/*'].each do |factory|
+    require File.expand_path(factory)
+  end
+
 end

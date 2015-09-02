@@ -34,4 +34,9 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'sass-rails', '~> 5.0.0.beta1'
   s.add_development_dependency 'selenium-webdriver'
   s.add_development_dependency 'simplecov'
+  s.add_development_dependency 'sqlite3'
+  s.add_development_dependency 'pry'
+  s.add_development_dependency 'vcr'
+  s.add_development_dependency 'webmock'
+
 end
