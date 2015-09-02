@@ -13,3 +13,5 @@ pkg
 *.swp
 spec/dummy
 .pt
+.ruby-gemset
+.ruby-version
