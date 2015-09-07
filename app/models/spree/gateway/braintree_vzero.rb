@@ -30,5 +30,49 @@ module Spree
       provider::ClientToken.generate
     end
 
+    def purchase(nonce, order)
+
+      result = provider::Transaction.sale(
+          amount: order.total,
+          payment_method_nonce: nonce,
+          options: {
+              submit_for_settlement: true
+          }
+      )
+      unless result.success?
+        result.errors.each { |e| order.errors.add(:braintree_error, e.message) }
+      end
+      result
+    end
+
+    def complete_order(order, result, payment_method)
+      return false unless result.transaction
+      payment = order.payments.create!({
+                                           source: Spree::BraintreeCheckout.create!(transaction_id: result.transaction.id, state: result.transaction.status),
+                                           amount: order.total,
+                                           payment_method: payment_method,
+                                           state: map_payment_status(result.transaction.status)
+                                       })
+      payment.started_processing!
+      payment.pend!
+      order.update_attributes(completed_at: Time.zone.now, state: :complete)
+      order.finalize!
+    end
+
+    def map_payment_status(braintree_status)
+      case braintree_status
+        when 'authorized'
+          'pending'
+        when 'voided'
+          'void'
+        when 'submitted_for_settlement', 'settling', 'settlement_pending' #TODO: can we treat it as paid?
+          'completed'
+        when 'settled'
+          'completed'
+        else
+          'failed'
+      end
+    end
+
   end
 end
