@@ -13,7 +13,7 @@ module Spree
     def provider
       Braintree::Configuration.environment = preferred_server.present? ? preferred_server.to_sym : :sandbox
       Braintree::Configuration.merchant_id = preferred_merchant_id
-      Braintree::Configuration.public_key = preferred_public_key
+      Braintree::Configuration.public_key  = preferred_public_key
       Braintree::Configuration.private_key = preferred_private_key
       Braintree
     end
@@ -31,13 +31,12 @@ module Spree
     end
 
     def purchase(nonce, order)
-
       result = provider::Transaction.sale(
-          amount: order.total,
-          payment_method_nonce: nonce,
-          options: {
-              submit_for_settlement: true
-          }
+        amount: order.total,
+        payment_method_nonce: nonce,
+        options: {
+          submit_for_settlement: true
+        }
       )
       unless result.success?
         result.errors.each { |e| order.errors.add(:braintree_error, e.message) }
@@ -48,13 +47,13 @@ module Spree
     def complete_order(order, result, payment_method)
       return false unless result.transaction
       payment = order.payments.create!({
-                                           source: Spree::BraintreeCheckout.create!(transaction_id: result.transaction.id, state: result.transaction.status),
-                                           amount: order.total,
-                                           payment_method: payment_method,
-                                           state: map_payment_status(result.transaction.status)
-                                       })
-      payment.started_processing!
-      payment.pend!
+        source: Spree::BraintreeCheckout.create!(transaction_id: result.transaction.id, state: result.transaction.status),
+        amount: order.total,
+        payment_method: payment_method,
+        state: map_payment_status(result.transaction.status),
+        response_code: result.transaction.id
+      })
+      payment.save!
       order.update_attributes(completed_at: Time.zone.now, state: :complete)
       order.finalize!
     end
