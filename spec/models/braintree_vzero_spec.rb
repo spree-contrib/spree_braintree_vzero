@@ -22,7 +22,6 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
         expect(gateway.purchase('fake-invalid-nonce', order).success?).to be false
       end
 
-
       context 'with 3DSecure option turned on' do
         before { gateway.preferred_3dsecure = true }
 
@@ -40,9 +39,24 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
 
     describe '#complete_order' do
 
-      it 'completes order with valid nonce' do
+      before do
+        gateway.preferred_3dsecure = false
         gateway.complete_order(order, gateway.purchase('fake-valid-nonce', order), gateway)
-        expect(order.completed?).to be true
+      end
+
+      context 'with valid nonce' do
+        it 'completes order with valid nonce' do
+          expect(order.completed?).to be true
+        end
+
+        it 'creates Payment object with valid state' do
+          expect(order.payments.first.state).to eq 'completed'
+        end
+
+        it 'updates Order state' do
+          r = gateway.purchase('fake-valid-nonce', order)
+          expect(order.payment_state).to eq 'paid'
+        end
       end
 
 
