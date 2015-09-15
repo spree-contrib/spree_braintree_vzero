@@ -46,15 +46,18 @@ module Spree
         data.merge!(shipping: @utils.address_data('shipping'))
       end
       data.merge!(@utils.order_data(nonce))
-      data.merge!(options: {
-                      submit_for_settlement: true,
-                      three_d_secure: {
-                          required: preferred_3dsecure
-                      }})
+      data.merge!(
+        options: {
+          submit_for_settlement: true,
+          three_d_secure: {
+            required: preferred_3dsecure
+          }
+        }
+      )
 
       result = provider::Transaction.sale(data)
 
-      if !result.success?
+      unless result.success?
         result.errors.each { |e| order.errors.add(:braintree_error, e.message) }
       end
       if result.transaction.try(:gateway_rejection_reason) == Braintree::Transaction::GatewayRejectionReason::ThreeDSecure
@@ -66,13 +69,13 @@ module Spree
 
     def complete_order(order, result, payment_method)
       return false unless result.transaction
-      payment = order.payments.create!({
-                                           source: Spree::BraintreeCheckout.create!(transaction_id: result.transaction.id, state: result.transaction.status),
-                                           amount: order.total,
-                                           payment_method: payment_method,
-                                           state: map_payment_status(result.transaction.status),
-                                           response_code: result.transaction.id
-                                       })
+      payment = order.payments.create!(
+        source: Spree::BraintreeCheckout.create!(transaction_id: result.transaction.id, state: result.transaction.status),
+        amount: order.total,
+        payment_method: payment_method,
+        state: map_payment_status(result.transaction.status),
+        response_code: result.transaction.id
+      )
       payment.save!
       order.update_attributes(completed_at: Time.zone.now, state: :complete)
       order.finalize!
@@ -81,16 +84,16 @@ module Spree
 
     def map_payment_status(braintree_status)
       case braintree_status
-        when 'authorized'
-          'pending'
-        when 'voided'
-          'void'
-        when 'submitted_for_settlement', 'settling', 'settlement_pending' #TODO: can we treat it as paid?
-          'completed'
-        when 'settled'
-          'completed'
-        else
-          'failed'
+      when 'authorized'
+        'pending'
+      when 'voided'
+        'void'
+      when 'submitted_for_settlement', 'settling', 'settlement_pending' #TODO: can we treat it as paid?
+        'completed'
+      when 'settled'
+        'completed'
+      else
+        'failed'
       end
     end
 

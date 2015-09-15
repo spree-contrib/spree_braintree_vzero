@@ -29,7 +29,7 @@ module Spree
           postal_code: order.send("#{address_type}_address").zipcode,
           region: order.send("#{address_type}_address").state.try(:abbr),
           street_address: order.send("#{address_type}_address").address1,
-          extended_address: order.send("#{address_type}_address").address2,
+          extended_address: order.send("#{address_type}_address").address2
         }
       end
 
