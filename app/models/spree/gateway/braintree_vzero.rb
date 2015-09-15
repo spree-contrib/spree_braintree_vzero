@@ -5,6 +5,13 @@ module Spree
     preference :public_key, :string
     preference :private_key, :string
     preference :server, :string, default: :sandbox
+    preference :pass_billing_and_shipping_address, :boolean, default: true
+
+    attr_reader :utils
+
+    def self.current
+      super
+    end
 
     def provider_class
       Braintree
@@ -13,7 +20,7 @@ module Spree
     def provider
       Braintree::Configuration.environment = preferred_server.present? ? preferred_server.to_sym : :sandbox
       Braintree::Configuration.merchant_id = preferred_merchant_id
-      Braintree::Configuration.public_key  = preferred_public_key
+      Braintree::Configuration.public_key = preferred_public_key
       Braintree::Configuration.private_key = preferred_private_key
       Braintree
     end
@@ -31,31 +38,40 @@ module Spree
     end
 
     def purchase(nonce, order)
-      result = provider::Transaction.sale(
-        amount: order.total,
-        payment_method_nonce: nonce,
-        options: {
-          submit_for_settlement: true
-        }
-      )
-      unless result.success?
-        result.errors.each { |e| order.errors.add(:braintree_error, e.message) }
+      @utils = BraintreeUtils.new(order)
+      data = {}
+      if preferred_pass_billing_and_shipping_address
+        data.merge!(billing: @utils.address_data('billing'))
+        data.merge!(shipping: @utils.address_data('shipping'))
       end
+      data.merge!(@utils.order_data(nonce))
+      data.merge!(options: {
+                     submit_for_settlement: true})
+
+      result = provider::Transaction.sale(data)
+
+      if !result.success?
+        result.errors.each { |e| order.errors.add(:braintree_error, e.message) }
+      elsif result.transaction.gateway_rejection_reason == Braintree::Transaction::GatewayRejectionReason::ThreeDSecure
+        order.errors.add(:braintree_error, :three_d_secure_validation_failed)
+      end
+
       result
     end
 
     def complete_order(order, result, payment_method)
       return false unless result.transaction
       payment = order.payments.create!({
-        source: Spree::BraintreeCheckout.create!(transaction_id: result.transaction.id, state: result.transaction.status),
-        amount: order.total,
-        payment_method: payment_method,
-        state: map_payment_status(result.transaction.status),
-        response_code: result.transaction.id
-      })
+                                           source: Spree::BraintreeCheckout.create!(transaction_id: result.transaction.id, state: result.transaction.status),
+                                           amount: order.total,
+                                           payment_method: payment_method,
+                                           state: map_payment_status(result.transaction.status),
+                                           response_code: result.transaction.id
+                                       })
       payment.save!
       order.update_attributes(completed_at: Time.zone.now, state: :complete)
       order.finalize!
+      order.update!
     end
 
     def map_payment_status(braintree_status)
