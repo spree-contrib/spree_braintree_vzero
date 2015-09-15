@@ -5,6 +5,7 @@ module Spree
     preference :public_key, :string
     preference :private_key, :string
     preference :server, :string, default: :sandbox
+    preference '3dsecure', :boolean, default: true
     preference :pass_billing_and_shipping_address, :boolean, default: true
 
     attr_reader :utils
@@ -46,14 +47,18 @@ module Spree
       end
       data.merge!(@utils.order_data(nonce))
       data.merge!(options: {
-                     submit_for_settlement: true})
+                      submit_for_settlement: true,
+                      three_d_secure: {
+                          required: preferred_3dsecure
+                      }})
 
       result = provider::Transaction.sale(data)
 
       if !result.success?
         result.errors.each { |e| order.errors.add(:braintree_error, e.message) }
-      elsif result.transaction.gateway_rejection_reason == Braintree::Transaction::GatewayRejectionReason::ThreeDSecure
-        order.errors.add(:braintree_error, :three_d_secure_validation_failed)
+      end
+      if result.transaction.try(:gateway_rejection_reason) == Braintree::Transaction::GatewayRejectionReason::ThreeDSecure
+        order.errors.add(:braintree_error, 'three_d_secure_validation_failed')
       end
 
       result

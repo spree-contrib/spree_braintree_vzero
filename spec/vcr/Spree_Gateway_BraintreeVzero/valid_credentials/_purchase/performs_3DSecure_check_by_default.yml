@@ -1,0 +1,141 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://h442tzpn8wdk89p6:c3c1f38bf6b87c79b7eb4550e66d7b0a@api.sandbox.braintreegateway.com/merchants/yccdpmn3cvtjbgnr/transactions
+    body:
+      encoding: UTF-8
+      string: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <transaction>
+          <billing>
+            <company>Company</company>
+            <country-code-alpha2>US</country-code-alpha2>
+            <country-code-alpha3>USA</country-code-alpha3>
+            <country-code-numeric type="integer">840</country-code-numeric>
+            <country-name>United States of America</country-name>
+            <first-name>John</first-name>
+            <last-name>Doe</last-name>
+            <locality>Herndon</locality>
+            <postal-code>35005</postal-code>
+            <region>AL</region>
+            <street-address>10 Lovely Street</street-address>
+            <extended-address>Northwest</extended-address>
+          </billing>
+          <shipping>
+            <company>Company</company>
+            <country-code-alpha2>US</country-code-alpha2>
+            <country-code-alpha3>USA</country-code-alpha3>
+            <country-code-numeric type="integer">840</country-code-numeric>
+            <country-name>United States of America</country-name>
+            <first-name>John</first-name>
+            <last-name>Doe</last-name>
+            <locality>Herndon</locality>
+            <postal-code>35005</postal-code>
+            <region>AL</region>
+            <street-address>10 Lovely Street</street-address>
+            <extended-address>Northwest</extended-address>
+          </shipping>
+          <amount>20.00</amount>
+          <payment-method-nonce>fake-valid-debit-nonce</payment-method-nonce>
+          <order-id>R006969886</order-id>
+          <options>
+            <submit-for-settlement type="boolean">true</submit-for-settlement>
+            <three-d-secure>
+              <required type="boolean">true</required>
+            </three-d-secure>
+          </options>
+          <type>sale</type>
+        </transaction>
+    headers:
+      Accept-Encoding:
+      - gzip
+      Accept:
+      - application/xml
+      User-Agent:
+      - Braintree Ruby Gem 2.47.0
+      X-Apiversion:
+      - '4'
+      Content-Type:
+      - application/xml
+  response:
+    status:
+      code: 422
+      message: Unprocessable Entity
+    headers:
+      Date:
+      - Tue, 15 Sep 2015 08:20:48 GMT
+      Content-Type:
+      - application/xml; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - close
+      X-Frame-Options:
+      - SAMEORIGIN
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      X-Ua-Compatible:
+      - chrome=1
+      X-Authentication:
+      - basic_auth
+      Strict-Transport-Security:
+      - max-age=31536000
+      - max-age=31536000; includeSubDomains
+      X-User:
+      - 85kvddg6myqz4n82
+      Vary:
+      - Accept-Encoding
+      Content-Encoding:
+      - gzip
+      Cache-Control:
+      - no-cache
+      X-Request-Id:
+      - 40be2e5d-9f19-48c5-bad7-e54db75c65a4
+      X-Runtime:
+      - '1.092849'
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        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
+    http_version: 
+  recorded_at: Tue, 15 Sep 2015 08:21:59 GMT
+recorded_with: VCR 2.9.3

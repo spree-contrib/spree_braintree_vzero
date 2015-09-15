@@ -12,6 +12,7 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
     end
 
     describe '#purchase' do
+      before { gateway.preferred_3dsecure = false }
 
       it 'returns suceess with valid nonce' do
         expect(gateway.purchase('fake-valid-nonce', order).success?).to be true
@@ -19,6 +20,20 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
 
       it 'returns false with invalid nonce' do
         expect(gateway.purchase('fake-invalid-nonce', order).success?).to be false
+      end
+
+
+      context 'with 3DSecure option turned on' do
+        before { gateway.preferred_3dsecure = true }
+
+        it 'performs 3DSecure check' do
+          expect(gateway.purchase('fake-valid-debit-nonce', order).success?).to be false
+        end
+
+        it 'adds error to Order' do
+          gateway.purchase('fake-valid-debit-nonce', order)
+          expect(order.errors.include?(:braintree_error)).to be true
+        end
       end
 
     end

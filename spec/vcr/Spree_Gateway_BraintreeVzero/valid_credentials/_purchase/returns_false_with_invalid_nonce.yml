@@ -72,4 +72,120 @@ http_interactions:
         Xf2JTHfXMARVmuzD3zy5GfHvMyRbZj7nDwAAAP//AwD1Bdt62QIAAA==
     http_version: 
   recorded_at: Mon, 07 Sep 2015 12:03:05 GMT
+- request:
+    method: post
+    uri: https://h442tzpn8wdk89p6:c3c1f38bf6b87c79b7eb4550e66d7b0a@api.sandbox.braintreegateway.com/merchants/yccdpmn3cvtjbgnr/transactions
+    body:
+      encoding: UTF-8
+      string: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <transaction>
+          <billing>
+            <company>Company</company>
+            <country-code-alpha2>US</country-code-alpha2>
+            <country-code-alpha3>USA</country-code-alpha3>
+            <country-code-numeric type="integer">840</country-code-numeric>
+            <country-name>United States of America</country-name>
+            <first-name>John</first-name>
+            <last-name>Doe</last-name>
+            <locality>Herndon</locality>
+            <postal-code>35005</postal-code>
+            <region>AL</region>
+            <street-address>10 Lovely Street</street-address>
+            <extended-address>Northwest</extended-address>
+          </billing>
+          <shipping>
+            <company>Company</company>
+            <country-code-alpha2>US</country-code-alpha2>
+            <country-code-alpha3>USA</country-code-alpha3>
+            <country-code-numeric type="integer">840</country-code-numeric>
+            <country-name>United States of America</country-name>
+            <first-name>John</first-name>
+            <last-name>Doe</last-name>
+            <locality>Herndon</locality>
+            <postal-code>35005</postal-code>
+            <region>AL</region>
+            <street-address>10 Lovely Street</street-address>
+            <extended-address>Northwest</extended-address>
+          </shipping>
+          <amount>20.00</amount>
+          <payment-method-nonce>fake-invalid-nonce</payment-method-nonce>
+          <order-id>R446697898</order-id>
+          <options>
+            <submit-for-settlement type="boolean">true</submit-for-settlement>
+            <three-d-secure>
+              <required type="boolean">true</required>
+            </three-d-secure>
+          </options>
+          <type>sale</type>
+        </transaction>
+    headers:
+      Accept-Encoding:
+      - gzip
+      Accept:
+      - application/xml
+      User-Agent:
+      - Braintree Ruby Gem 2.47.0
+      X-Apiversion:
+      - '4'
+      Content-Type:
+      - application/xml
+  response:
+    status:
+      code: 422
+      message: Unprocessable Entity
+    headers:
+      Date:
+      - Tue, 15 Sep 2015 08:16:05 GMT
+      Content-Type:
+      - application/xml; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - close
+      X-Frame-Options:
+      - SAMEORIGIN
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      X-Ua-Compatible:
+      - chrome=1
+      X-Authentication:
+      - basic_auth
+      Strict-Transport-Security:
+      - max-age=31536000
+      - max-age=31536000; includeSubDomains
+      X-User:
+      - 85kvddg6myqz4n82
+      Vary:
+      - Accept-Encoding
+      Content-Encoding:
+      - gzip
+      Cache-Control:
+      - no-cache
+      X-Request-Id:
+      - ae1cf760-2166-40f6-b0b4-95b693e2df43
+      X-Runtime:
+      - '5.613842'
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAMXT91UAA+xWTW/bMAy991cYvit2mo8lgKIi2DAMQ7HDupwLxWZiobbk
+        SXRa//tJjj8Tt1juPUV8fI+iRFoMfXjLUu8E2gglN/50EvoeyEjFQh43/u7P
+        d7LyH9gd5bkgoLXSRIPJlTTA7jyPVpBxy9bwsMxh43OteekHtQs1l4ZHaDc5
+        I+P0xtd4O9siNilg6+liuaBBte47OaIW+wKhjmfKbK9Sn+W8zEDicwaYqPhZ
+        KhkBDVr2IEYGxvAjsJ18kepVemPaCQ0aWpdrMEi2Nk1r70Wa2uu8PNzoTTn5
+        BZ+aROT5LQGGAhpc3H4/QZpzzTPzQZmus49UlnNZsq/nX1eNM9CnFBJ1SVyd
+        CE/zhN+z3ZNjXuMfqWZWtR2Tzd6TySIDLSK2mocXusZzLZQ8c1UXCLH3hBzB
+        eOrgbSs676JUtE59ENrgGfypEkmDHtCxUt5g35TtvM7sUVTEU4El+wFaxspG
+        apGOlCuDPK1OwmaLMLQfQR/qiBqOrnzbRxrUy85nUAMg4XFsv2LDpqH3qE6Q
+        lvbUzmE7Z0joNdwbgowhbl2/lMbkFYwVXflu6eTPZvpspv9rpsvmoTxzd8nu
+        w0loy1NbjbN+vMn58SbV480O/AWIkCd7HzVkDz5GbKIoHYMmIma/5/Plcv1l
+        tV7RoAVbVu5ezP4JTbHPBJKDnZcGEFNwWzDUhd1w3NdpMbHXRmLrjAo9nFAa
+        /hZCQ1xHas3eKBpX26SHOVI3OpjhqQ1TLd8bFd18uHk+2pqM/Gv4BwAA//8D
+        ADG8vmByCAAA
+    http_version: 
+  recorded_at: Tue, 15 Sep 2015 08:17:16 GMT
 recorded_with: VCR 2.9.3
