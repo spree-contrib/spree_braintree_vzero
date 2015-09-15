@@ -1,16 +1,28 @@
 <div id="payment-form"></div>
 <%= submit_tag Spree.t(:save_and_continue), class: 'btn btn-lg btn-success primary' %>
 
-<hr />
-<br />
+<hr/>
+<br/>
 
 <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
 <script>
-  var clientToken = "<%= payment_method.client_token %>";
+    var clientToken = "<%= payment_method.client_token %>";
 
-  braintree.setup(clientToken, "dropin", {
-    container: "payment-form"
-  });
+    braintree.setup(clientToken, "dropin", {
+        container: "payment-form"
+    });
 
-  SpreeBraintreeVzero.paymentMethodID = "<%= payment_method.id %>"
+    SpreeBraintreeVzero.paymentMethodID = "<%= payment_method.id %>"
+
+    <% if payment_method.preferred_advanced_fraud_tools %>
+    var BraintreeEnv = "<%= payment_method.preferred_server %>"
+    var BraintreeMerchantId = "<%= payment_method.preferred_merchant_id %>"
+
+    window.onBraintreeDataLoad = function () {
+        BraintreeData.setup(BraintreeMerchantId, 'payment-form', BraintreeData.environments[BraintreeEnv]);
+    };
+    <% end %>
 </script>
+<% if payment_method.preferred_advanced_fraud_tools %>
+    <script src='https://js.braintreegateway.com/v1/braintree-data.js' async=true></script>
+<% end %>

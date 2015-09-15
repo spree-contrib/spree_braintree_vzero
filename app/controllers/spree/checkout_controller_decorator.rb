@@ -5,7 +5,7 @@ Spree::CheckoutController.class_eval do
 
     if params[:payment_method_nonce]
       if payment_method = Spree::PaymentMethod.find_by_id(params[:order][:payments_attributes].first[:payment_method_id])
-        result = payment_method.purchase(params[:payment_method_nonce], current_order)
+        result = payment_method.purchase(params[:payment_method_nonce], current_order, params[:device_data])
         if result.success?
           payment_method.complete_order(current_order, result, payment_method)
           flash.notice = Spree.t(:order_processed_successfully)

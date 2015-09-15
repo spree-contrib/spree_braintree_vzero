@@ -6,7 +6,8 @@ module Spree
     preference :private_key, :string
     preference :server, :string, default: :sandbox
     preference :'3dsecure', :boolean, default: true
-    preference :pass_billing_and_shipping_address, :boolean, default: true
+    preference :pass_billing_and_shipping_address, :boolean, default: false
+    preference :advanced_fraud_tools, :boolean, default: false
 
     attr_reader :utils
 
@@ -38,19 +39,22 @@ module Spree
       provider::ClientToken.generate
     end
 
-    def purchase(nonce, order)
+    def purchase(nonce, order, device_data = nil)
       @utils = BraintreeUtils.new(order)
       data = {}
       if preferred_pass_billing_and_shipping_address
         data.merge!(billing: @utils.address_data('billing'))
         data.merge!(shipping: @utils.address_data('shipping'))
       end
+      if preferred_advanced_fraud_tools
+        data.merge!(device_data: device_data)
+      end
       data.merge!(@utils.order_data(nonce))
       data.merge!(
         options: {
           submit_for_settlement: true,
           three_d_secure: {
-            required: preferred_3dsecure
+            required: false
           }
         }
       )
@@ -59,9 +63,9 @@ module Spree
 
       unless result.success?
         result.errors.each { |e| order.errors.add(:braintree_error, e.message) }
-      end
-      if result.transaction.try(:gateway_rejection_reason) == Braintree::Transaction::GatewayRejectionReason::ThreeDSecure
-        order.errors.add(:braintree_error, 'three_d_secure_validation_failed')
+        if result.errors.size == 0 && result.transaction.try(:gateway_rejection_reason)
+          order.errors.add(:braintree_error, result.transaction.gateway_rejection_reason)
+        end
       end
 
       result
@@ -84,16 +88,16 @@ module Spree
 
     def map_payment_status(braintree_status)
       case braintree_status
-      when 'authorized'
-        'pending'
-      when 'voided'
-        'void'
-      when 'submitted_for_settlement', 'settling', 'settlement_pending' #TODO: can we treat it as paid?
-        'completed'
-      when 'settled'
-        'completed'
-      else
-        'failed'
+        when 'authorized'
+          'pending'
+        when 'voided'
+          'void'
+        when 'submitted_for_settlement', 'settling', 'settlement_pending' #TODO: can we treat it as paid?
+          'completed'
+        when 'settled'
+          'completed'
+        else
+          'failed'
       end
     end
 
