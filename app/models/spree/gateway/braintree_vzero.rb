@@ -54,7 +54,7 @@ module Spree
         options: {
           submit_for_settlement: true,
           three_d_secure: {
-            required: false
+            required: preferred_3dsecure
           }
         }
       )
@@ -64,7 +64,7 @@ module Spree
       unless result.success?
         result.errors.each { |e| order.errors.add(:braintree_error, e.message) }
         if result.errors.size == 0 && result.transaction.try(:gateway_rejection_reason)
-          order.errors.add(:braintree_error, result.transaction.gateway_rejection_reason)
+          order.errors.add(:base, I18n.t(result.transaction.gateway_rejection_reason, scope: 'braintree.error'))
         end
       end
 

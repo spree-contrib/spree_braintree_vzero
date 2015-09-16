@@ -31,7 +31,7 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
 
         it 'adds error to Order' do
           gateway.purchase('fake-valid-debit-nonce', order)
-          expect(order.errors.include?(:braintree_error)).to be true
+          expect(order.errors.values.flatten.include?(I18n.t(:three_d_secure, scope: 'braintree.error'))).to be true
         end
       end
 

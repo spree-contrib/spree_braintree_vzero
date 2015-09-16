@@ -6,23 +6,54 @@
 
 <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
 <script>
-    var clientToken = "<%= payment_method.client_token %>";
+  var clientToken = "<%= payment_method.client_token %>";
+  var checkout_form_id = <%= Rails.application.secrets.braintree_checkout_form_id || 'checkout_form_payment' %>;
+  var error_messages_container = <%= Rails.application.secrets.braintree_error_messages_container_id || 'content' %>;
 
-    braintree.setup(clientToken, "dropin", {
-        container: "payment-form"
-    });
+  SpreeBraintreeVzero.advancedFraudTools = <%= payment_method.preferred_advanced_fraud_tools %>
+      SpreeBraintreeVzero.threeDSecure = <%= payment_method.preferred_3dsecure %>
 
-    SpreeBraintreeVzero.paymentMethodID = "<%= payment_method.id %>"
+          braintree.setup(clientToken, "dropin", {
+            container: "payment-form",
 
-    <% if payment_method.preferred_advanced_fraud_tools %>
-    var BraintreeEnv = "<%= payment_method.preferred_server %>"
-    var BraintreeMerchantId = "<%= payment_method.preferred_merchant_id %>"
+            onPaymentMethodReceived: function (result) {
+              if (SpreeBraintreeVzero.threeDSecure && result.type == 'CreditCard') {
+                var client = new braintree.api.Client({
+                  clientToken: clientToken
+                });
+
+                client.verify3DS({
+                  amount: <%= current_order.total %>,
+                  creditCard: result.nonce
+                }, function (error, response) {
+                  if (!error) {
+                    $('#' + checkout_form_id).append('<input type="hidden" name="payment_method_nonce" value=' + response.nonce + '>');
+                    $('#' + checkout_form_id).submit();
+                  } else {
+                    $('#' + error_messages_container).prepend("<div class='alert alert-error'><%= I18.t(:gateway_error, scope: 'braintree.error') %>></div>")
+                  }
+                });
+
+
+              } else {
+                $('#' + checkout_form_id).append('<input type="hidden" name="payment_method_nonce" value=' + result.nonce + '>');
+                $('#' + checkout_form_id).submit();
+              }
+            }
+
+          });
+
+  SpreeBraintreeVzero.paymentMethodID = "<%= payment_method.id %>";
+
+  if (SpreeBraintreeVzero.advancedFraudTools) {
+    var BraintreeEnv = "<%= payment_method.preferred_server %>";
+    var BraintreeMerchantId = "<%= payment_method.preferred_merchant_id %>";
 
     window.onBraintreeDataLoad = function () {
-        BraintreeData.setup(BraintreeMerchantId, 'payment-form', BraintreeData.environments[BraintreeEnv]);
+      BraintreeData.setup(BraintreeMerchantId, checkout_form_id, BraintreeData.environments[BraintreeEnv]);
     };
-    <% end %>
+  }
 </script>
 <% if payment_method.preferred_advanced_fraud_tools %>
-    <script src='https://js.braintreegateway.com/v1/braintree-data.js' async=true></script>
+  <script src='https://js.braintreegateway.com/v1/braintree-data.js' async=true></script>
 <% end %>
