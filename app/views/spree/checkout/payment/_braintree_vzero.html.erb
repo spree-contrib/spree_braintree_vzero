@@ -27,17 +27,17 @@
                   creditCard: result.nonce
                 }, function (error, response) {
                   if (!error) {
-                    $('#' + checkout_form_id).append('<input type="hidden" name="payment_method_nonce" value=' + response.nonce + '>');
-                    $('#' + checkout_form_id).submit();
+                    $(checkout_form_id).append('<input type="hidden" name="payment_method_nonce" value=' + response.nonce + '>');
+                    $(checkout_form_id).submit();
                   } else {
-                    $('#' + error_messages_container).prepend("<div class='alert alert-error'><%= I18n.t(:gateway_error, scope: 'braintree.error') %>></div>")
+                    $(error_messages_container).prepend("<div class='alert alert-error'><%= I18n.t(:gateway_error, scope: 'braintree.error') %>></div>")
                   }
                 });
 
 
               } else {
-                $('#' + checkout_form_id).append('<input type="hidden" name="payment_method_nonce" value=' + result.nonce + '>');
-                $('#' + checkout_form_id).submit();
+                $(checkout_form_id).append('<input type="hidden" name="payment_method_nonce" value=' + result.nonce + '>');
+                $(checkout_form_id).submit();
               }
             }
 
