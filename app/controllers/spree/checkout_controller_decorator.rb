@@ -1,5 +1,7 @@
 Spree::CheckoutController.class_eval do
+
   before_filter :process_braintree, only: :update
+  after_action :allow_braintree_iframe
 
   def process_braintree
 
@@ -20,5 +22,10 @@ Spree::CheckoutController.class_eval do
     end
   end
 
+  private
+
+  def allow_braintree_iframe
+    response.headers['X-Frame-Options'] = 'ALLOW-FROM https://assets.braintreegateway.com'
+  end
 
 end
