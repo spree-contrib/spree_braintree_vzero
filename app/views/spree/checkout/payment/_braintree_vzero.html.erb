@@ -11,7 +11,7 @@
   var error_messages_container = <%= Rails.application.secrets.braintree_error_messages_container_id || 'content' %>;
 
   SpreeBraintreeVzero.advancedFraudTools = <%= payment_method.preferred_advanced_fraud_tools %>
-      SpreeBraintreeVzero.threeDSecure = <%= payment_method.preferred_3dsecure %>
+  SpreeBraintreeVzero.threeDSecure = <%= payment_method.preferred_3dsecure %>
 
           braintree.setup(clientToken, "dropin", {
             container: "payment-form",
@@ -50,7 +50,7 @@
     var BraintreeMerchantId = "<%= payment_method.preferred_merchant_id %>";
 
     window.onBraintreeDataLoad = function () {
-      BraintreeData.setup(BraintreeMerchantId, checkout_form_id, BraintreeData.environments[BraintreeEnv]);
+      BraintreeData.setup(BraintreeMerchantId, checkout_form_id.id, BraintreeData.environments[BraintreeEnv]);
     };
   }
 </script>
