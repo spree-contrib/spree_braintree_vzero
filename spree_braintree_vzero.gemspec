@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'spree_core', '~> 3.0.4'
   s.add_dependency 'braintree'
+  s.add_dependency 'whenever'
 
   s.add_development_dependency 'capybara', '~> 2.4'
   s.add_development_dependency 'coffee-rails'

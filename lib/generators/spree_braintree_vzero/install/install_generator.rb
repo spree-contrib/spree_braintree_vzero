@@ -14,6 +14,15 @@ module SpreeBraintreeVzero
         inject_into_file 'vendor/assets/stylesheets/spree/backend/all.css', " *= require spree/backend/spree_braintree_vzero\n", :before => /\*\//, :verbose => true
       end
 
+      def add_schedule
+        create_file 'config/schedule.rb' unless File.exist?('config/schedule.rb')
+        append_file 'config/schedule.rb' do
+          "\nevery '0 4,16 * * * *' do
+            rake 'spree_braintree_vzero:update_states'
+          end"
+        end
+      end
+
       def add_migrations
         run 'bundle exec rake railties:install:migrations FROM=spree_braintree_vzero'
       end

@@ -33,6 +33,22 @@ module Spree
         }
       end
 
+
+      def map_payment_status(braintree_status)
+        case braintree_status
+          when 'authorized'
+            'pending'
+          when 'voided'
+            'void'
+          when 'submitted_for_settlement', 'settling', 'settlement_pending'
+            'pending'
+          when 'settled'
+            'completed'
+          else
+            'failed'
+        end
+      end
+
     end
   end
 end

@@ -50,12 +50,12 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
         end
 
         it 'creates Payment object with valid state' do
-          expect(order.payments.first.state).to eq 'completed'
+          expect(order.payments.first.state).to eq 'pending'
         end
 
         it 'updates Order state' do
-          r = gateway.purchase('fake-valid-nonce', order)
-          expect(order.payment_state).to eq 'paid'
+          gateway.purchase('fake-valid-nonce', order)
+          expect(order.payment_state).to eq 'balance_due'
         end
       end
 
@@ -67,14 +67,42 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
 
     end
 
-  end
+    describe '#update_states' do
 
-  context 'with invalid credentials' do
-    let(:gateway) { create(:vzero_gateway, merchant_id: 'invalid_id') }
+      before do
+        gateway.preferred_3dsecure = false
+        gateway.complete_order(order, gateway.purchase('fake-valid-nonce', order), gateway)
+        order.payments.first.source.update_attribute(:transaction_id, '9drj68') #use already settled transaction
+      end
 
-    it 'raises Braintree error' do
-      expect { gateway.client_token }.to raise_error('Braintree::AuthenticationError')
+      let!(:result) { Spree::BraintreeCheckout.update_states }
+
+      it 'updates payment State' do
+        expect(result[:changed]).to eq 1
+      end
+
+      it 'does not update completed Checkout on subsequent runs' do
+        expect(result[:changed]).to eq 1
+        expect(Spree::BraintreeCheckout.update_states[:changed]).to eq 0
+      end
+
+      it 'updates Order payment_state when Checkout is updated' do
+        expect(order.reload.payment_state).to eq 'paid'
+      end
+
+      it 'updates Payment state when Checkout is updated' do
+        expect(order.reload.payments.first.state).to eq 'completed'
+      end
+
     end
 
+    context 'with invalid credentials' do
+      let(:gateway) { create(:vzero_gateway, merchant_id: 'invalid_id') }
+
+      it 'raises Braintree error' do
+        expect { gateway.client_token }.to raise_error('Braintree::AuthenticationError')
+      end
+
+    end
   end
 end

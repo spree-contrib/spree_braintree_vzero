@@ -1,0 +1,5 @@
+<%= label_tag "transaction_id#{payment_method.id}", raw(Spree.t(:transaction_id) + content_tag(:span, ' *', :class => 'required')) %>
+<%= text_field_tag "[payment][source][transaction_id]", '', :class => 'required form-control', :id => "transaction_id#{payment_method.id}", :maxlength => 19 %>
+
+<%= label_tag "state#{payment_method.id}", raw(Spree.t(:state) + content_tag(:span, ' *', :class => 'required')) %>
+<%= text_field_tag "[payment][source][state]", '', :class => 'required form-control', :id => "state#{payment_method.id}", :maxlength => 19 %>

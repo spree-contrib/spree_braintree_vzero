@@ -62,7 +62,7 @@ module Spree
       result = provider::Transaction.sale(data)
 
       unless result.success?
-        result.errors.each { |e| order.errors.add(:braintree_error, e.message) }
+        result.errors.each { |e| order.errors.add(:base, I18n.t(e.message), scope: 'braintree.error') }
         if result.errors.size == 0 && result.transaction.try(:gateway_rejection_reason)
           order.errors.add(:base, I18n.t(result.transaction.gateway_rejection_reason, scope: 'braintree.error'))
         end
@@ -73,32 +73,18 @@ module Spree
 
     def complete_order(order, result, payment_method)
       return false unless result.transaction
+      @utils = BraintreeUtils.new(order)
       payment = order.payments.create!(
         source: Spree::BraintreeCheckout.create!(transaction_id: result.transaction.id, state: result.transaction.status),
         amount: order.total,
         payment_method: payment_method,
-        state: map_payment_status(result.transaction.status),
+        state: @utils.map_payment_status(result.transaction.status),
         response_code: result.transaction.id
       )
       payment.save!
       order.update_attributes(completed_at: Time.zone.now, state: :complete)
       order.finalize!
       order.update!
-    end
-
-    def map_payment_status(braintree_status)
-      case braintree_status
-        when 'authorized'
-          'pending'
-        when 'voided'
-          'void'
-        when 'submitted_for_settlement', 'settling', 'settlement_pending' #TODO: can we treat it as paid?
-          'completed'
-        when 'settled'
-          'completed'
-        else
-          'failed'
-      end
     end
 
   end
