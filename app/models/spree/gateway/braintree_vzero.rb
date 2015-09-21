@@ -5,7 +5,7 @@ module Spree
     preference :public_key, :string
     preference :private_key, :string
     preference :server, :string, default: :sandbox
-    preference :'3dsecure', :boolean, default: true
+    preference :'3dsecure', :boolean, default: false
     preference :pass_billing_and_shipping_address, :boolean, default: false
     preference :advanced_fraud_tools, :boolean, default: false
 
