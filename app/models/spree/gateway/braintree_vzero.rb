@@ -15,6 +15,10 @@ module Spree
       super
     end
 
+    def payment_profiles_supported?
+      false
+    end
+
     def provider_class
       Braintree
     end

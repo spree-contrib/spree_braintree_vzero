@@ -30,7 +30,7 @@ module Spree
 
     def update_payment_and_order
       if state_changed? && payment
-        payment.update_attribute(:state, Gateway::BraintreeUtils.new(order).map_payment_status(Gateway::BraintreeVzero.first.provider::Transaction.find(transaction_id).status))
+        payment.update_attribute(:state, Gateway::BraintreeUtils.new(order).map_payment_status(state))
         order.update!
       end
     end
