@@ -14,6 +14,8 @@ Spree::Admin::BaseHelper.module_eval do
         form.text_area(field, preference_field_options(options))
       when :boolean_select
         form.select(field, [true, false])
+      when :select
+        form.select(field, options_for_select(options[:values].map{|key| [I18n.t(key, scope: 'braintree.preferences'), key]}, options[:selected]))
       else
         form.text_field(field, preference_field_options(options))
     end
@@ -34,9 +36,23 @@ Spree::Admin::BaseHelper.module_eval do
         text_area_tag(name, value, preference_field_options(options))
       when :boolean_select
         select_tag(name, value, preference_field_options(options))
+      when :select
+        select_tag(name, value, preference_field_options(options))
       else
         text_field_tag(name, value, preference_field_options(options))
     end
+  end
+
+  def preference_fields(object, form)
+    return unless object.respond_to?(:preferences)
+    object.preferences.keys.map{ |key|
+      if object.has_preference?(key)
+        form.label("preferred_#{key}", Spree.t(key) + ": ") +
+          preference_field_for(form, "preferred_#{key}", type: object.preference_type(key),
+                               values: object.send("preferred_#{key}_default").is_a?(Hash) ? object.send("preferred_#{key}_default")[:values] : nil,
+                               selected: object.preferences[key])
+      end
+    }.join("<br />").html_safe
   end
 
 

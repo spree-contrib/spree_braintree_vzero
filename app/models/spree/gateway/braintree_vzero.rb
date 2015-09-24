@@ -8,6 +8,7 @@ module Spree
     preference :'3dsecure', :boolean_select, default: false
     preference :pass_billing_and_shipping_address, :boolean_select, default: false
     preference :advanced_fraud_tools, :boolean_select, default: false
+    preference :store_payments_in_vault, :select, default: -> {{values: [:do_not_store, :store_only_on_success, :store_all]}}
 
     attr_reader :utils
 

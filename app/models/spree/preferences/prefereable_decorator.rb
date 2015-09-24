@@ -4,7 +4,7 @@ Spree::Preferences::Preferable.class_eval do
 
   def convert_preference_value(value, type)
     case type
-      when :string, :text
+      when :string, :text, :select
         value.to_s
       when :password
         value.to_s
