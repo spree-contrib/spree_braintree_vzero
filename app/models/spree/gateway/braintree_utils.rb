@@ -6,7 +6,10 @@ module Spree
 
       def initialize(gateway, order)
         @order = order
-        @customer = gateway.provider::Customer.find(order.user.id) if order.user
+        begin
+          @customer = gateway.provider::Customer.find(order.user.id) if order.user
+        rescue
+        end
         @gateway = gateway
       end
 
