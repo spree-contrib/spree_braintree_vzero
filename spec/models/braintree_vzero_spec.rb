@@ -22,6 +22,10 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
         expect(gateway.purchase('fake-invalid-nonce', order).success?).to be false
       end
 
+      it 'does not store Transaction in Vault by default' do
+        expect(gateway.purchase('fake-valid-nonce', order).transaction.credit_card_details.token).to be_nil
+      end
+
       context 'with 3DSecure option turned on' do
         before { gateway.preferred_3dsecure = true }
 
@@ -32,6 +36,15 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
         it 'adds error to Order' do
           gateway.purchase('fake-valid-debit-nonce', order)
           expect(order.errors.values.flatten.include?(I18n.t(:three_d_secure, scope: 'braintree.error'))).to be true
+        end
+      end
+
+      context 'using Vault' do
+        before { gateway.preferred_store_payments_in_vault = :store_all }
+
+        it 'stores Transaction' do
+          card_vault_token = gateway.purchase('fake-valid-nonce', order).transaction.credit_card_details.token
+          expect { Braintree::PaymentMethod.find(card_vault_token) }.not_to raise_error
         end
       end
 

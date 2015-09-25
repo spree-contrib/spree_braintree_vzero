@@ -45,7 +45,7 @@ module Spree
     end
 
     def purchase(nonce, order, device_data = nil)
-      @utils = BraintreeUtils.new(order)
+      @utils = BraintreeUtils.new(self, order)
       data = {}
       if preferred_pass_billing_and_shipping_address
         data.merge!(billing: @utils.address_data('billing'))
@@ -54,14 +54,16 @@ module Spree
       if preferred_advanced_fraud_tools
         data.merge!(device_data: device_data)
       end
+      data.merge!(@utils.get_customer)
       data.merge!(@utils.order_data(nonce))
       data.merge!(
         options: {
           submit_for_settlement: true,
+          add_billing_address_to_payment_method: preferred_pass_billing_and_shipping_address ? true : false,
           three_d_secure: {
             required: preferred_3dsecure
           }
-        }
+        }.merge!(@utils.payment_in_vault)
       )
 
       result = provider::Transaction.sale(data)
@@ -78,7 +80,7 @@ module Spree
 
     def complete_order(order, result, payment_method)
       return false unless result.transaction
-      @utils = BraintreeUtils.new(order)
+      @utils = BraintreeUtils.new(self, order)
       payment = order.payments.create!(
         source: Spree::BraintreeCheckout.create!(transaction_id: result.transaction.id, state: result.transaction.status),
         amount: order.total,

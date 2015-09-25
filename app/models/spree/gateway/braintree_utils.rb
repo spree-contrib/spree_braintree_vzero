@@ -2,10 +2,12 @@ module Spree
   class Gateway
     class BraintreeUtils
 
-      attr_reader :order
+      attr_reader :order, :customer, :gateway
 
-      def initialize(order)
+      def initialize(gateway, order)
         @order = order
+        @customer = gateway.provider::Customer.find(order.user.id) if order.user
+        @gateway = gateway
       end
 
       def order_data(nonce)
@@ -33,6 +35,31 @@ module Spree
         }
       end
 
+      def get_customer
+        if @customer
+          {customer_id: @customer.id}
+        else
+          {customer: customer_data}
+        end
+      end
+
+      def customer_data
+        if payment_in_vault[:store_shipping_address_in_vault] && order.user
+          address_data('billing').slice(:first_name, :last_name, :company).merge!(id: order.user.id, email: order.user.email, phone: order.billing_address.phone)
+        else
+          {}
+        end
+      end
+
+      def payment_in_vault
+        if gateway.preferred_store_payments_in_vault == 'store_only_on_success'
+          {store_in_vault_on_success: true, store_shipping_address_in_vault: true}
+        elsif gateway.preferred_store_payments_in_vault == 'store_all'
+          {store_in_vault: true, store_shipping_address_in_vault: true}
+        else
+          {store_in_vault: false}
+        end
+      end
 
       def map_payment_status(braintree_status)
         case braintree_status
