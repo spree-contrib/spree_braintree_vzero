@@ -15,7 +15,7 @@ Spree::Admin::BaseHelper.module_eval do
       when :boolean_select
         content_tag('div', class: 'form-group', 'data-hook' => field) do
           label_tag(field, Spree.t(field))
-          form.select(field, [true, false], {}, class: 'select2')
+          form.select(field, {Spree.t(:enabled) => true, Spree.t(:disabled) => false}, {}, class: 'select2')
         end
       when :select
         content_tag('div', class: 'form-group', 'data-hook' => field) do
