@@ -6,9 +6,9 @@
 
 <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
 <script>
-  var clientToken = "<%= payment_method.client_token %>";
-  var checkout_form_id = <%= Rails.application.secrets.braintree_checkout_form_id || 'checkout_form_payment' %>;
-  var error_messages_container = <%= Rails.application.secrets.braintree_error_messages_container_id || 'content' %>;
+  var clientToken = "<%= payment_method.client_token(current_spree_user) %>";
+  var checkoutFormId = <%= Rails.application.secrets.braintree_checkout_form_id || 'checkout_form_payment' %>;
+  var error_messagesContainer = <%= Rails.application.secrets.braintree_error_messages_container_id || 'content' %>;
 
   SpreeBraintreeVzero.advancedFraudTools = <%= payment_method.preferred_advanced_fraud_tools %>
   SpreeBraintreeVzero.threeDSecure = <%= payment_method.preferred_3dsecure %>
@@ -27,17 +27,17 @@
                   creditCard: result.nonce
                 }, function (error, response) {
                   if (!error) {
-                    $(checkout_form_id).append('<input type="hidden" name="payment_method_nonce" value=' + response.nonce + '>');
-                    $(checkout_form_id).submit();
+                    $(checkoutFormId).append('<input type="hidden" name="payment_method_nonce" value=' + response.nonce + '>');
+                    $(checkoutFormId).submit();
                   } else {
-                    $(error_messages_container).prepend("<div class='alert alert-error'><%= I18n.t(:gateway_error, scope: 'braintree.error') %>></div>")
+                    $(error_messagesContainer).prepend("<div class='alert alert-error'><%= I18n.t(:gateway_error, scope: 'braintree.error') %>></div>")
                   }
                 });
 
 
               } else {
-                $(checkout_form_id).append('<input type="hidden" name="payment_method_nonce" value=' + result.nonce + '>');
-                $(checkout_form_id).submit();
+                $(checkoutFormId).append('<input type="hidden" name="payment_method_nonce" value=' + result.nonce + '>');
+                $(checkoutFormId).submit();
               }
             }
 
@@ -50,7 +50,7 @@
     var BraintreeMerchantId = "<%= payment_method.preferred_merchant_id %>";
 
     window.onBraintreeDataLoad = function () {
-      BraintreeData.setup(BraintreeMerchantId, checkout_form_id.id, BraintreeData.environments[BraintreeEnv]);
+      BraintreeData.setup(BraintreeMerchantId, checkoutFormId.id, BraintreeData.environments[BraintreeEnv]);
     };
   }
 </script>

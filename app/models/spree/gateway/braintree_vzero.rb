@@ -40,8 +40,8 @@ module Spree
       'braintree_vzero'
     end
 
-    def client_token
-      provider::ClientToken.generate
+    def client_token(user = nil)
+      provider::ClientToken.generate(customer_id: user.try(:id))
     end
 
     def purchase(nonce, order, device_data = nil)
