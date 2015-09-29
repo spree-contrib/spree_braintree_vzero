@@ -42,16 +42,12 @@ module Spree
         if @customer
           {customer_id: @customer.id}
         else
-          {customer: customer_data}
+          {customer: (payment_in_vault[:store_shipping_address_in_vault] && order.user) ? customer_data(order.user) : {}}
         end
       end
 
-      def customer_data
-        if payment_in_vault[:store_shipping_address_in_vault] && order.user
-          address_data('billing').slice(:first_name, :last_name, :company).merge!(id: order.user.id, email: order.user.email, phone: order.billing_address.phone)
-        else
-          {}
-        end
+      def customer_data(user)
+        address_data('billing').slice(:first_name, :last_name, :company, :phone).merge!(id: user.id, email: user.email)
       end
 
       def payment_in_vault

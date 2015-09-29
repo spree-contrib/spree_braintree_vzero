@@ -8,7 +8,7 @@ module Spree
     preference :'3dsecure', :boolean_select, default: false
     preference :pass_billing_and_shipping_address, :boolean_select, default: false
     preference :advanced_fraud_tools, :boolean_select, default: false
-    preference :store_payments_in_vault, :select, default: -> {{values: [:do_not_store, :store_only_on_success, :store_all]}}
+    preference :store_payments_in_vault, :select, default: -> { {values: [:do_not_store, :store_only_on_success, :store_all]} }
 
     attr_reader :utils
 
@@ -40,8 +40,9 @@ module Spree
       'braintree_vzero'
     end
 
-    def client_token(user = nil)
-      provider::ClientToken.generate(customer_id: user.try(:id))
+    def client_token(order = nil, user = nil)
+      braintree_user = BraintreeUser.new(provider, user, order).user
+      braintree_user ? provider::ClientToken.generate(customer_id: user.id) : provider::ClientToken.generate
     end
 
     def purchase(nonce, order, device_data = nil)

@@ -7,8 +7,18 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
     let(:gateway) { create(:vzero_gateway) }
     let(:order) { OrderWalkthrough.up_to(:payment) }
 
-    it 'generates token' do
+    it 'generates token without User' do
       expect(gateway.client_token).to_not be_nil
+    end
+
+    it 'generates token for new User' do
+      expect(gateway.client_token(create(:user))).to_not be_nil
+    end
+
+    it 'generates token for User registered in Braintree' do
+      user = create(:user)
+      Spree::Gateway::BraintreeUser.new(gateway.provider, user, order).register_user
+      expect(gateway.client_token(user)).to_not be_nil
     end
 
     describe '#purchase' do

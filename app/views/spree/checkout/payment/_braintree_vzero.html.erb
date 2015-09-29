@@ -6,7 +6,7 @@
 
 <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
 <script>
-  var clientToken = "<%= payment_method.client_token(current_spree_user) %>";
+  var clientToken = "<%= payment_method.client_token(current_order, current_spree_user) %>";
   var checkoutFormId = <%= Rails.application.secrets.braintree_checkout_form_id || 'checkout_form_payment' %>;
   var error_messagesContainer = <%= Rails.application.secrets.braintree_error_messages_container_id || 'content' %>;
 
