@@ -119,6 +119,44 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
 
     end
 
+    describe '#void' do
+      let(:payment) { order.payments.first }
+      let(:payment_source) { payment.payment_source }
+      let(:void) { gateway.void(payment_source.transaction_id, {}) }
+      let!(:prepare_gateway) { gateway.preferred_3dsecure = false }
+
+      context 'with voidable state' do
+        let!(:complete_order) do
+          gateway.complete_order(order, gateway.purchase('fake-valid-nonce', order), gateway)
+          void
+        end
+
+        it 'should change payment_source state to voided' do
+          expect(payment_source.reload.state).to eq 'voided'
+        end
+
+        it 'should change payment_source state to voided' do
+          expect(payment.reload.state).to eq 'void'
+        end
+      end
+
+      context 'with unvoidable state' do
+        let!(:complete_order) do
+          gateway.complete_order(order, gateway.purchase('fake-paypal-one-time-nonce', order), gateway)
+          void
+        end
+
+        it 'should not change payment_source state' do
+          expect(payment_source.reload.state).to eq 'settling'
+        end
+
+        it 'should not change payment_source state' do
+          expect(payment.reload.state).to eq 'pending'
+        end
+      end
+
+    end
+
     context 'with invalid credentials' do
       let(:gateway) { create(:vzero_gateway, merchant_id: 'invalid_id') }
 

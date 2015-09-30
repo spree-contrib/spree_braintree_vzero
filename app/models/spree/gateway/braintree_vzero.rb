@@ -95,5 +95,15 @@ module Spree
       order.update!
     end
 
+    def void(transaction_id, _data)
+      result = provider::Transaction.void(transaction_id)
+
+      if result.success?
+        Spree::BraintreeCheckout.find_by(transaction_id: transaction_id).update(state: 'voided')
+      end
+
+      result
+    end
+
   end
 end

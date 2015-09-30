@@ -26,6 +26,14 @@ module Spree
       result
     end
 
+    def actions
+      %w(void)
+    end
+
+    def can_void?(_payment)
+      %w(authorized submitted_for_settlement).include? state
+    end
+
     private
 
     def update_payment_and_order
