@@ -157,6 +157,31 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
 
     end
 
+    describe '#capture' do
+
+      before do
+        gateway.preferred_submit_for_settlement = false
+        gateway.complete_order(order, gateway.purchase('fake-valid-nonce', order), gateway)
+        @payment = order.payments.first
+      end
+
+
+      context 'captures authorized amount' do
+
+        it 'updates Payment state' do
+          expect(@payment.state).to eq 'pending'
+          @payment.capture!
+          expect(@payment.state).to eq 'completed'
+        end
+
+        it 'submits Transaction for settlement' do
+          expect(gateway.provider::Transaction.find(@payment.response_code).status).to eq 'authorized'
+          @payment.capture!
+          expect(gateway.provider::Transaction.find(@payment.response_code).status).to eq 'submitted_for_settlement'
+        end
+      end
+    end
+
     context 'with invalid credentials' do
       let(:gateway) { create(:vzero_gateway, merchant_id: 'invalid_id') }
 

@@ -27,11 +27,15 @@ module Spree
     end
 
     def actions
-      %w(void)
+      %w(void capture)
     end
 
     def can_void?(_payment)
       %w(authorized submitted_for_settlement).include? state
+    end
+
+    def can_capture?(_)
+      %w(authorized).include? state
     end
 
     private

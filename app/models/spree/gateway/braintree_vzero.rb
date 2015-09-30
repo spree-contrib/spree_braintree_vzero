@@ -9,6 +9,7 @@ module Spree
     preference :pass_billing_and_shipping_address, :boolean_select, default: false
     preference :advanced_fraud_tools, :boolean_select, default: false
     preference :store_payments_in_vault, :select, default: -> { {values: [:do_not_store, :store_only_on_success, :store_all]} }
+    preference :submit_for_settlement, :boolean_select, default: false
 
     attr_reader :utils
 
@@ -59,7 +60,7 @@ module Spree
       data.merge!(@utils.order_data(nonce))
       data.merge!(
         options: {
-          submit_for_settlement: true,
+          submit_for_settlement: preferred_submit_for_settlement,
           add_billing_address_to_payment_method: preferred_pass_billing_and_shipping_address ? true : false,
           three_d_secure: {
             required: preferred_3dsecure
@@ -93,6 +94,16 @@ module Spree
       order.update_attributes(completed_at: Time.zone.now, state: :complete)
       order.finalize!
       order.update!
+    end
+
+    def capture(amount, response_code, gateway_options)
+      checkout = Spree::BraintreeCheckout.find_by_transaction_id(response_code)
+      begin
+        result = provider::Transaction.submit_for_settlement(response_code, amount / 100)
+      ensure
+        checkout.update_attribute(:state, result.transaction.status)
+      end
+      result
     end
 
     def void(transaction_id, _data)
