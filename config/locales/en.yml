@@ -15,3 +15,15 @@ en:
       do_not_store: Do not store
       store_only_on_success: Story only on success
       store_all: Store all
+
+  spree:
+    3d_secure: 3D Secure
+    advanced_fraud_tools: Advanced Fraud Tools
+    descriptor_name: Card or Bank Statement Name
+    descriptor_name_information_box_text: "This field will be displayed on the consumer’s bank or card statement.<br/><br/>If this field is not enabled by Braintree, please call Sales Rep or Braintree Support to set this up."
+    merchant_id: Merchant
+    pass_billing_and_shipping_address: Pass Billing and Shipping Address
+    private_key: Private Key
+    public_key: Public Key
+    store_payments_in_vault: Store Payments In Vault
+    submit_for_settlement: Submit for Settlement

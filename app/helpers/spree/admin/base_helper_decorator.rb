@@ -7,7 +7,11 @@ Spree::Admin::BaseHelper.module_eval do
       when :boolean
         form.check_box(field, preference_field_options(options))
       when :string
-        form.text_field(field, preference_field_options(options))
+        content_tag('div', class: 'form-group', 'data-hook' => field) do
+          "#{content_tag('div', Spree.t('descriptor_name_information_box_text').html_safe,
+                         class: 'alert alert-warning') if field.eql?('preferred_descriptor_name')}".html_safe +
+          form.text_field(field, preference_field_options(options))
+        end
       when :password
         form.password_field(field, preference_field_options(options))
       when :text
