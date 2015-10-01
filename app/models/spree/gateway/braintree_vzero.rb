@@ -60,7 +60,7 @@ module Spree
       data.merge!(@utils.get_customer)
       data.merge!(@utils.order_data(nonce))
       data.merge!(
-        descriptor: { name: preferred_descriptor_name.gsub('/', '*') },
+        descriptor: { name: preferred_descriptor_name.to_s.gsub('/', '*') },
         options: {
           submit_for_settlement: preferred_submit_for_settlement,
           add_billing_address_to_payment_method: preferred_pass_billing_and_shipping_address ? true : false,
