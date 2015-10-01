@@ -1,6 +1,18 @@
 Spree::Payment::Processing.class_eval do
 
+  delegate :settle, to: :provider
+
+  def settle!
+    handle_payment_preconditions { process_settle }
+  end
+
   private
+
+
+  def process_settle
+    started_processing!
+    gateway_action(source, :settle, :started_processing)
+  end
 
   def gateway_error(error)
     if error.is_a? ActiveMerchant::Billing::Response

@@ -157,7 +157,7 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
 
     end
 
-    describe '#capture' do
+    describe '#settle' do
 
       before do
         gateway.preferred_submit_for_settlement = false
@@ -166,19 +166,32 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
       end
 
 
-      context 'captures authorized amount' do
+      context 'settles authorized amount' do
 
-        it 'updates Payment state' do
+        it 'does not update Order payment_state' do
+          expect(order.payment_state).to eq 'balance_due'
+          @payment.settle!
+          expect(order.reload.payment_state).to eq 'balance_due'
+        end
+
+        it 'updates  Payment state' do
           expect(@payment.state).to eq 'pending'
-          @payment.capture!
-          expect(@payment.state).to eq 'completed'
+          @payment.settle!
+          expect(@payment.state).to eq 'processing'
         end
 
         it 'submits Transaction for settlement' do
           expect(gateway.provider::Transaction.find(@payment.response_code).status).to eq 'authorized'
-          @payment.capture!
+          @payment.settle!
           expect(gateway.provider::Transaction.find(@payment.response_code).status).to eq 'submitted_for_settlement'
         end
+
+        it 'prepares Checkout for status updating' do
+          expect(Spree::BraintreeCheckout.not_in_state(Spree::BraintreeCheckout::FINAL_STATES).count).to eq 0
+          @payment.settle!
+          expect(Spree::BraintreeCheckout.not_in_state(Spree::BraintreeCheckout::FINAL_STATES).count).to eq 1
+        end
+
       end
     end
 

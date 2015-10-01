@@ -96,13 +96,9 @@ module Spree
       order.update!
     end
 
-    def capture(amount, response_code, gateway_options)
-      checkout = Spree::BraintreeCheckout.find_by_transaction_id(response_code)
-      begin
-        result = provider::Transaction.submit_for_settlement(response_code, amount / 100)
-      ensure
-        checkout.update_attribute(:state, result.transaction.status)
-      end
+    def settle(amount, checkout, gateway_options)
+      result = provider::Transaction.submit_for_settlement(checkout.transaction_id, amount / 100.0)
+      checkout.update_attribute(:state, result.transaction.status)
       result
     end
 

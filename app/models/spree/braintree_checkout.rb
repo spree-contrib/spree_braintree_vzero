@@ -6,7 +6,7 @@ module Spree
 
     after_save :update_payment_and_order
 
-    FINAL_STATES = %w(authorization_expired processor_declined gateway_rejected failed voided settled settlement_declined refunded released)
+    FINAL_STATES = %w(authorized authorization_expired processor_declined gateway_rejected failed voided settled settlement_declined refunded released)
 
     has_one :payment, foreign_key: :source_id, inverse_of: :source
     has_one :order, through: :payment
@@ -26,15 +26,21 @@ module Spree
       result
     end
 
+    def update_state
+      status = Gateway::BraintreeVzero.first.provider::Transaction.find(transaction_id).status
+      self.update_attribute(:state, status)
+      status
+    end
+
     def actions
-      %w(void capture)
+      %w(void settle)
     end
 
     def can_void?(_payment)
       %w(authorized submitted_for_settlement).include? state
     end
 
-    def can_capture?(_)
+    def can_settle?(_)
       %w(authorized).include? state
     end
 
