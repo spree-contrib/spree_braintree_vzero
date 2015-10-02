@@ -8,114 +8,21 @@ http_interactions:
       string: |
         <?xml version="1.0" encoding="UTF-8"?>
         <transaction>
-          <amount>110.00</amount>
-          <payment-method-nonce>fake-invalid-nonce</payment-method-nonce>
-          <options>
-            <submit-for-settlement type="boolean">true</submit-for-settlement>
-          </options>
-          <type>sale</type>
-        </transaction>
-    headers:
-      Accept-Encoding:
-      - gzip
-      Accept:
-      - application/xml
-      User-Agent:
-      - Braintree Ruby Gem 2.47.0
-      X-Apiversion:
-      - '4'
-      Content-Type:
-      - application/xml
-  response:
-    status:
-      code: 422
-      message: Unprocessable Entity
-    headers:
-      Date:
-      - Mon, 07 Sep 2015 12:12:56 GMT
-      Content-Type:
-      - application/xml; charset=utf-8
-      Transfer-Encoding:
-      - chunked
-      Connection:
-      - close
-      X-Authentication:
-      - basic_auth
-      Strict-Transport-Security:
-      - max-age=31536000
-      - max-age=31536000; includeSubDomains
-      X-User:
-      - 85kvddg6myqz4n82
-      Vary:
-      - Accept-Encoding
-      Content-Encoding:
-      - gzip
-      X-Ua-Compatible:
-      - IE=Edge,chrome=1
-      Cache-Control:
-      - no-cache
-      X-Request-Id:
-      - 38a18633f3c0d46824622d3280890539
-      X-Runtime:
-      - '1.290296'
-      X-Frame-Options:
-      - SAMEORIGIN
-    body:
-      encoding: ASCII-8BIT
-      string: !binary |-
-        H4sIAEh/7VUAA5RSu27DMAzc8xWGdln2kKIFFGXrFzRzQCdMKsSiDFFO67+v
-        7Nh5wS3QjeSRp+NRev3t6uyMga2nlSjzQmRIO7+3dFyJzce7fBVrs9DQWIkh
-        +CADcuOJ0SyyTA8l7sNrksWuwZWAEKATaoRiAGLYxfTIpTLfPmETestTJYlC
-        81YuX5ZaDfE9CDEGW7URRz7uXOVrYRroHFLcOoyffr8lTzvU6tr9wOGQGY5o
-        NnQi/0XZ3Gyu1dR206oexI7p5Ip62v0e1g0EcPyHSeB8S9GUZZEXRRJ+SSd0
-        VCgvCuWg0BzghNLSGWo7lrSabZxYfNM/yXcLcVs5G+UhnZsxxhr7YRNDm6jm
-        sevuT2S6P4dhqNPkEP5mys2Jf98h2TLzO38AAAD//wMA/idketoCAAA=
-    http_version: 
-  recorded_at: Mon, 07 Sep 2015 12:14:05 GMT
-- request:
-    method: post
-    uri: https://h442tzpn8wdk89p6:c3c1f38bf6b87c79b7eb4550e66d7b0a@api.sandbox.braintreegateway.com/merchants/yccdpmn3cvtjbgnr/transactions
-    body:
-      encoding: UTF-8
-      string: |
-        <?xml version="1.0" encoding="UTF-8"?>
-        <transaction>
-          <billing>
-            <company>Company</company>
-            <country-code-alpha2>US</country-code-alpha2>
-            <country-code-alpha3>USA</country-code-alpha3>
-            <country-code-numeric type="integer">840</country-code-numeric>
-            <country-name>United States of America</country-name>
-            <first-name>John</first-name>
-            <last-name>Doe</last-name>
-            <locality>Herndon</locality>
-            <postal-code>35005</postal-code>
-            <region>AL</region>
-            <street-address>10 Lovely Street</street-address>
-            <extended-address>Northwest</extended-address>
-          </billing>
-          <shipping>
-            <company>Company</company>
-            <country-code-alpha2>US</country-code-alpha2>
-            <country-code-alpha3>USA</country-code-alpha3>
-            <country-code-numeric type="integer">840</country-code-numeric>
-            <country-name>United States of America</country-name>
-            <first-name>John</first-name>
-            <last-name>Doe</last-name>
-            <locality>Herndon</locality>
-            <postal-code>35005</postal-code>
-            <region>AL</region>
-            <street-address>10 Lovely Street</street-address>
-            <extended-address>Northwest</extended-address>
-          </shipping>
+          <customer>
+          </customer>
           <amount>20.00</amount>
           <payment-method-nonce>fake-invalid-nonce</payment-method-nonce>
-          <order-id>R533418348</order-id>
+          <order-id>R489298281</order-id>
+          <descriptor>
+            <name></name>
+          </descriptor>
           <options>
             <submit-for-settlement type="boolean">true</submit-for-settlement>
+            <add-billing-address-to-payment-method type="boolean">false</add-billing-address-to-payment-method>
             <three-d-secure>
-              <required type="boolean">true</required>
+              <required type="boolean">false</required>
             </three-d-secure>
+            <store-in-vault type="boolean">false</store-in-vault>
           </options>
           <type>sale</type>
         </transaction>
@@ -125,7 +32,7 @@ http_interactions:
       Accept:
       - application/xml
       User-Agent:
-      - Braintree Ruby Gem 2.47.0
+      - Braintree Ruby Gem 2.49.0
       X-Apiversion:
       - '4'
       Content-Type:
@@ -136,7 +43,7 @@ http_interactions:
       message: Unprocessable Entity
     headers:
       Date:
-      - Tue, 15 Sep 2015 11:52:58 GMT
+      - Fri, 02 Oct 2015 09:08:15 GMT
       Content-Type:
       - application/xml; charset=utf-8
       Transfer-Encoding:
@@ -159,28 +66,24 @@ http_interactions:
       Cache-Control:
       - no-cache
       X-Request-Id:
-      - 5aed37274f84103f208dc2f74ee5d0ff
+      - 606426f86380aada0ed2dd44016bcce5
       X-Runtime:
-      - '1.130835'
+      - '1.159769'
       X-Frame-Options:
       - SAMEORIGIN
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        H4sIAJoG+FUAA+xWTW/bMAy991cYvit2mmTIAEVFsGEYhmKHdT0XisXEQm3J
-        k+i0/veTHH8mbtHce4r4+B5FibQYeveaZ8ERjJVabcL5LA4DUIkWUh024ePf
-        H2Qd3rEbygtJwBhtiAFbaGWB3QQBrSHrl50RYFXAJuTG8CqMGhcarixP0G1y
-        Qqbpra/19rZDXFLAvs5XX1Y0qtdDJ0c0clciNPFsle90FrKCVzkofMoBUy2e
-        lFYJ0Khjj2LkYC0/AHtUz0q/qGBKO6NRS+tzjUbJNqbt7J3MMned54ebvCkv
-        P+NTm8qiuCbAWECjs9sfJkgLbnhu3ynTZfaJzguuKvbt9OurcQKGlFKhqYiv
-        E+FZkfJb9vjgmZf4e6qFU22nZIu3ZKrMwciErZfxma71XAoVz33VJYIIHpAj
-        2EDvg21N532Umtar99JYPIG/dKpoNAB6VsZb7Lt2ndebA4pOeCaxYj/BKKFd
-        pA7pSYW2yLP6JGyximP3EQyhnmjg4Mu3vadRs+x9Fg0AEi6E+4otm8fBvT5C
-        VrlTe4frnDFh0HCvCEqA6Fy/tcH0BawTXfiu6eTPZvpspo8103nzUJ77u2S3
-        8Sx25Wms1tk83uT0eJP68WZ7/gxEqqO7jwZyB58itlG0EWCIFOzParFYzteL
-        5ZpGHdixCv9iDk9oy10ukezdvLSAmIHfgqEp3YbTvl6Lqbs2IpwzKc14Qhn4
-        V0oDoonUmYNRNK12SY9zpH50MMszF6ZevjUq+vlw9Xx0NZn41/AfAAD//wMA
-        CiXWxXIIAAA=
+        H4sIAH9JDlYAA5RUy27jMAy89ysM3xUlwXaRAIp66wcU23Oh2GwrVA+XpNPm
+        71dOLNvJuov2RnLI8ZAaWN19elccAMnGsCtXi2VZQKhibcPLrnz8cy825Z2+
+        UaaxAhAjCgRqYiDQN0WhTiXqwiEp+NjArjSI5ljKHmI0gUzF6SPnynx7xjI6
+        5qmSRIHerm5/3yp5iqegYUa7bxl6Pjr6fXSlbszRQ+AnD/wa66cQQwVKDt0X
+        HB6IzAvox/AW4kco5mYXSua2Uau8ENun+SryavcprBqDxtN/jlS1xNEDFsG6
+        XcnYQr5pt7SPbWC9Xi6Wy7TUOctgr16c1YuTev1s3kDYcDDO9iUlZxszS8Qa
+        UNhaP/zabNfbzXqzUnIo5q4aqELb8PTFVDAeZmXLf9tVbLq1aTJO7d5bFs/J
+        cgTMDjqRuqNSch4bZ01di711LplYpDhZlgRHcblpOoajzgzfah7J+RUBRJ2+
+        XLV46SCE99YiDNRDPvHKV+MqPTR2jyMOpnWcKa6qww2vDqY622syLo2cwq/M
+        Nzrux35Pp5r5C/wFAAD//wMABVl9d0IEAAA=
     http_version: 
-  recorded_at: Tue, 15 Sep 2015 11:54:09 GMT
+  recorded_at: Fri, 02 Oct 2015 09:08:15 GMT
 recorded_with: VCR 2.9.3

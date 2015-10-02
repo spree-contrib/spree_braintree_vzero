@@ -26,4 +26,3 @@ en:
     private_key: Private Key
     public_key: Public Key
     store_payments_in_vault: Store Payments In Vault
-    submit_for_settlement: Submit for Settlement

@@ -4,7 +4,7 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
 
   context 'valid credentials' do
 
-    let(:gateway) { create(:vzero_gateway) }
+    let(:gateway) { create(:vzero_gateway, auto_capture: true) }
     let(:order) { OrderWalkthrough.up_to(:payment) }
 
     it 'generates token without User' do
@@ -64,10 +64,13 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
 
       before do
         gateway.preferred_3dsecure = false
-        gateway.complete_order(order, gateway.purchase('fake-valid-nonce', order), gateway)
       end
 
       context 'with valid nonce' do
+        before do
+          gateway.complete_order(order, gateway.purchase('fake-valid-nonce', order), gateway)
+        end
+
         it 'completes order with valid nonce' do
           expect(order.completed?).to be true
         end
@@ -160,7 +163,7 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
     describe '#settle' do
 
       before do
-        gateway.preferred_submit_for_settlement = false
+        gateway.update(auto_capture: false)
         gateway.complete_order(order, gateway.purchase('fake-valid-nonce', order), gateway)
         @payment = order.payments.first
       end

@@ -16,7 +16,7 @@ http_interactions:
       Accept:
       - application/xml
       User-Agent:
-      - Braintree Ruby Gem 2.48.1
+      - Braintree Ruby Gem 2.49.0
       X-Apiversion:
       - '4'
       Content-Type:
@@ -27,7 +27,7 @@ http_interactions:
       message: Created
     headers:
       Date:
-      - Tue, 29 Sep 2015 16:30:59 GMT
+      - Fri, 02 Oct 2015 09:07:52 GMT
       Content-Type:
       - application/xml; charset=utf-8
       Transfer-Encoding:
@@ -48,42 +48,42 @@ http_interactions:
       X-Ua-Compatible:
       - IE=Edge,chrome=1
       Etag:
-      - '"2cb2a60a307847692a58cc992c259d62"'
+      - '"3a3b8d8927cc5242fc7de8f75301f227"'
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 02ef72919223ea884e86ab01ec4ced8c
+      - b7826a9a30711defc1d62bc94c2c10d6
       X-Runtime:
-      - '0.221684'
+      - '0.083865'
       X-Frame-Options:
       - SAMEORIGIN
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        H4sIAMO8ClYAA7xVXY+bOBR9768YzXu3YIbZIk1bTZKFgILTkMQGv2E7MwFs
-        ki3h89f3kvlKtaNVpZX2IYpkru+599xzru++dVpdNbsfVXYov1ybfxjXV7tS
-        HGRWPn653m7cj5+vv339cCdUtitPH0+HYld+/XB1ddekqt593fUBYnEwpNSp
-        /fzQL6bBXsbRgVvBcaddYzyPtKoZIr2YB0derrJl5vd4Ftrh7NEMN37LZiQL
-        PVIsZ26GN0GBaWglQwLn/g3eFDdsPM9Fh6nfYr3q2Gy/X9KVEeaqwMjvwnyi
-        8OwePXi4Z9Q1GI0eknjlhPl9h9dGu1wb/ZKsOpwfhnB2MJfrmwHPVghvEiMc
-        tj/C2X0bup0J/z3WphIaHxJqGzFSxfdY5QmKWk5vhsRiRqqDkpeBkBu4k7NW
-        0qBKKX5IEbG/00cDzwJjV07q5VwW6fBoi1mSASc5R7ZOqSRCt9B/cJDzqBXD
-        oVkgt03X9gB4RaKdm4UO+oSqWs4DxajcS49YSVzUCXJOyxx67p0T8J2nngsx
-        YbOjOGfzyYnnOJdl9HeiZS0yJ+eeUrwceZgcF1bSLRBuuGZHZpE+iaMjRzfn
-        uiBPxT0yzmfw8yOP123GqI3SOIB4Uz3NK3itz8/aLEHdEWKMFeQmcVDB3LN0
-        HhliHt4uemcvvKIWyK2ZFzS7qZ0J7cLcI5gNKQFbSeTaCw31bA7AV9hwCjWh
-        /R5ihoX1Ht9+84IZn/nyK1+7g0DEECbp+dS/9fXekPPJsMw+N0mMBxZDrn/h
-        8txHTIzUfe8+nE9tBHgn3v/ebM75qL3ncwWaxyOXf/rlO7mf+1hQt05oZ0tP
-        5eJ3MUqj8svoIDRRkYtVArNkWwJ5gopRmBNwLOn2nzFr/xZ8WnHk/JDx5P/S
-        oJGO94lTxNZLHc5zDffZA+hMeK4NvyoC3hLdKQZcAabJLr6dedTRUViTKonV
-        MqGmGvW2tSZ7oavHLXIqedazPfgubhfZ5Nb3Pte8f9L3sw+CMTcvScWnkBv2
-        kNRuviOX87kftat2nnsSXqfO+lw7rZiC1koCegomzBr5GD0R/cLhOFcWg37j
-        ScXWNnjdaKTnDGdNgE4Z+S8afYp7x2fAP8lT5JhyarfATZvQ9vUe8xT4DRur
-        C/yX/kF3FbekP9YO/BqiJAq4gr7YUWinBj/W8i+72WhiSOT0af82l3d2Q8M0
-        gx1oqxFXwneod9zB+FUjgM20WwkE2rzsd4vh3oilirE3Tt0B+u9fPBL2o8/h
-        zfC6I9fykv/hUjNvud929wo0ya233OKsl9PAUWeC5xpe4kHMjw0/Y2BTlNC/
-        xvY6xs0KOcXoGb8gZJsFztP+VvV5lpd+0wz8jkfu3vzwjPe+J0YtMcAxm3O/
-        iGnQZ83WgXP36ek9/XD36deX9icAAAD//wMAtzghMKAHAAA=
+        H4sIAGhJDlYAA7xVXW+jOBR9n19R9X12iCndInU6atJCQMGZkARjv2E7bQCb
+        ZEv4/PV7Sb8y2mg10kr7gJDg+p57zz3n+vZHq9VFvXkp013x/XL0h3F5sSnE
+        TqbF8/fL9cr5enP54+7LrVDppjh8PezyTXH35eLitk5UtbnbdD5isd8nxK68
+        bNfNJv5WxuGOm/5+ox1j+B5qVTEUdWLq73mxSOepr+lq3WBCDfwQKorWTfCw
+        7nAmTEYeDZbJLV3lZqCdjJEop8TrMPGu5iRoqA6s4R24j0bQPzc0W7dz19nS
+        fm0+ubhjxDEYCZ9ovLCD7L7FS6MNJkYTqEUzX+0a3O9GQXqFcP9sBA8LC2f5
+        S/Bw3wROO4J3h/VICY13lFhGjFT+M1YZRWHDyVVPTWYk2i944Qu5gjMZayTx
+        y4TgpwRF1k/yDP34xqYYV/OpzJP+2RIPNAVOMo4snRAZCd0M/e/kNGxEv6tn
+        yGmSpdUDXk61fTXTfkeJquTUV4zIrXQjk8Z5RZF9mGcLI+jsA/CdJa4DMUG9
+        IThj0/GBZziTRfgX1bISqZ1xVyleDDyM9zOTtjOEa67ZnplRR+Nwz9HVsS7I
+        U3I3GubTe9mex8smZcRCSexD/Ei9zeujPi9tUoraPcQYC8gdxX4Jc0+TaWiI
+        aXA96+ytcPNKIKdirl9vJlYqtANzD2E2UQHYSiLHmmmoZ7UDvoKaE6gJbbcQ
+        08/Mc3x79TtmfOTLKz3t9AJFhhhFHZ94157eGnI67ufpTU1j3LMYcv0Ll8c+
+        4shInHPn4fvEQoB34N3vzeaYj1hbPlWgeTxw+adXnMn91seMOBUlrSVdlYnf
+        xSiM0ivCndCRCh2sKMySrSPI45eMwJyAY0nW/4xZetfg05Ij+0XG4/9Lg0Yy
+        nI/sPDbf67DfarhPn0BnwnUseMoQeKO6VQy4AswRO/l35FGHe2GOSxqrOSUj
+        NehtbY63QpfPa2SX8qhnq/cc3MzS8bXn3lS8e9X3mw/8ITcvopJPIDfsIQm7
+        ZROdzud+0K7auM5BuK066nNpN2ICWisi0JM/ZubAx+CJ8BcOh7myGPQbj0u2
+        tMDrRi1duz9qAnTKov+i0de4Mz4D/qMsQfZITqwGuGkoaT7OMVeB37CxOMF/
+        7x90V3JTekPtwK8hikgBV9AX2wttV+DHSj5a9UpHhkR2l3SfczmzG2qmGexA
+        Sw24Ev5DvcMOxh8aAWymnVIg0OZpv2sM5wYslQ+9ceL00H/37pGgG3wOd4bb
+        7rmWp/z3p5r5zP25uxegSW5+5hZHvRx6jtoReK7mBe7FdF/zIwYeiQL619ha
+        xrheIDsfPOPlUbROfft1f6vqOMtTv2kGfscDd59+eMM774lBSwxwRvWxX8Q0
+        6LNiS9++/fZ6n365/fbrTfs3AAAA//8DAAK4P2WgBwAA
     http_version: 
-  recorded_at: Tue, 29 Sep 2015 16:32:14 GMT
+  recorded_at: Fri, 02 Oct 2015 09:07:52 GMT
 recorded_with: VCR 2.9.3

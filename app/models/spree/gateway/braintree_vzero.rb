@@ -9,7 +9,6 @@ module Spree
     preference :pass_billing_and_shipping_address, :boolean_select, default: false
     preference :advanced_fraud_tools, :boolean_select, default: false
     preference :store_payments_in_vault, :select, default: -> { {values: [:do_not_store, :store_only_on_success, :store_all]} }
-    preference :submit_for_settlement, :boolean_select, default: false
     preference :descriptor_name, :string
 
     attr_reader :utils
@@ -32,10 +31,6 @@ module Spree
       Braintree::Configuration.public_key = preferred_public_key
       Braintree::Configuration.private_key = preferred_private_key
       Braintree
-    end
-
-    def auto_capture?
-      true
     end
 
     def method_type
@@ -62,7 +57,7 @@ module Spree
       data.merge!(
         descriptor: { name: preferred_descriptor_name.to_s.gsub('/', '*') },
         options: {
-          submit_for_settlement: preferred_submit_for_settlement,
+          submit_for_settlement: auto_capture?,
           add_billing_address_to_payment_method: preferred_pass_billing_and_shipping_address ? true : false,
           three_d_secure: {
             required: preferred_3dsecure
