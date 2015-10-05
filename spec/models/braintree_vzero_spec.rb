@@ -198,6 +198,34 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
       end
     end
 
+    describe '#credit' do
+      let(:payment) { order.payments.first }
+      let(:payment_source) { payment.payment_source }
+      let(:refund) { gateway.credit('unimportant', payment_source.transaction_id, {}) }
+      let!(:prepare_gateway) { gateway.preferred_3dsecure = false }
+
+      context 'with refundable state' do
+        let!(:complete_order) do
+          gateway.complete_order(order, gateway.purchase('fake-paypal-one-time-nonce', order), gateway)
+        end
+
+        it 'should be a success' do
+          expect(refund.success?).to be true
+        end
+      end
+
+      context 'with unrefundable state' do
+        let!(:complete_order) do
+          gateway.complete_order(order, gateway.purchase('fake-valid-nonce', order), gateway)
+        end
+
+        it 'should not be a success' do
+          expect(refund.success?).to be false
+        end
+      end
+
+    end
+
     context 'with invalid credentials' do
       let(:gateway) { create(:vzero_gateway, merchant_id: 'invalid_id') }
 

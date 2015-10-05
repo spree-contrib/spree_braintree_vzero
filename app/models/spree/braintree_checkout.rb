@@ -33,7 +33,7 @@ module Spree
     end
 
     def actions
-      %w(void settle)
+      %w(void settle credit)
     end
 
     def can_void?(_payment)
@@ -42,6 +42,10 @@ module Spree
 
     def can_settle?(_)
       %w(authorized).include? state
+    end
+
+    def can_credit?(_payment)
+      %w(settled settling).include? state
     end
 
     private
