@@ -1,6 +1,6 @@
 # Braintree v.zero extension for Spree Commerce
 
-[![Code Climate](https://codeclimate.com/repos/560308aa6956801375000a4e/badges/9874199a656054d613cd/gpa.svg)](https://codeclimate.com/repos/560308aa6956801375000a4e/feed)  [![Circle CI](https://circleci.com/gh/spark-solutions/spree_braintree_vzero.svg?style=svg)](https://circleci.com/gh/spark-solutions/spree_braintree_vzero)
+[![Code Climate](https://codeclimate.com/repos/560308aa6956801375000a4e/badges/9874199a656054d613cd/gpa.svg)](https://codeclimate.com/repos/560308aa6956801375000a4e/feed)  [[![Circle CI](https://circleci.com/gh/spark-solutions/spree_braintree_vzero.svg?style=svg&circle-token=3171e5c1f53e64db0b323332e573533a3bdde115)](https://circleci.com/gh/spark-solutions/spree_braintree_vzero)
 
 ## Installation
 
