@@ -17,10 +17,13 @@ en:
       store_all: Store all
 
   spree:
-    3d_secure: 3D Secure
+    3dsecure: 3D Secure
     advanced_fraud_tools: Advanced Fraud Tools
     descriptor_name: Card or Bank Statement Name
     descriptor_name_information_box_text: "This field will be displayed on the consumer’s bank or card statement.<br/><br/>If this field is not enabled by Braintree, please call Sales Rep or Braintree Support to set this up."
+    dropin_checkout_form_id: DropinUI Checkout Form
+    dropin_container: DropinUI Container
+    dropin_error_messages_container_id: DropinUI Error Messages Container
     merchant_id: Merchant
     pass_billing_and_shipping_address: Pass Billing and Shipping Address
     private_key: Private Key
