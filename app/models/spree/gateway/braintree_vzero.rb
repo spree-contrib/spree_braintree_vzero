@@ -109,5 +109,9 @@ module Spree
       result
     end
 
+    def credit(_credit_cents, transaction_id, _options)
+      provider::Transaction.refund(transaction_id)
+    end
+
   end
 end
