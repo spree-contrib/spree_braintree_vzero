@@ -1,5 +1,36 @@
-<%= label_tag "transaction_id#{payment_method.id}", raw(Spree.t(:transaction_id) + content_tag(:span, ' *', :class => 'required')) %>
-<%= text_field_tag "[payment][source][transaction_id]", '', :class => 'required form-control', :id => "transaction_id#{payment_method.id}", :maxlength => 19 %>
+<div id="payment-form" />
 
-<%= label_tag "state#{payment_method.id}", raw(Spree.t(:state) + content_tag(:span, ' *', :class => 'required')) %>
-<%= text_field_tag "[payment][source][state]", '', :class => 'required form-control', :id => "state#{payment_method.id}", :maxlength => 19 %>
+<script src="https://js.braintreegateway.com/v2/braintree.js"></script>
+<script>
+  var clientToken = "<%= payment_method.client_token(@order, @order.user) %>";
+  var newPaymentFormId = "#new_payment";
+  var paymentAmountFieldId = "#payment_amount";
+
+  braintree.setup(clientToken, "dropin", {
+    container: "payment-form",
+
+    onPaymentMethodReceived: function (result) {
+      if (<%= payment_method.preferred_3dsecure %> && result.type == "CreditCard") {
+        var client = new braintree.api.Client({
+          clientToken: clientToken
+        });
+
+        client.verify3DS({
+          amount: $(paymentAmountFieldId).val(),
+          creditCard: result.nonce
+        }, function (error, response) {
+          if (!error) {
+            $(newPaymentFormId).append("<input type='hidden' name='payment_method_nonce' value=" + response.nonce + ">");
+            $(newPaymentFormId).submit();
+          }
+        });
+
+
+      } else {
+        $(newPaymentFormId).append("<input type='hidden' name='payment_method_nonce' value=" + result.nonce + ">");
+        $(newPaymentFormId).submit();
+      }
+    }
+
+  });
+</script>
