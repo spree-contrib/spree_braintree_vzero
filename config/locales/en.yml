@@ -17,6 +17,10 @@ en:
       store_all: Store all
 
   spree:
+    admin:
+      vaulted_payments:
+        credit_card: "%{card_type} ending with %{last_4}"
+        paypal: "Paypal %{email}"
     3dsecure: 3D Secure
     advanced_fraud_tools: Advanced Fraud Tools
     descriptor_name: Card or Bank Statement Name

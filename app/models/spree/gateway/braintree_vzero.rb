@@ -45,7 +45,7 @@ module Spree
       braintree_user ? provider::ClientToken.generate(customer_id: user.id) : provider::ClientToken.generate
     end
 
-    def purchase(nonce, order, device_data = nil, amount = nil)
+    def purchase(nonce, order, device_data = nil)
       @utils = BraintreeUtils.new(self, order)
       data = {}
       if preferred_pass_billing_and_shipping_address
@@ -57,7 +57,6 @@ module Spree
       end
       data.merge!(@utils.get_customer)
       data.merge!(@utils.order_data(nonce))
-      data.merge!(amount: amount) if amount.present?
       data.merge!(
         descriptor: { name: preferred_descriptor_name.to_s.gsub('/', '*') },
         options: {
@@ -69,16 +68,20 @@ module Spree
         }.merge!(@utils.payment_in_vault)
       )
 
-      result = provider::Transaction.sale(data)
+      sale(data, order)
+    end
 
-      unless result.success?
-        result.errors.each { |e| order.errors.add(:base, I18n.t(e.message), scope: 'braintree.error') }
-        if result.errors.size == 0 && result.transaction.try(:gateway_rejection_reason)
-          order.errors.add(:base, I18n.t(result.transaction.gateway_rejection_reason, scope: 'braintree.error'))
-        end
-      end
+    def admin_purchase(token, order, amount)
+      @utils = BraintreeUtils.new(self, order)
+      data = { amount: amount, payment_method_token: token }
 
-      result
+      data.merge!(
+        options: {
+          submit_for_settlement: auto_capture?,
+        }.merge!(@utils.payment_in_vault)
+      )
+
+      sale(data, order)
     end
 
     def complete_order(order, result, payment_method)
@@ -115,6 +118,26 @@ module Spree
 
     def credit(_credit_cents, transaction_id, _options)
       provider::Transaction.refund(transaction_id)
+    end
+
+    def customer_payment_methods(order)
+      @utils = BraintreeUtils.new(self, order)
+      @utils.customer_payment_methods
+    end
+
+    private
+
+    def sale(data, order)
+      result = provider::Transaction.sale(data)
+
+      unless result.success?
+        result.errors.each { |e| order.errors.add(:base, I18n.t(e.message), scope: 'braintree.error') }
+        if result.errors.size == 0 && result.transaction.try(:gateway_rejection_reason)
+          order.errors.add(:base, I18n.t(result.transaction.gateway_rejection_reason, scope: 'braintree.error'))
+        end
+      end
+
+      result
     end
 
   end

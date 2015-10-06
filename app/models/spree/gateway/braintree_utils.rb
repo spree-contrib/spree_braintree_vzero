@@ -50,6 +50,10 @@ module Spree
         address_data('billing').slice(:first_name, :last_name, :company, :phone).merge!(id: user.id, email: user.email)
       end
 
+      def customer_payment_methods
+        @customer.payment_methods
+      end
+
       def payment_in_vault
         if gateway.preferred_store_payments_in_vault == 'store_only_on_success'
           {store_in_vault_on_success: true, store_shipping_address_in_vault: true}

@@ -1,36 +1,17 @@
-<div id="payment-form" />
+<% payment_method.customer_payment_methods(@order).each do |method| %>
+  <div class="radio">
+    <label data-hook="braintree_payment_method_field">
 
-<script src="https://js.braintreegateway.com/v2/braintree.js"></script>
-<script>
-  var clientToken = "<%= payment_method.client_token(@order, @order.user) %>";
-  var newPaymentFormId = "#new_payment";
-  var paymentAmountFieldId = "#payment_amount";
+      <% if method.is_a?(Braintree::CreditCard) %>
+        <%= radio_button_tag 'payment_method_token', method.token %>
+        <%= Spree.t('admin.vaulted_payments.credit_card', card_type: method.card_type, last_4: method.last_4) %>
+      <% end %>
 
-  braintree.setup(clientToken, "dropin", {
-    container: "payment-form",
+      <% if method.is_a?(Braintree::PayPalAccount) %>
+        <%= radio_button_tag 'payment_method_token', method.token %>
+        <%= Spree.t('admin.vaulted_payments.paypal', email: method.email) %>
+      <% end %>
 
-    onPaymentMethodReceived: function (result) {
-      if (<%= payment_method.preferred_3dsecure %> && result.type == "CreditCard") {
-        var client = new braintree.api.Client({
-          clientToken: clientToken
-        });
-
-        client.verify3DS({
-          amount: $(paymentAmountFieldId).val(),
-          creditCard: result.nonce
-        }, function (error, response) {
-          if (!error) {
-            $(newPaymentFormId).append("<input type='hidden' name='payment_method_nonce' value=" + response.nonce + ">");
-            $(newPaymentFormId).submit();
-          }
-        });
-
-
-      } else {
-        $(newPaymentFormId).append("<input type='hidden' name='payment_method_nonce' value=" + result.nonce + ">");
-        $(newPaymentFormId).submit();
-      }
-    }
-
-  });
-</script>
+    </label>
+  </div>
+<% end %>
