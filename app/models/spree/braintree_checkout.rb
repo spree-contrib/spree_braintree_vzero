@@ -6,7 +6,7 @@ module Spree
 
     after_save :update_payment_and_order
 
-    FINAL_STATES = %w(authorized authorization_expired processor_declined gateway_rejected failed voided settled settlement_declined refunded released)
+    FINAL_STATES = %w(authorization_expired processor_declined gateway_rejected failed voided settled settlement_declined refunded released)
 
     has_one :payment, foreign_key: :source_id, inverse_of: :source
     has_one :order, through: :payment
@@ -52,7 +52,7 @@ module Spree
 
     def update_payment_and_order
       if state_changed? && payment
-        payment.update_attribute(:state, Gateway::BraintreeUtils.new(Gateway::BraintreeVzero.first, order).map_payment_status(state))
+        payment.update_attribute(:state, Gateway::BraintreeVzero::Utils.new(Gateway::BraintreeVzero.first, order).map_payment_status(state))
         order.update!
       end
     end

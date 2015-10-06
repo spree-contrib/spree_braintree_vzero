@@ -17,7 +17,7 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
 
     it 'generates token for User registered in Braintree' do
       user = create(:user)
-      Spree::Gateway::BraintreeUser.new(gateway.provider, user, order).register_user
+      Spree::Gateway::BraintreeVzero::User.new(gateway.provider, user, order).register_user
       expect(gateway.client_token(user)).to_not be_nil
     end
 
@@ -56,6 +56,34 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
           card_vault_token = gateway.purchase('fake-valid-nonce', order).transaction.credit_card_details.token
           expect { Braintree::PaymentMethod.find(card_vault_token) }.not_to raise_error
         end
+
+        it 'saves Braintree::Address id to Spree::Address when address is being saved' do
+          gateway.preferred_pass_billing_and_shipping_address = true
+          address = create(:address)
+          order.update_attribute(:ship_address_id, address.id)
+          order.update_attribute(:bill_address_id, address.id)
+          gateway.purchase('fake-valid-nonce', order)
+
+          bill_id = order.billing_address.braintree_id
+          ship_id = order.shipping_address.braintree_id
+          expect(order.billing_address.braintree_id).to_not be_nil
+          expect(order.shipping_address.braintree_id).to_not be_nil
+          expect(bill_id).to eq ship_id
+        end
+
+        it 'saves unique Braintree::Addresses ids' do
+          gateway.preferred_pass_billing_and_shipping_address = true
+          order.update_attribute(:ship_address_id, create(:address, first_name: 'foo').id)
+          order.update_attribute(:bill_address_id, create(:address, first_name: 'bar').id)
+          gateway.purchase('fake-valid-nonce', order)
+
+          bill_id = order.billing_address.braintree_id
+          ship_id = order.shipping_address.braintree_id
+          expect(bill_id).to_not be_nil
+          expect(ship_id).to_not be_nil
+          expect(bill_id).to_not eq ship_id
+        end
+
       end
 
     end
@@ -190,7 +218,6 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
         end
 
         it 'prepares Checkout for status updating' do
-          expect(Spree::BraintreeCheckout.not_in_state(Spree::BraintreeCheckout::FINAL_STATES).count).to eq 0
           @payment.settle!
           expect(Spree::BraintreeCheckout.not_in_state(Spree::BraintreeCheckout::FINAL_STATES).count).to eq 1
         end

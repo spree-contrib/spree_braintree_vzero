@@ -1,0 +1,141 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://h442tzpn8wdk89p6:c3c1f38bf6b87c79b7eb4550e66d7b0a@api.sandbox.braintreegateway.com/merchants/yccdpmn3cvtjbgnr/customers/1/addresses
+    body:
+      encoding: UTF-8
+      string: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <address>
+          <company>Company</company>
+          <country-code-alpha2>US</country-code-alpha2>
+          <country-code-alpha3>USA</country-code-alpha3>
+          <country-code-numeric type="integer">840</country-code-numeric>
+          <country-name>United States of America</country-name>
+          <first-name>John</first-name>
+          <last-name>Doe</last-name>
+          <locality>Herndon</locality>
+          <postal-code>35005</postal-code>
+          <region>AL</region>
+          <street-address>10 Lovely Street</street-address>
+          <extended-address>Northwest</extended-address>
+        </address>
+    headers:
+      Accept-Encoding:
+      - gzip
+      Accept:
+      - application/xml
+      User-Agent:
+      - Braintree Ruby Gem 2.48.1
+      X-Apiversion:
+      - '4'
+      Content-Type:
+      - application/xml
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Date:
+      - Tue, 06 Oct 2015 12:20:18 GMT
+      Content-Type:
+      - application/xml; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - close
+      X-Authentication:
+      - basic_auth
+      Strict-Transport-Security:
+      - max-age=31536000
+      - max-age=31536000; includeSubDomains
+      X-User:
+      - 85kvddg6myqz4n82
+      Vary:
+      - Accept-Encoding
+      Content-Encoding:
+      - gzip
+      X-Ua-Compatible:
+      - IE=Edge,chrome=1
+      Etag:
+      - '"29376446db0cd8558c574bdef128a524"'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 3f5ce9d70103173fd471db9253cf031a
+      X-Runtime:
+      - '0.094495'
+      X-Frame-Options:
+      - SAMEORIGIN
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAIK8E1YAA5RST2/CIBS/+ylI7wxadTEGMWbLsixmF/WyGylPJWmhAers
+        tx9UbRv1shP8/r083oMtz2WBTmCdMnqRpC80QaBzI5U+LJLd9gPPkiUfMSGl
+        Bef4CCGmJD9PGAlHRHntvCnB4oBTRoYwyntlncdalMC/zFEzMiCiXogbejfA
+        SA/b2qashG742+UM1a9EFJ23AB7fOkspWpsTFA3atAIjd4aYgbMHLUF25Lex
+        /vgLLtgftLY9k4tC+YZ/gtXShP47JsoWDmFufLVm5HqNbGWcFwUOUwQ+nlI6
+        ZWRIXV5Wa2+blsCiqI4i47tNfOAj/9w/Dv7Vs8D4MaDrsBGV89mE3iVuyjDS
+        jn+nlQcZZik8OGT2aNUaRZ/vt2QhmMLcPPJNBYtEBuhVCQnPaDrFKcX0dZtm
+        84zO09lPqNAF2nxdyf/l+0D4maRb1x8AAAD//wMA8r0dycwCAAA=
+    http_version: 
+  recorded_at: Tue, 06 Oct 2015 12:21:36 GMT
+- request:
+    method: delete
+    uri: https://h442tzpn8wdk89p6:c3c1f38bf6b87c79b7eb4550e66d7b0a@api.sandbox.braintreegateway.com/merchants/yccdpmn3cvtjbgnr/customers/1/addresses/x4
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip
+      Accept:
+      - application/xml
+      User-Agent:
+      - Braintree Ruby Gem 2.48.1
+      X-Apiversion:
+      - '4'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 06 Oct 2015 12:20:19 GMT
+      Content-Type:
+      - application/xml; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - close
+      X-Authentication:
+      - basic_auth
+      Strict-Transport-Security:
+      - max-age=31536000
+      - max-age=31536000; includeSubDomains
+      X-User:
+      - 85kvddg6myqz4n82
+      Vary:
+      - Accept-Encoding
+      Content-Encoding:
+      - gzip
+      X-Ua-Compatible:
+      - IE=Edge,chrome=1
+      Etag:
+      - '"72a662b87fef94eb0bb704764f860dfb"'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 9f480fad4283a81d8838031b9cf5b236
+      X-Runtime:
+      - '0.136483'
+      X-Frame-Options:
+      - SAMEORIGIN
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAIO8E1YAA1IAAAAA//8DAEXPbOkBAAAA
+    http_version: 
+  recorded_at: Tue, 06 Oct 2015 12:21:37 GMT
+recorded_with: VCR 2.9.3

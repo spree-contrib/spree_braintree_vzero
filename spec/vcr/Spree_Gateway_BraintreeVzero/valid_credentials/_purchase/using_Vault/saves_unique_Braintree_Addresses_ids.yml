@@ -1,0 +1,145 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://h442tzpn8wdk89p6:c3c1f38bf6b87c79b7eb4550e66d7b0a@api.sandbox.braintreegateway.com/merchants/yccdpmn3cvtjbgnr/transactions
+    body:
+      encoding: UTF-8
+      string: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <transaction>
+          <shipping>
+            <company>Company</company>
+            <country-code-alpha2>US</country-code-alpha2>
+            <country-code-alpha3>USA</country-code-alpha3>
+            <country-code-numeric type="integer">840</country-code-numeric>
+            <country-name>United States of America</country-name>
+            <first-name>foo</first-name>
+            <last-name>Doe</last-name>
+            <locality>Herndon</locality>
+            <postal-code>35005</postal-code>
+            <region>AL</region>
+            <street-address>10 Lovely Street</street-address>
+            <extended-address>Northwest</extended-address>
+          </shipping>
+          <billing>
+            <company>Company</company>
+            <country-code-alpha2>US</country-code-alpha2>
+            <country-code-alpha3>USA</country-code-alpha3>
+            <country-code-numeric type="integer">840</country-code-numeric>
+            <country-name>United States of America</country-name>
+            <first-name>bar</first-name>
+            <last-name>Doe</last-name>
+            <locality>Herndon</locality>
+            <postal-code>35005</postal-code>
+            <region>AL</region>
+            <street-address>10 Lovely Street</street-address>
+            <extended-address>Northwest</extended-address>
+          </billing>
+          <customer>
+          </customer>
+          <amount>20.00</amount>
+          <payment-method-nonce>fake-valid-nonce</payment-method-nonce>
+          <order-id>R072978961</order-id>
+          <descriptor>
+            <name></name>
+          </descriptor>
+          <options>
+            <submit-for-settlement type="boolean">true</submit-for-settlement>
+            <add-billing-address-to-payment-method type="boolean">true</add-billing-address-to-payment-method>
+            <three-d-secure>
+              <required type="boolean">false</required>
+            </three-d-secure>
+            <store-in-vault type="boolean">true</store-in-vault>
+            <store-shipping-address-in-vault type="boolean">true</store-shipping-address-in-vault>
+          </options>
+          <type>sale</type>
+        </transaction>
+    headers:
+      Accept-Encoding:
+      - gzip
+      Accept:
+      - application/xml
+      User-Agent:
+      - Braintree Ruby Gem 2.48.1
+      X-Apiversion:
+      - '4'
+      Content-Type:
+      - application/xml
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Date:
+      - Tue, 06 Oct 2015 22:31:17 GMT
+      Content-Type:
+      - application/xml; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - close
+      X-Authentication:
+      - basic_auth
+      Strict-Transport-Security:
+      - max-age=31536000
+      - max-age=31536000; includeSubDomains
+      X-User:
+      - 85kvddg6myqz4n82
+      Vary:
+      - Accept-Encoding
+      Content-Encoding:
+      - gzip
+      X-Ua-Compatible:
+      - IE=Edge,chrome=1
+      Etag:
+      - '"13b4afcb5fcc5855e8a9c9dafbf83db8"'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 08446e5d0075619056770a82a566da30
+      X-Runtime:
+      - '1.043127'
+      X-Frame-Options:
+      - SAMEORIGIN
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        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
+        FAAA
+    http_version: 
+  recorded_at: Tue, 06 Oct 2015 22:32:35 GMT
+recorded_with: VCR 2.9.3
