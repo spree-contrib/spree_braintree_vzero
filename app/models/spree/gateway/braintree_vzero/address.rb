@@ -5,14 +5,14 @@ module Spree
 
         attr_reader :user, :utils, :request
 
-        def initialize(provider, user, order)
+        def initialize(provider, order)
           @utils = Utils.new(provider, order)
-          @user = user
+          @user = order.user
           @request = provider::Address
         end
 
         def create
-          @request.create(@utils.address_data('billing').merge!(customer_id: @user.id.to_s))
+          @request.create(@utils.address_data('billing', utils.order).merge!(customer_id: user.id.to_s))
         end
 
         def find(braintree_address)

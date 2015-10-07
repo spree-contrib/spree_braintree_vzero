@@ -5,7 +5,7 @@ describe Spree::Gateway::BraintreeVzero::Address, :vcr do
   let(:gateway) { create(:vzero_gateway, auto_capture: true) }
   let(:user) { create(:user) }
   let(:order) { create(:order) }
-  let(:braintree_address) { Spree::Gateway::BraintreeVzero::Address.new(gateway.provider, user, order) }
+  let(:braintree_address) { Spree::Gateway::BraintreeVzero::Address.new(gateway.provider, order) }
 
   context '#create' do
 

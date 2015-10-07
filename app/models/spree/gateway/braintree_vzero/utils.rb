@@ -17,14 +17,14 @@ module Spree
 
         def get_address(address_type)
           if order.user && address = order.user.send("#{address_type}_address")
-            braintree_address = BraintreeVzero::Address.new(gateway.provider, order.user, order)
+            braintree_address = BraintreeVzero::Address.new(gateway.provider, order)
             if address.braintree_id && braintree_address.find(address.braintree_id)
               {"#{address_type}_address_id" => braintree_address.id}
             else
-              {address_type => address_data(address_type)}
+              {address_type => address_data(address_type, order.user)}
             end
           else
-            {address_type => address_data(address_type)}
+            {address_type => address_data(address_type, order)}
           end
         end
 
@@ -44,25 +44,25 @@ module Spree
           }
         end
 
-        def address_data(address_type)
+        def address_data(address_type, target)
           {
-            company: order.send("#{address_type}_address").company,
-            country_code_alpha2: order.send("#{address_type}_address").country.iso,
-            country_code_alpha3: order.send("#{address_type}_address").country.iso3,
-            country_code_numeric: order.send("#{address_type}_address").country.numcode,
-            country_name: order.send("#{address_type}_address").country.name,
-            first_name: order.send("#{address_type}_address").first_name,
-            last_name: order.send("#{address_type}_address").last_name,
-            locality: order.send("#{address_type}_address").city,
-            postal_code: order.send("#{address_type}_address").zipcode,
-            region: order.send("#{address_type}_address").state.try(:abbr),
-            street_address: order.send("#{address_type}_address").address1,
-            extended_address: order.send("#{address_type}_address").address2
+            company: target.send("#{address_type}_address").company,
+            country_code_alpha2: target.send("#{address_type}_address").country.iso,
+            country_code_alpha3: target.send("#{address_type}_address").country.iso3,
+            country_code_numeric: target.send("#{address_type}_address").country.numcode,
+            country_name: target.send("#{address_type}_address").country.name,
+            first_name: target.send("#{address_type}_address").first_name,
+            last_name: target.send("#{address_type}_address").last_name,
+            locality: target.send("#{address_type}_address").city,
+            postal_code: target.send("#{address_type}_address").zipcode,
+            region: target.send("#{address_type}_address").state.try(:abbr),
+            street_address: target.send("#{address_type}_address").address1,
+            extended_address: target.send("#{address_type}_address").address2
           }
         end
 
         def customer_data(user)
-          address_data('billing').slice(:first_name, :last_name, :company, :phone).merge!(id: user.id, email: user.email)
+          address_data('billing', user).slice(:first_name, :last_name, :company, :phone).merge!(id: user.id, email: user.email)
         end
 
         def payment_in_vault
