@@ -88,6 +88,29 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
 
     end
 
+    describe '#admin_purchase' do
+      # before { gateway.preferred_3dsecure = false }
+
+      it 'returns success with valid token' do
+        gateway.preferred_store_payments_in_vault = :store_all
+        token = gateway.purchase('fake-valid-nonce', order).transaction.credit_card_details.token
+        expect(gateway.admin_purchase(token, order, order.total).success?).to be true
+      end
+
+      it 'returns false with invalid token' do
+        token = 'sometoken'
+        expect(gateway.admin_purchase(token, order, order.total).success?).to be false
+      end
+
+      it 'creates payment with given amount' do
+        amount = 11.21
+        gateway.preferred_store_payments_in_vault = :store_all
+        token = gateway.purchase('fake-valid-nonce', order).transaction.credit_card_details.token
+        expect(gateway.admin_purchase(token, order, amount).transaction.amount).to eq amount
+      end
+
+    end
+
     describe '#complete_order' do
 
       before do

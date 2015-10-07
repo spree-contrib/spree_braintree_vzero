@@ -51,7 +51,7 @@ module Spree
       end
 
       def customer_payment_methods
-        @customer.payment_methods
+        @customer.try(:payment_methods) || []
       end
 
       def payment_in_vault
