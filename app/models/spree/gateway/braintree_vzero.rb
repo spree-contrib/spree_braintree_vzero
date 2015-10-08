@@ -45,7 +45,7 @@ module Spree
       braintree_user ? provider::ClientToken.generate(customer_id: user.id) : provider::ClientToken.generate
     end
 
-    def purchase(nonce, order, device_data = nil)
+    def purchase(identifier_hash, order, device_data = nil)
       @utils = Utils.new(self, order)
       data = {}
       if preferred_pass_billing_and_shipping_address
@@ -56,7 +56,7 @@ module Spree
         data.merge!(device_data: device_data)
       end
       data.merge!(@utils.get_customer)
-      data.merge!(@utils.order_data(nonce))
+      data.merge!(@utils.order_data(identifier_hash))
       data.merge!(
         descriptor: { name: preferred_descriptor_name.to_s.gsub('/', '*') },
         options: {
@@ -77,7 +77,7 @@ module Spree
 
       data.merge!(
         options: {
-          submit_for_settlement: auto_capture?,
+          submit_for_settlement: auto_capture?
         }.merge!(@utils.payment_in_vault)
       )
 

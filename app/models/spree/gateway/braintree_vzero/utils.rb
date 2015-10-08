@@ -36,12 +36,11 @@ module Spree
           end
         end
 
-        def order_data(nonce)
-          {
+        def order_data(identifier)
+          identifier.merge(
             amount: order.total,
-            payment_method_nonce: nonce,
             order_id: order.number
-          }
+          )
         end
 
         def address_data(address_type, target)
