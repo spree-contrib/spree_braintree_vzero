@@ -263,7 +263,7 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
     describe '#credit' do
       let(:payment) { order.payments.first }
       let(:payment_source) { payment.payment_source }
-      let(:refund) { gateway.credit('unimportant', payment_source.transaction_id, {}) }
+      let(:refund) { gateway.credit(1317, payment_source.transaction_id, {}) }
       let!(:prepare_gateway) { gateway.preferred_3dsecure = false }
 
       context 'with refundable state' do
@@ -273,6 +273,7 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
 
         it 'should be a success' do
           expect(refund.success?).to be true
+          expect(refund.transaction.amount).to eq 13.17
         end
       end
 
