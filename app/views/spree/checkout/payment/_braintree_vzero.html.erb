@@ -47,6 +47,11 @@
   braintree.setup(clientToken, "dropin", {
     container: "<%= payment_method.preferred_dropin_container %>",
 
+    paypal: {
+      amount: <%= current_order.total %>,
+      currency: "<%= current_currency %>"
+    },
+
     onPaymentMethodReceived: function (result) {
       if (SpreeBraintreeVzero.threeDSecure && result.type == "CreditCard") {
         var client = new braintree.api.Client({
