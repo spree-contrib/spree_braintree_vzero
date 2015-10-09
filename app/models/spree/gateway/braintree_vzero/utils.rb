@@ -19,7 +19,7 @@ module Spree
           if order.user && address = order.user.send("#{address_type}_address")
             braintree_address = BraintreeVzero::Address.new(gateway.provider, order)
             if address.braintree_id && braintree_address.find(address.braintree_id)
-              {"#{address_type}_address_id" => braintree_address.id}
+              {"#{address_type}_address_id" => address.braintree_id}
             else
               {address_type => address_data(address_type, order.user)}
             end
