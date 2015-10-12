@@ -101,8 +101,6 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
     end
 
     describe '#admin_purchase' do
-      # before { gateway.preferred_3dsecure = false }
-
       it 'returns success with valid token' do
         gateway.preferred_store_payments_in_vault = :store_all
         token = gateway.purchase({payment_method_nonce: 'fake-valid-nonce'}, order).transaction.credit_card_details.token

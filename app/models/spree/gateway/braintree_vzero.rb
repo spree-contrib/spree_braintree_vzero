@@ -72,7 +72,7 @@ module Spree
     end
 
     def admin_purchase(token, order, amount)
-      @utils = BraintreeUtils.new(self, order)
+      @utils = Utils.new(self, order)
       data = { amount: amount, payment_method_token: token }
 
       data.merge!(
@@ -121,7 +121,7 @@ module Spree
     end
 
     def customer_payment_methods(order)
-      @utils = BraintreeUtils.new(self, order)
+      @utils = Utils.new(self, order)
       @utils.customer_payment_methods
     end
 

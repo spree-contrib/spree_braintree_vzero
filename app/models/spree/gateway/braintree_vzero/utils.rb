@@ -16,23 +16,23 @@ module Spree
 
 
         def get_address(address_type)
-          if order.user && address = order.user.send("#{address_type}_address")
+          if order.user && (address = order.user.send("#{address_type}_address"))
             braintree_address = BraintreeVzero::Address.new(gateway.provider, order)
             if address.braintree_id && braintree_address.find(address.braintree_id)
-              {"#{address_type}_address_id" => address.braintree_id}
+              { "#{address_type}_address_id" => address.braintree_id }
             else
-              {address_type => address_data(address_type, order.user)}
+              { address_type => address_data(address_type, order.user) }
             end
           else
-            {address_type => address_data(address_type, order)}
+            { address_type => address_data(address_type, order) }
           end
         end
 
         def get_customer
           if @customer
-            {customer_id: @customer.id}
+            { customer_id: @customer.id }
           else
-            {customer: (payment_in_vault[:store_shipping_address_in_vault] && order.user) ? customer_data(order.user) : {}}
+            { customer: (payment_in_vault[:store_shipping_address_in_vault] && order.user) ? customer_data(order.user) : {} }
           end
         end
 
@@ -64,28 +64,32 @@ module Spree
           address_data('billing', user).slice(:first_name, :last_name, :company, :phone).merge!(id: user.id, email: user.email)
         end
 
+        def customer_payment_methods
+          @customer.try(:payment_methods) || []
+        end
+
         def payment_in_vault
           if gateway.preferred_store_payments_in_vault == 'store_only_on_success'
-            {store_in_vault_on_success: true, store_shipping_address_in_vault: true}
+            { store_in_vault_on_success: true, store_shipping_address_in_vault: true }
           elsif gateway.preferred_store_payments_in_vault == 'store_all'
-            {store_in_vault: true, store_shipping_address_in_vault: true}
+            { store_in_vault: true, store_shipping_address_in_vault: true }
           else
-            {store_in_vault: false}
+            { store_in_vault: false }
           end
         end
 
         def map_payment_status(braintree_status)
           case braintree_status
-            when 'authorized'
-              'pending'
-            when 'voided'
-              'void'
-            when 'submitted_for_settlement', 'settling', 'settlement_pending'
-              'pending'
-            when 'settled'
-              'completed'
-            else
-              'failed'
+          when 'authorized'
+            'pending'
+          when 'voided'
+            'void'
+          when 'submitted_for_settlement', 'settling', 'settlement_pending'
+            'pending'
+          when 'settled'
+            'completed'
+          else
+            'failed'
           end
         end
 
