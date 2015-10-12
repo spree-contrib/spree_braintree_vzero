@@ -48,14 +48,9 @@ module Spree
 
     def purchase(identifier_hash, order, device_data = nil)
       @utils = Utils.new(self, order)
-      data = {}
-      if preferred_pass_billing_and_shipping_address
-        data.merge!(@utils.get_address('shipping'))
-        data.merge!(@utils.get_address('billing')) unless order.shipping_address.same_as?(order.billing_address)
-      end
+
+      data = set_basic_purchase_data(identifier_hash, order, @utils)
       data.merge!(device_data: device_data) if preferred_advanced_fraud_tools
-      data.merge!(@utils.get_customer)
-      data.merge!(@utils.order_data(identifier_hash))
       data.merge!(
         descriptor: { name: preferred_descriptor_name.to_s.gsub('/', '*') },
         options: {
@@ -84,15 +79,18 @@ module Spree
     end
 
     def complete_order(order, result, payment_method)
-      return false unless result.transaction
+      return false unless (transaction = result.transaction)
+
       @utils = Utils.new(self, order)
       payment = order.payments.create!(
-        source: Spree::BraintreeCheckout.create!(transaction_id: result.transaction.id, state: result.transaction.status),
+        source: Spree::BraintreeCheckout.create!(transaction_id: transaction.id,
+                                                 state: transaction.status),
         amount: order.total,
         payment_method: payment_method,
-        state: @utils.map_payment_status(result.transaction.status),
-        response_code: result.transaction.id
+        state: @utils.map_payment_status(transaction.status),
+        response_code: transaction.id
       )
+
       payment.save!
       order.update_attributes(completed_at: Time.zone.now, state: :complete)
       order.finalize!
@@ -139,18 +137,34 @@ module Spree
     end
 
     def update_addresses(response, order)
-      order.shipping_address.update_attribute(:braintree_id, response.transaction.shipping_details.id)
-      if order.shipping_address.same_as?(order.billing_address)
-        order.billing_address.update_attribute(:braintree_id, response.transaction.shipping_details.id)
-      else
-        order.billing_address.update_attribute(:braintree_id, response.transaction.billing_details.id)
-      end
+      shipping_address = order.shipping_address
+      billing_address = order.billing_address
+      transaction = response.transaction
+
+      details_id = if shipping_address.same_as?(billing_address)
+                     transaction.shipping_details.id
+                   else
+                     transaction.billing_details.id
+                   end
+
+      shipping_address.update_attribute(:braintree_id, transaction.shipping_details.id)
+      billing_address.update_attribute(:braintree_id, details_id)
     end
 
     def add_order_errors(response, order)
       response.errors.each { |e| order.errors.add(:base, I18n.t(e.message), scope: 'braintree.error') }
       return unless response.errors.size.zero? && response.transaction.try(:gateway_rejection_reason)
       order.errors.add(:base, I18n.t(response.transaction.gateway_rejection_reason, scope: 'braintree.error'))
+    end
+
+    def set_basic_purchase_data(identifier_hash, order, utils)
+      data = {}
+      data.merge!(utils.get_customer)
+      data.merge!(utils.order_data(identifier_hash))
+      return data unless preferred_pass_billing_and_shipping_address
+
+      data.merge!(utils.get_address('billing')) unless order.shipping_address.same_as?(order.billing_address)
+      data.merge!(utils.get_address('shipping'))
     end
 
   end
