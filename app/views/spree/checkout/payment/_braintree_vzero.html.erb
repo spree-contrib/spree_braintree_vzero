@@ -48,6 +48,7 @@
     container: "<%= payment_method.preferred_dropin_container %>",
 
     paypal: {
+      singleUse: <%= payment_method.preferred_store_payments_in_vault.eql?(:do_not_store) %>,
       amount: <%= current_order.total %>,
       currency: "<%= current_currency %>"
     },
