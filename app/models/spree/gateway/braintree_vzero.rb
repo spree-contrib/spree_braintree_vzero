@@ -1,4 +1,5 @@
 require 'braintree'
+
 module Spree
   class Gateway::BraintreeVzero < Gateway
     preference :merchant_id, :string
@@ -8,7 +9,7 @@ module Spree
     preference :'3dsecure', :boolean_select, default: false
     preference :pass_billing_and_shipping_address, :boolean_select, default: false
     preference :advanced_fraud_tools, :boolean_select, default: false
-    preference :store_payments_in_vault, :select, default: -> { {values: [:do_not_store, :store_only_on_success, :store_all]} }
+    preference :store_payments_in_vault, :select, default: -> { { values: [:do_not_store, :store_only_on_success, :store_all] } }
     preference :descriptor_name, :string
     preference :dropin_container, :string, default: 'payment-form'
     preference :dropin_checkout_form_id, :string, default: 'checkout_form_payment'
@@ -52,9 +53,7 @@ module Spree
         data.merge!(@utils.get_address('shipping'))
         data.merge!(@utils.get_address('billing')) unless order.shipping_address.same_as?(order.billing_address)
       end
-      if preferred_advanced_fraud_tools
-        data.merge!(device_data: device_data)
-      end
+      data.merge!(device_data: device_data) if preferred_advanced_fraud_tools
       data.merge!(@utils.get_customer)
       data.merge!(@utils.order_data(identifier_hash))
       data.merge!(
@@ -100,7 +99,7 @@ module Spree
       order.update!
     end
 
-    def settle(amount, checkout, gateway_options)
+    def settle(amount, checkout, _gateway_options)
       result = provider::Transaction.submit_for_settlement(checkout.transaction_id, amount / 100.0)
       checkout.update_attribute(:state, result.transaction.status)
       result
@@ -131,20 +130,27 @@ module Spree
       result = provider::Transaction.sale(data)
 
       if result.success?
-        order.shipping_address.update_attribute(:braintree_id, result.transaction.shipping_details.id)
-        if order.shipping_address.same_as?(order.billing_address)
-          order.billing_address.update_attribute(:braintree_id, result.transaction.shipping_details.id)
-        else
-          order.billing_address.update_attribute(:braintree_id, result.transaction.billing_details.id)
-        end
+        update_addresses(result, order)
       else
-        result.errors.each { |e| order.errors.add(:base, I18n.t(e.message), scope: 'braintree.error') }
-        if result.errors.size == 0 && result.transaction.try(:gateway_rejection_reason)
-          order.errors.add(:base, I18n.t(result.transaction.gateway_rejection_reason, scope: 'braintree.error'))
-        end
+        add_order_errors(result, order)
       end
 
       result
+    end
+
+    def update_addresses(response, order)
+      order.shipping_address.update_attribute(:braintree_id, response.transaction.shipping_details.id)
+      if order.shipping_address.same_as?(order.billing_address)
+        order.billing_address.update_attribute(:braintree_id, response.transaction.shipping_details.id)
+      else
+        order.billing_address.update_attribute(:braintree_id, response.transaction.billing_details.id)
+      end
+    end
+
+    def add_order_errors(response, order)
+      response.errors.each { |e| order.errors.add(:base, I18n.t(e.message), scope: 'braintree.error') }
+      return unless response.errors.size.zero? && response.transaction.try(:gateway_rejection_reason)
+      order.errors.add(:base, I18n.t(response.transaction.gateway_rejection_reason, scope: 'braintree.error'))
     end
 
   end

@@ -44,19 +44,22 @@ module Spree
         end
 
         def address_data(address_type, target)
+          address = target.send("#{address_type}_address")
+          country = address.country
+
           {
-            company: target.send("#{address_type}_address").company,
-            country_code_alpha2: target.send("#{address_type}_address").country.iso,
-            country_code_alpha3: target.send("#{address_type}_address").country.iso3,
-            country_code_numeric: target.send("#{address_type}_address").country.numcode,
-            country_name: target.send("#{address_type}_address").country.name,
-            first_name: target.send("#{address_type}_address").first_name,
-            last_name: target.send("#{address_type}_address").last_name,
-            locality: target.send("#{address_type}_address").city,
-            postal_code: target.send("#{address_type}_address").zipcode,
-            region: target.send("#{address_type}_address").state.try(:abbr),
-            street_address: target.send("#{address_type}_address").address1,
-            extended_address: target.send("#{address_type}_address").address2
+            company: address.company,
+            country_code_alpha2: country.iso,
+            country_code_alpha3: country.iso3,
+            country_code_numeric: country.numcode,
+            country_name: country.name,
+            first_name: address.first_name,
+            last_name: address.last_name,
+            locality: address.city,
+            postal_code: address.zipcode,
+            region: address.state.try(:abbr),
+            street_address: address.address1,
+            extended_address: address.address2
           }
         end
 
