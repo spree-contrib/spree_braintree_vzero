@@ -1,6 +1,6 @@
 FactoryGirl.define do
-  factory :vzero_gateway, class: Spree::Gateway::BraintreeVzero do
-    name 'Braintree Vzero'
+  factory :vzero_gateway, class: Spree::Gateway::BraintreeVzeroStandard do
+    name 'Braintree Vzero Base'
 
     transient do
       merchant_id nil

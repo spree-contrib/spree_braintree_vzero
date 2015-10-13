@@ -7,7 +7,7 @@ Spree::CheckoutController.class_eval do
     return true if params[:order][:payments_attributes].blank?
     payment_method = Spree::PaymentMethod.find_by_id(params[:order][:payments_attributes].first[:payment_method_id])
 
-    if payment_method && payment_method.is_a?(Spree::Gateway::BraintreeVzero)
+    if payment_method && payment_method.is_a?(Spree::Gateway::BraintreeVzeroStandard)
       result = if (token = params[:payment_method_token]).present?
                  payment_method.purchase({payment_method_token: token}, current_order, params[:device_data])
                elsif (nonce = params[:payment_method_nonce]).present?

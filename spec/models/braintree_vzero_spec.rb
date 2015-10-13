@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Spree::Gateway::BraintreeVzero, :vcr do
+describe Spree::Gateway::BraintreeVzeroBase, :vcr do
 
   context 'valid credentials' do
 
@@ -17,7 +17,7 @@ describe Spree::Gateway::BraintreeVzero, :vcr do
 
     it 'generates token for User registered in Braintree' do
       user = create(:user, billing_address: create(:address))
-      Spree::Gateway::BraintreeVzero::User.new(gateway.provider, user, order).register_user
+      Spree::Gateway::BraintreeVzeroBase::User.new(gateway.provider, user, order).register_user
       expect(gateway.client_token(user)).to_not be_nil
     end
 

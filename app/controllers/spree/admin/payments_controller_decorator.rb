@@ -32,7 +32,7 @@ Spree::Admin::PaymentsController.class_eval do
   private
 
   def process_payment
-    if @payment.payment_source.is_a?(Spree::Gateway::BraintreeVzero)
+    if @payment.payment_source.is_a?(Spree::Gateway::BraintreeVzeroStandard)
       result = @payment.payment_source.admin_purchase(params[:payment_method_token], @order, object_params[:amount])
 
       @payment.source = Spree::BraintreeCheckout.create!(transaction_id: result.transaction.id)

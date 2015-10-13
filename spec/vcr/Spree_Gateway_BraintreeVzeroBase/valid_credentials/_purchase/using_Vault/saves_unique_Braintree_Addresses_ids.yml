@@ -1,0 +1,144 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://yd57hn7c4r5bhp8g:1cc8b0097ef43165847630438f864834@api.sandbox.braintreegateway.com/merchants/yccdpmn3cvtjbgnr/transactions
+    body:
+      encoding: UTF-8
+      string: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <transaction>
+          <customer>
+          </customer>
+          <payment-method-nonce>fake-valid-nonce</payment-method-nonce>
+          <amount>20.00</amount>
+          <order-id>R289150130</order-id>
+          <billing>
+            <company>Company</company>
+            <country-code-alpha2>US</country-code-alpha2>
+            <country-code-alpha3>USA</country-code-alpha3>
+            <country-code-numeric type="integer">840</country-code-numeric>
+            <country-name>United States of America</country-name>
+            <first-name>bar</first-name>
+            <last-name>Doe</last-name>
+            <locality>Herndon</locality>
+            <postal-code>35005</postal-code>
+            <region>AL</region>
+            <street-address>10 Lovely Street</street-address>
+            <extended-address>Northwest</extended-address>
+          </billing>
+          <shipping>
+            <company>Company</company>
+            <country-code-alpha2>US</country-code-alpha2>
+            <country-code-alpha3>USA</country-code-alpha3>
+            <country-code-numeric type="integer">840</country-code-numeric>
+            <country-name>United States of America</country-name>
+            <first-name>foo</first-name>
+            <last-name>Doe</last-name>
+            <locality>Herndon</locality>
+            <postal-code>35005</postal-code>
+            <region>AL</region>
+            <street-address>10 Lovely Street</street-address>
+            <extended-address>Northwest</extended-address>
+          </shipping>
+          <descriptor>
+            <name></name>
+          </descriptor>
+          <options>
+            <submit-for-settlement type="boolean">true</submit-for-settlement>
+            <add-billing-address-to-payment-method type="boolean">true</add-billing-address-to-payment-method>
+            <three-d-secure>
+              <required type="boolean">false</required>
+            </three-d-secure>
+            <store-in-vault type="boolean">true</store-in-vault>
+            <store-shipping-address-in-vault type="boolean">true</store-shipping-address-in-vault>
+          </options>
+          <type>sale</type>
+        </transaction>
+    headers:
+      Accept-Encoding:
+      - gzip
+      Accept:
+      - application/xml
+      User-Agent:
+      - Braintree Ruby Gem 2.49.0
+      X-Apiversion:
+      - '4'
+      Content-Type:
+      - application/xml
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Date:
+      - Tue, 13 Oct 2015 14:10:34 GMT
+      Content-Type:
+      - application/xml; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - close
+      X-Authentication:
+      - basic_auth
+      Strict-Transport-Security:
+      - max-age=31536000
+      - max-age=31536000; includeSubDomains
+      X-User:
+      - 97syg9czj6hrdzyn
+      Vary:
+      - Accept-Encoding
+      Content-Encoding:
+      - gzip
+      X-Ua-Compatible:
+      - IE=Edge,chrome=1
+      Etag:
+      - '"4e3cc78ac910a7a235e3149b600ebec5"'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - cbafa574438cb45defe5534d3961fdc2
+      X-Runtime:
+      - '0.825804'
+      X-Frame-Options:
+      - SAMEORIGIN
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIANoQHVYAA+xYX2/bNhB/76cw/M5Isp3MKRQVWbuhGLoCbZMB20tAiSeL
+        s0RqJOXY/fQ7SpQsWVKbl2EP21Osux+P9/+OCd8ci3xxAKW5FHfL4MpfLkAk
+        knGxu1s+PvxMtss30avQKCo0TQyioleLRchZFN8e4nQTevjTUrShptKRruKC
+        GwPsKZXqSYMxORQgTOg5gMWaUwmRpjmEXv3T0pJKKbz5RLiWBBWA6KfHz6E3
+        JlswLWQlTLTyr3w/9NyXZRSgkowKQ2iSWCJB7XRJ1V7LvLLaa11+lTL0poBW
+        gFQMlP34vNreBtd+sMYLOmKtqAKK9hFqFlb5uyXDT8MLWKI+wTUJfBKsH4LN
+        68B/vV7/gSZ0B+rzVclefn6D588HnKO0kai+/WgicXOzub3d+tdtLJCacqUN
+        EbSAheD53dKoCpaeY+Z0npfIoqTiNMGBgvJ8gv4MseZmSlaZSTFFT+nxkmoD
+        fTYrjHmeYwaeTVxnk8ZFMVWh1/u+MDB6JzHHzp8DG6O3zV+82xEatjYKABOD
+        MQVaR4G/+CAPkJ8WX2qGzeQBwLnnaEAwGyZH/iiVyZ5B44ERz6kpE5pzc4re
+        gxJMCtS0pTQABTtbcPcfQs/9dI6VWEx5Uw7ra99Gvk9qrcS0VqfG8EeBIWJo
+        AWaSXsh0cY+u5gm1tvdgw5NWGKF5mdFV9PjlDO3T506s8cT91JH11BFR1epE
+        241/cabl1DnSSwv0TVoJhkU5SqWOo12BUaXoacDEUPQ62pQQ7BmGo0PPHezi
+        xJRwWplMKv71++J7YmNqkmwSk/GyHFQB209XQWo72v9V8B+pgn5euGlAUg45
+        0y4LD5qAUlIR9HKJIw9qIaP8sriew4bo6Fecq98EtCKGeTAt5ZuY2ozDYXxy
+        TLTQHQbvmZ6Q8yc09YXzVUsxLmElE7wN/dDWJa3htaRfPq0+XL/HjPkWaChl
+        qErg29Vjjjtz0mANRPclcg7AJk/XiNq1jHGrCTp/DBvZepA8sQFKMfB4AvMl
+        BjX2SGWXHrylWWhmUIYeSbNSTbLgCEXZ7i6xlDlQsYxSmmu7znWAdldCK0hC
+        Vdu1jNyDiLKbskxihNdfDSfmItr4wWq7tY1e9JvYJgq228C1sE1bOiiU1Ovj
+        b1zbEu6+21ZUctUEs5DCZFGwsj3ogjjCnoAqXMRW/gBcU929blEhtk3VC3Hd
+        FUbUs5aZzGt3T29cvKA7IJXKo8yYUr/2PKpxPOirWFEubOG4jL/CBu2V9GSn
+        xlMBmK3sKZc76R3Q/qtS7N6AOHAlhQXcaSpYLI84MDr5rm0qKClOkY/SJmDz
+        u+FkQHOToca2U+6FfMZe3KM1IAYxN2d+8+lYlcLAYRbuqtxurD3UJacbQXYP
+        xzl7hvZoTl96UjLvIVqCc5/WFTZDHKNif8YMqMNWK1NiuVQkMOzOfUbrKsmq
+        pH4bnG8/0xpQJfhfFbhiQjI6n2M7VlESxwEL1uskZpt1uqHAbli8+YGtkk28
+        Wd1gNs4ebSQfQBSSaLafKbaO7zboYbG5FxnJOGamOg3WlW7G1whAQS6GtkLx
+        KYKMonzh86TDdxLcS++8DfUffzVi7v3WOFSjBwqacnSQbp1hFeutVFpiK4OI
+        lgiaoDfmeWP7/mGTX/L6/Tcd0FFcUjRTIafTO2oV60TxcnaH7fG7Hl4v6KTE
+        bUUygusesb6c6HoXSFRLmUksqnxxjx2NBKfgxALOuK6reZIHjRTZltdMP557
+        tWIHHes2FIqrqv1/Bdo1U7Edv5mOGRUCxlIx5gc7zlOAuUFsr5XPpInmiItu
+        iCulm/cFA4MP93bbHrKmY9N7nExfP8SM/kXzQjgcrQNwNqlpNexDDTMVF9sp
+        gVVid6KJiMzYbi0vK7v3j1PDDVXCBS6qVfPYs4tE01GfbEcNvTnQcNXrGTrc
+        CPvb3izo+7Lq/fB7srolUnG9t1Gmvf+kBG83/u8P7x787Y+91ySDhOv6mdVs
+        pza1HaV260BSaDJcSwiWrc1nQJekchiJQVOKXv0NAAD//wMAP4eXvWcUAAA=
+    http_version: 
+  recorded_at: Tue, 13 Oct 2015 14:10:34 GMT
+recorded_with: VCR 2.9.3

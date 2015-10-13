@@ -1,0 +1,89 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://yd57hn7c4r5bhp8g:1cc8b0097ef43165847630438f864834@api.sandbox.braintreegateway.com/merchants/yccdpmn3cvtjbgnr/transactions
+    body:
+      encoding: UTF-8
+      string: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <transaction>
+          <customer>
+          </customer>
+          <payment-method-token>sometoken</payment-method-token>
+          <amount>20.00</amount>
+          <order-id>R702195341</order-id>
+          <descriptor>
+            <name></name>
+          </descriptor>
+          <options>
+            <submit-for-settlement type="boolean">true</submit-for-settlement>
+            <add-billing-address-to-payment-method type="boolean">false</add-billing-address-to-payment-method>
+            <three-d-secure>
+              <required type="boolean">false</required>
+            </three-d-secure>
+            <store-in-vault type="boolean">false</store-in-vault>
+          </options>
+          <type>sale</type>
+        </transaction>
+    headers:
+      Accept-Encoding:
+      - gzip
+      Accept:
+      - application/xml
+      User-Agent:
+      - Braintree Ruby Gem 2.49.0
+      X-Apiversion:
+      - '4'
+      Content-Type:
+      - application/xml
+  response:
+    status:
+      code: 422
+      message: Unprocessable Entity
+    headers:
+      Date:
+      - Tue, 13 Oct 2015 14:10:14 GMT
+      Content-Type:
+      - application/xml; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - close
+      X-Authentication:
+      - basic_auth
+      Strict-Transport-Security:
+      - max-age=31536000
+      - max-age=31536000; includeSubDomains
+      X-User:
+      - 97syg9czj6hrdzyn
+      Vary:
+      - Accept-Encoding
+      Content-Encoding:
+      - gzip
+      X-Ua-Compatible:
+      - IE=Edge,chrome=1
+      Cache-Control:
+      - no-cache
+      X-Request-Id:
+      - 71ebf3494c459467befd99b9293bca47
+      X-Runtime:
+      - '0.141587'
+      X-Frame-Options:
+      - SAMEORIGIN
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAMYQHVYAA5xUTW/bMAy991cIviuyuxVrAUW99TwM27lQLLYVpg+XlIPl
+        30+2I9vJ3GHYjeTjo8jnB8vHX96xIyDZGPZVs6srBqGNxobXffXj+xO/rx7V
+        jdSd5YAYkSNQFwOBumFMjiUawjlh6dTBvtKI+lSJM5RQB9Jtyo9Mle32ghV0
+        yXMlLwXqoblr7qUY4zWoU0J76BOc59HJH6KrVKdPHkJ69pDeonlO8ScEKebu
+        ixkeiPQrqK8Th00cNnKYJWbDUTtrdlKUzmVdcbHvOS3CiKvz17DsNGpPf9Gp
+        7SlFD8iCdfsqYQ9F1pE97sqnXfm4q6Lcfr50Ey9k7WMfkrqtd3WdRZmyAkY0
+        gNwa9e1Lfds83H363EgxF0uXAWrRdmn9rWTQHja3FX+2y9gN19KKTv3B28Rf
+        stkIUnIwXKCGUVJsYwtXG8MP1rlsX57jbFbKR/NLGdSLdpSH/VvzMjy9IQA3
+        +eW2x0vvILz3FmEePecri3xEl/n7InAb+FH3LpURV9VZwyvB5GB4Rdplyhh+
+        5LnFaP/j9KzWxi/gNwAAAP//AwAlQQzdPwQAAA==
+    http_version: 
+  recorded_at: Tue, 13 Oct 2015 14:10:14 GMT
+recorded_with: VCR 2.9.3
