@@ -45,7 +45,7 @@ module Spree
       braintree_user ? provider::ClientToken.generate(customer_id: user.id) : provider::ClientToken.generate
     end
 
-    def purchase(nonce, order, device_data = nil)
+    def purchase(identifier_hash, order, device_data = nil)
       @utils = Utils.new(self, order)
       data = {}
       if preferred_pass_billing_and_shipping_address
@@ -56,7 +56,7 @@ module Spree
         data.merge!(device_data: device_data)
       end
       data.merge!(@utils.get_customer)
-      data.merge!(@utils.order_data(nonce))
+      data.merge!(@utils.order_data(identifier_hash))
       data.merge!(
         descriptor: { name: preferred_descriptor_name.to_s.gsub('/', '*') },
         options: {
@@ -77,7 +77,7 @@ module Spree
 
       data.merge!(
         options: {
-          submit_for_settlement: auto_capture?,
+          submit_for_settlement: auto_capture?
         }.merge!(@utils.payment_in_vault)
       )
 
@@ -101,13 +101,13 @@ module Spree
     end
 
     def settle(amount, checkout, gateway_options)
-      result = provider::Transaction.submit_for_settlement(checkout.transaction_id, amount / 100.0)
+      result = Transaction.new(provider, checkout.transaction_id).submit_for_settlement(amount / 100.0)
       checkout.update_attribute(:state, result.transaction.status)
       result
     end
 
     def void(transaction_id, _data)
-      result = provider::Transaction.void(transaction_id)
+      result = Transaction.new(provider, transaction_id).void
 
       if result.success?
         Spree::BraintreeCheckout.find_by(transaction_id: transaction_id).update(state: 'voided')
@@ -116,8 +116,8 @@ module Spree
       result
     end
 
-    def credit(_credit_cents, transaction_id, _options)
-      provider::Transaction.refund(transaction_id)
+    def credit(credit_cents, transaction_id, _options)
+      Transaction.new(provider, transaction_id).refund(credit_cents.to_f/100)
     end
 
     def customer_payment_methods(order)
@@ -128,7 +128,7 @@ module Spree
     private
 
     def sale(data, order)
-      result = provider::Transaction.sale(data)
+      result = Transaction.new(provider).sale(data)
 
       if result.success?
         order.shipping_address.update_attribute(:braintree_id, result.transaction.shipping_details.id)
