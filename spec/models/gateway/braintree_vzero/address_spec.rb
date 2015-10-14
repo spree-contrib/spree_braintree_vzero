@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe Spree::Gateway::BraintreeVzero::Address, :vcr do
+describe Spree::Gateway::BraintreeVzeroBase::Address, :vcr do
 
   let(:gateway) { create(:vzero_gateway, auto_capture: true) }
   let(:user) { create(:user) }
   let(:order) { create(:order) }
-  let(:braintree_address) { Spree::Gateway::BraintreeVzero::Address.new(gateway.provider, order) }
+  let(:braintree_address) { Spree::Gateway::BraintreeVzeroBase::Address.new(gateway.provider, order) }
 
   context '#create' do
 

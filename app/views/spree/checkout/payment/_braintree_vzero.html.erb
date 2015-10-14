@@ -1,5 +1,36 @@
-<div id="payment-form"></div>
-<%= submit_tag Spree.t(:save_and_continue), class: 'btn btn-lg btn-success primary' %>
+<% display_payment_methods_list = !payment_method.preferred_3dsecure && (@methods = payment_method.customer_payment_methods(@order)).any? %>
+<% if display_payment_methods_list %>
+  <% @methods.each do |method| %>
+    <div class="radio">
+      <label data-hook="braintree_payment_method_field">
+
+        <% if method.is_a?(Braintree::CreditCard) %>
+          <%= radio_button_tag 'payment_method_token', method.token %>
+          <%= Spree.t('admin.vaulted_payments.credit_card', card_type: method.card_type, last_4: method.last_4) %>
+        <% end %>
+
+        <% if method.is_a?(Braintree::PayPalAccount) %>
+          <%= radio_button_tag 'payment_method_token', method.token %>
+          <%= Spree.t('admin.vaulted_payments.paypal', email: method.email) %>
+        <% end %>
+
+      </label>
+    </div>
+  <% end %>
+
+  <div class="radio">
+    <label data-hook="braintree_payment_method_field">
+
+      <%= radio_button_tag 'payment_method_token', '' %>
+      <%= Spree.t(:new) %>
+
+    </label>
+  </div>
+<% end %>
+
+
+<div id="payment-form" class="<%= display_payment_methods_list ? 'new-braintree-payment-method' : '' %>" style="<%= display_payment_methods_list ? 'display: none;' : '' %>"></div>
+<%= submit_tag Spree.t(:save_and_continue), class: 'btn btn-lg btn-success primary new-braintree-payment-method', style: 'display: none;' %>
 
 <hr/>
 <br/>
@@ -15,6 +46,12 @@
 
   braintree.setup(clientToken, "dropin", {
     container: "<%= payment_method.preferred_dropin_container %>",
+
+    paypal: {
+      singleUse: <%= payment_method.preferred_store_payments_in_vault.eql?(:do_not_store) %>,
+      amount: <%= current_order.total %>,
+      currency: "<%= current_currency %>"
+    },
 
     onPaymentMethodReceived: function (result) {
       if (SpreeBraintreeVzero.threeDSecure && result.type == "CreditCard") {
