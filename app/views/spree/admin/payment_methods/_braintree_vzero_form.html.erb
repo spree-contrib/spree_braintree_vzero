@@ -8,7 +8,7 @@
         <%= collection_select(:payment_method, :type, @providers, :to_s, :name, {}, {:id => 'gtwy-type', :class => 'select2'}) %>
 
         <% unless @object.new_record? %>
-          <%= preference_fields(@object, f) %>
+          <%= preference_fields(@object, f, @object.reject_preferences) %>
 
           <% if @object.respond_to?(:preferences) %>
             <div id="gateway-settings-warning" class="info warning"><%= Spree.t(:provider_settings_warning) %></div>

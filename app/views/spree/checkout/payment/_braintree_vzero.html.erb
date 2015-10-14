@@ -44,7 +44,8 @@
   SpreeBraintreeVzero.advancedFraudTools = <%= payment_method.preferred_advanced_fraud_tools %>
   SpreeBraintreeVzero.threeDSecure = <%= payment_method.preferred_3dsecure %>
 
-  braintree.setup(clientToken, "dropin", {
+  braintree.setup(clientToken, '<%= payment_method.ui_kind %>', {
+    <% if payment_method.ui_kind == 'dropin' %>
     container: "<%= payment_method.preferred_dropin_container %>",
 
     paypal: {
@@ -52,6 +53,14 @@
       amount: <%= current_order.total %>,
       currency: "<%= current_currency %>"
     },
+    <% else %>
+
+    id: '',
+    hostedFields: {
+
+    },
+    
+    <% end %>
 
     onPaymentMethodReceived: function (result) {
       if (SpreeBraintreeVzero.threeDSecure && result.type == "CreditCard") {

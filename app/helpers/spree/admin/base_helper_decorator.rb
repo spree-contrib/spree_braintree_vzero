@@ -53,9 +53,9 @@ Spree::Admin::BaseHelper.module_eval do
     end
   end
 
-  def preference_fields(object, form)
+  def preference_fields(object, form, prefix='')
     return unless object.respond_to?(:preferences)
-    object.preferences.keys.map { |key|
+    object.preferences.keys.reject{|x| x.to_s.starts_with? prefix}.map { |key|
       if object.has_preference?(key)
         form.label("preferred_#{key}", Spree.t(key) + ": ") +
           preference_field_for(form, "preferred_#{key}", type: object.preference_type(key),
