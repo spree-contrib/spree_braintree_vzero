@@ -17,6 +17,10 @@ en:
       store_all: Store all
       dropin: Dropin
       hosted: Hosted Fields
+      placeholder:
+        number: Card Number
+        cvv: Cvv code
+        expiration_date: Card Expiration Date
 
   spree:
     admin:

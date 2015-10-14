@@ -29,7 +29,11 @@
 <% end %>
 
 
-<div id="payment-form" class="<%= display_payment_methods_list ? 'new-braintree-payment-method' : '' %>" style="<%= display_payment_methods_list ? 'display: none;' : '' %>"></div>
+<div id="payment-form" class="<%= display_payment_methods_list ? 'new-braintree-payment-method' : '' %>" style="<%= display_payment_methods_list ? 'display: none;' : '' %>">
+  <div id="hosted-fields-number"></div>
+  <div id="hosted-fields-cvv"></div>
+  <div id="hosted-fields-expiration-date"></div>
+</div>
 <%= submit_tag Spree.t(:save_and_continue), class: 'btn btn-lg btn-success primary new-braintree-payment-method', style: 'display: none;' %>
 
 <hr/>
@@ -41,8 +45,8 @@
   var checkoutFormId = <%= payment_method.preferred_dropin_checkout_form_id %>;
   var errorMessagesContainer = <%= payment_method.preferred_dropin_error_messages_container_id %>;
 
-  SpreeBraintreeVzero.advancedFraudTools = <%= payment_method.preferred_advanced_fraud_tools %>
-  SpreeBraintreeVzero.threeDSecure = <%= payment_method.preferred_3dsecure %>
+  SpreeBraintreeVzero.advancedFraudTools = <%= payment_method.preferred_advanced_fraud_tools %>;
+  SpreeBraintreeVzero.threeDSecure = <%= payment_method.preferred_3dsecure %>;
 
   braintree.setup(clientToken, '<%= payment_method.ui_kind %>', {
     <% if payment_method.ui_kind == 'dropin' %>
@@ -55,11 +59,22 @@
     },
     <% else %>
 
-    id: '',
+    id: '<%= payment_method.preferred_hosted_container %>',
     hostedFields: {
-
+      number: {
+        selector: "<%= payment_method.preferred_hosted_number_selector %>",
+        placeholder: "<%= payment_method.preferred_hosted_number_placeholder %>"
+      },
+      cvv: {
+        selector: "<%= payment_method.preferred_hosted_cvv_selector %>",
+        placeholder: "<%= payment_method.preferred_hosted_cvv_placeholder %>"
+      },
+      expirationDate: {
+        selector: "<%= payment_method.preferred_hosted_expiration_date_selector %>",
+        placeholder: "<%= payment_method.preferred_hosted_expiration_date_placeholder %>"
+      }
     },
-    
+
     <% end %>
 
     onPaymentMethodReceived: function (result) {
@@ -87,11 +102,11 @@
       }
     },
 
-    onReady: function(integration) {
+    onReady: function (integration) {
       <%= render partial: 'spree/checkout/payment/braintree_vzero/dropin_on_ready_callback', formats: [:js] %>
     },
 
-    onError: function(error) {
+    onError: function (error) {
       <%= render partial: 'spree/checkout/payment/braintree_vzero/dropin_on_error_callback', formats: [:js] %>
     }
 
