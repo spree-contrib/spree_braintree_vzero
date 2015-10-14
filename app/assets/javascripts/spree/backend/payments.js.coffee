@@ -4,9 +4,16 @@ $(document).ready ->
 
     init: ->
       @applyMaskOnDescriptorName()
+      @toggleAdvancedPreferences()
 
     applyMaskOnDescriptorName: ->
-      $('#gateway_braintree_vzero_preferred_descriptor_name').mask("***/*?*****************")
+      $('[id*="_preferred_descriptor_name"]').mask("***/*?*****************")
+
+    toggleAdvancedPreferences: ->
+      $('#advanced-preferences-heading').on 'click', ->
+        $('#advanced-preferences').slideToggle()
+        $('#advanced-preferences').toggleClass('collapsed')
+        $('span.icon', $(this)).toggleClass('icon-chevron-down')
 
 
   SpreePayments.init()

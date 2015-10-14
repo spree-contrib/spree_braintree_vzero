@@ -53,9 +53,29 @@ Spree::Admin::BaseHelper.module_eval do
     end
   end
 
-  def preference_fields(object, form, prefix='')
+  def preference_fields(object, form)
     return unless object.respond_to?(:preferences)
-    object.preferences.keys.reject{|x| x.to_s.starts_with? prefix}.map { |key|
+    get_preference_fields(object, object.preferences.keys, form)
+  end
+
+  def braintree_basic_preference_fields(object, form)
+    return unless object.respond_to?(:preferences)
+    keys = object.preferences.slice(*basic_braintree_preference_keys).keys
+    get_preference_fields(object, keys, form)
+  end
+
+  def braintree_advanced_preference_fields(object, form, reject_prefix = nil)
+    reject_prefix = reject_prefix.nil? ? ' ' : reject_prefix
+    return unless object.respond_to?(:preferences)
+    keys = object.preferences.keys.reject {|k| k.to_s.starts_with? reject_prefix}.reverse - basic_braintree_preference_keys
+    keys_left, keys_right = keys.each_slice((keys.size/2.0).ceil).to_a
+
+    content_tag(:div, get_preference_fields(object, keys_left, form), class: 'col-md-6') +
+    content_tag(:div, get_preference_fields(object, keys_right, form), class: 'col-md-6')
+  end
+
+  def get_preference_fields(object, keys, form)
+    keys.map { |key|
       if object.has_preference?(key)
         form.label("preferred_#{key}", Spree.t(key) + ": ") +
           preference_field_for(form, "preferred_#{key}", type: object.preference_type(key),
@@ -65,5 +85,8 @@ Spree::Admin::BaseHelper.module_eval do
     }.join("<br />").html_safe
   end
 
+  def basic_braintree_preference_keys
+    [:merchant_id, :public_key, :private_key, :server, :test_mode]
+  end
 
 end

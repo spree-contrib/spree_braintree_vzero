@@ -23,16 +23,14 @@ en:
         expiration_date: Card Expiration Date
 
   spree:
+    3dsecure: 3D Secure
     admin:
       vaulted_payments:
         credit_card: "%{card_type} ending with %{last_4}"
         paypal: "Paypal %{email}"
         cant_create_note: Can't create payment. No payment methods stored for this user.
-      cannot_clone_payment: Cannot clone Braintree Payment
-      product_unavailable: "Product %{product} is unavailable (missing stock item?)"
-      cloned_order: "Successfully created cloned Order %{number}"
-    3dsecure: 3D Secure
     advanced_fraud_tools: Advanced Fraud Tools
+    advanced_settings: Advanced settings
     descriptor_name: Card or Bank Statement Name
     descriptor_name_information_box_text: "This field will be displayed on the consumer’s bank or card statement.<br/><br/>If this field is not enabled by Braintree, please call Sales Rep or Braintree Support to set this up."
     dropin_checkout_form_id: DropinUI Checkout Form
