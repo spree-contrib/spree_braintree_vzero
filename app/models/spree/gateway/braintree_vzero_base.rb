@@ -94,14 +94,14 @@ module Spree
       order.update!
     end
 
-    def settle(amount, checkout, _gateway_options)
-      result = provider::Transaction.submit_for_settlement(checkout.transaction_id, amount / 100.0)
+    def settle(amount, checkout, gateway_options)
+      result = Transaction.new(provider, checkout.transaction_id).submit_for_settlement(amount / 100.0)
       checkout.update_attribute(:state, result.transaction.status)
       result
     end
 
     def void(transaction_id, _data)
-      result = provider::Transaction.void(transaction_id)
+      result = Transaction.new(provider, transaction_id).void
 
       if result.success?
         Spree::BraintreeCheckout.find_by(transaction_id: transaction_id).update(state: 'voided')
@@ -111,7 +111,7 @@ module Spree
     end
 
     def credit(credit_cents, transaction_id, _options)
-      provider::Transaction.refund(transaction_id, credit_cents.to_f/100)
+      Transaction.new(provider, transaction_id).refund(credit_cents.to_f/100)
     end
 
     def customer_payment_methods(order)
@@ -122,7 +122,7 @@ module Spree
     private
 
     def sale(data, order)
-      result = provider::Transaction.sale(data)
+      result = Transaction.new(provider).sale(data)
 
       if result.success?
         update_addresses(result, order)

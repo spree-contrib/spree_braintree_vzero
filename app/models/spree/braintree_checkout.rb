@@ -27,7 +27,7 @@ module Spree
     end
 
     def update_state
-      status = Gateway::BraintreeVzeroStandard.first.provider::Transaction.find(transaction_id).status
+      status = Transaction.new(Gateway::BraintreeVzeroStandard.first.provider, transaction_id).status
       self.update_attribute(:state, status)
       status
     end
