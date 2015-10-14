@@ -29,27 +29,7 @@ module Spree
 
         raise ActiveRecord::Rollback if cloned_order.errors.any?
 
-        cloned_order.update_attributes(
-          payment_state: order.payment_state,
-          state: order.state,
-          completed_at: order.completed_at,
-          shipment_state: order.shipment_state,
-          item_total: order.item_total,
-          total: order.total,
-          adjustment_total: order.adjustment_total,
-          ship_total: order.ship_total,
-          payment_total: order.payment_total,
-          additional_tax_total: order.additional_tax_total,
-          promo_total: order.promo_total,
-          included_tax_total: order.included_tax_total,
-          approver: order.approver,
-          confirmation_delivered: order.confirmation_delivered,
-          canceler_id: order.canceler_id,
-          canceled_at: order.canceled_at,
-          shipping_method_id: order.shipping_method_id,
-          special_instructions: order.special_instructions,
-          currency: order.currency
-        )
+        cloned_order.update_attributes(order.attributes.except('id', 'number', 'created_at', 'updated_at', 'channel', 'guest_token').merge!(channel: 'clone'))
       end
       cloned_order
     end
@@ -78,11 +58,11 @@ module Spree
     end
 
     def create_braintree_payment
-      gateway = Gateway::BraintreeVzero.first
+      gateway = Gateway::BraintreeVzeroStandard.first
       clones = []
       order.payments.each do |payment|
         next unless payment.source.is_a? Spree::BraintreeCheckout
-        result = Gateway::BraintreeVzero::Transaction.new(gateway.provider, payment.source.transaction_id).clone
+        result = Gateway::BraintreeVzeroBase::Transaction.new(gateway.provider, payment.source.transaction_id).clone
         clones << result
         if result.success?
           gateway.complete_order(cloned_order, result, payment.payment_method)

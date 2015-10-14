@@ -51,16 +51,15 @@ describe Spree::OrderDuplicator, :vcr do
 
     context 'duplicates Order' do
       before {gateway.preferred_store_payments_in_vault = :store_all}
-      before { gateway.complete_order(order, gateway.purchase('fake-valid-nonce', order), gateway) }
+      before { gateway.complete_order(order, gateway.purchase({payment_method_nonce: 'fake-valid-nonce'}, order), gateway) }
       before { duplicator.clone }
 
 
       it_behaves_like 'a valid duplicator'
 
       it 'creates Braintree Payment with same status as in old one' do
-        sleep 2
-        old_payment_status = Spree::Gateway::BraintreeVzero::Transaction.new(gateway.provider, order.payments.first.source.transaction_id).status
-        new_payment_status = Spree::Gateway::BraintreeVzero::Transaction.new(gateway.provider, duplicator.cloned_order.payments.first.source.transaction_id).status
+        old_payment_status = Spree::Gateway::BraintreeVzeroBase::Transaction.new(gateway.provider, order.payments.first.source.transaction_id).status
+        new_payment_status = Spree::Gateway::BraintreeVzeroBase::Transaction.new(gateway.provider, duplicator.cloned_order.payments.first.source.transaction_id).status
         expect(new_payment_status).to eq old_payment_status
       end
 

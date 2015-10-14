@@ -1,6 +1,6 @@
 module Spree
   class Gateway
-    class BraintreeVzero
+    class BraintreeVzeroBase
       class Transaction
 
         attr_reader :transaction_id, :request

@@ -24,6 +24,7 @@ en:
         cant_create_note: Can't create payment. No payment methods stored for this user.
       cannot_clone_payment: Cannot clone Braintree Payment
       product_unavailable: "Product %{product} is unavailable (missing stock item?)"
+      cloned_order: "Successfully created cloned Order %{number}"
     3dsecure: 3D Secure
     advanced_fraud_tools: Advanced Fraud Tools
     descriptor_name: Card or Bank Statement Name
