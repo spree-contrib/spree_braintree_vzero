@@ -12,8 +12,9 @@
       singleUse: true,
       amount: <%= @order.total %>,
       currency: "<%= current_currency %>",
-      locale: 'en_us',
-      enableShippingAddress: 'true',
+      locale: "en_us",
+      enableShippingAddress: "true",
+      enableBillingAddress: "true",
 
       onPaymentMethodReceived: function (result) {
         $(checkoutFormId).append("<input type='hidden' name='order[ship_address][zipcode]' value='" + result.details.shippingAddress.postalCode + "'>");
