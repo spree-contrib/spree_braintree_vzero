@@ -2,7 +2,7 @@ Spree::Order.class_eval do
   def save_paypal_address(type, address_hash)
     return if address_hash.blank?
 
-    update("#{type}_id" => Spree::Address.create(prepare_address_hash(address_hash)).id)
+    update_column("#{type}_id", Spree::Address.create(prepare_address_hash(address_hash)).id)
   end
 
   private

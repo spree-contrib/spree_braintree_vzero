@@ -36,6 +36,7 @@
         $(checkoutFormId).append("<input type='hidden' name='order[bill_address][state]' value='" + result.details.billingAddress.region + "'>");
         $(checkoutFormId).append("<input type='hidden' name='order[bill_address][phone]' value='" + result.details.phone + "'>");
 
+        $(checkoutFormId).append("<input type='hidden' name='order[email]' value=" + result.details.email + ">");
         $(checkoutFormId).append("<input type='hidden' name='paypal[payment_method_nonce]' value=" + result.nonce + ">");
         $(checkoutFormId).append("<input type='hidden' name='checkout' value=true>");
 
