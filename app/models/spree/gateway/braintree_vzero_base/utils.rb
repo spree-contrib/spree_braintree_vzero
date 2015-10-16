@@ -14,12 +14,13 @@ module Spree
           @gateway = gateway
         end
 
-
         def get_address(address_type)
           if order.user && (address = order.user.send("#{address_type}_address"))
             braintree_address = BraintreeVzeroBase::Address.new(gateway.provider, order)
-            if address.braintree_id && braintree_address.find(address.braintree_id)
-              { "#{address_type}_address_id" => address.braintree_id }
+            vaulted_duplicate = Spree::Address.vaulted_duplicates(address).first
+
+            if vaulted_duplicate && braintree_address.find(vaulted_duplicate.braintree_id)
+              { "#{address_type}_address_id" => vaulted_duplicate.braintree_id }
             else
               { address_type => address_data(address_type, order.user) }
             end
