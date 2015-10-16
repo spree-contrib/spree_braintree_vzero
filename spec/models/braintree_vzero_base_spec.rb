@@ -112,7 +112,7 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
           expect(data['shipping_address_id']).to eq nil
         end
 
-        it 'sends address id when address is already in vault' do
+        it 'sends empty address id when address is already in vault' do
           gateway.preferred_pass_billing_and_shipping_address = true
           old_bill_address = create(:address, first_name: 'bar')
           old_ship_address = create(:address, first_name: 'foo')
@@ -132,8 +132,8 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
           utils = Spree::Gateway::BraintreeVzeroBase::Utils.new(gateway, other_order)
           data = gateway.send('set_basic_purchase_data', {}, other_order, utils)
 
-          expect(data['billing_address_id']).to eq old_bill_address.reload.braintree_id
-          expect(data['shipping_address_id']).to eq old_ship_address.reload.braintree_id
+          expect(data['billing_address_id']).to eq nil # old_bill_address.reload.braintree_id
+          expect(data['shipping_address_id']).to eq nil # old_ship_address.reload.braintree_id
           expect(data['billing']).to eq nil
           expect(data['shipping']).to eq nil
         end

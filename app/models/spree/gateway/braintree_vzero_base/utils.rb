@@ -20,7 +20,7 @@ module Spree
             vaulted_duplicate = Spree::Address.vaulted_duplicates(address).first
 
             if vaulted_duplicate && braintree_address.find(vaulted_duplicate.braintree_id)
-              { "#{address_type}_address_id" => vaulted_duplicate.braintree_id }
+              { "#{address_type}_address_id" => nil }
             else
               { address_type => address_data(address_type, order.user) }
             end
