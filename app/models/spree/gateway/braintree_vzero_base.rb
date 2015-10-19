@@ -43,11 +43,19 @@ module Spree
       braintree_user ? provider::ClientToken.generate(customer_id: user.id) : provider::ClientToken.generate
     end
 
-    def purchase(identifier_hash, order, device_data = nil)
+    def purchase(_money_in_cents, source, gateway_options)
+      order_number, payment_number = gateway_options[:order_id].split('-')
+      order = Spree::Order.find_by(number: order_number)
+      payment = order.payments.find_by(number: payment_number)
+      identifier_hash = if (token = payment[:braintree_token]).present?
+                          { payment_method_token: token }
+                        else
+                          { payment_method_nonce: payment[:braintree_nonce] }
+                        end
       @utils = Utils.new(self, order)
 
+
       data = set_basic_purchase_data(identifier_hash, order, @utils)
-      data.merge!(device_data: device_data) if preferred_advanced_fraud_tools
       data.merge!(
         descriptor: { name: preferred_descriptor_name.to_s.gsub('/', '*') },
         options: {
@@ -59,7 +67,7 @@ module Spree
         }.merge!(@utils.payment_in_vault)
       )
 
-      sale(data, order)
+      sale(data, order, payment.source)
     end
 
     def admin_purchase(token, order, amount)
@@ -121,11 +129,12 @@ module Spree
 
     private
 
-    def sale(data, order)
+    def sale(data, order, source = nil)
       result = Transaction.new(provider).sale(data)
 
       if result.success?
         update_addresses(result, order)
+        update_source(result, source)
       else
         add_order_errors(result, order)
       end
@@ -146,6 +155,12 @@ module Spree
 
       shipping_address.update_attribute(:braintree_id, transaction.shipping_details.id)
       billing_address.update_attribute(:braintree_id, details_id)
+    end
+
+    def update_source(response, source)
+      return unless source.present?
+      transaction = response.transaction
+      source.update(transaction_id: transaction.id, state: transaction.status)
     end
 
     def add_order_errors(response, order)

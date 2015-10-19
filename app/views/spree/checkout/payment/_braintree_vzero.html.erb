@@ -5,12 +5,12 @@
       <label data-hook="braintree_payment_method_field">
 
         <% if method.is_a?(Braintree::CreditCard) %>
-          <%= radio_button_tag 'payment_method_token', method.token %>
+          <%= radio_button_tag 'order[payments_attributes][][braintree_token]', method.token %>
           <%= Spree.t('admin.vaulted_payments.credit_card', card_type: method.card_type, last_4: method.last_4) %>
         <% end %>
 
         <% if method.is_a?(Braintree::PayPalAccount) %>
-          <%= radio_button_tag 'payment_method_token', method.token %>
+          <%= radio_button_tag 'order[payments_attributes][][braintree_token]', method.token %>
           <%= Spree.t('admin.vaulted_payments.paypal', email: method.email) %>
         <% end %>
 
@@ -21,7 +21,7 @@
   <div class="radio">
     <label data-hook="braintree_payment_method_field">
 
-      <%= radio_button_tag 'payment_method_token', '' %>
+      <%= radio_button_tag 'order[payments_attributes][][braintree_token]', '' %>
       <%= Spree.t(:new) %>
 
     </label>
@@ -64,7 +64,7 @@
           creditCard: result.nonce
         }, function (error, response) {
           if (!error) {
-            $(checkoutFormId).append("<input type='hidden' name='payment_method_nonce' value=" + response.nonce + ">");
+            $(checkoutFormId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + response.nonce + ">");
             $(checkoutFormId).submit();
           } else {
             $(errorMessagesContainer).prepend("<div class='alert alert-error'><%= I18n.t(:gateway_error, scope: 'braintree.error') %>></div>")
@@ -73,7 +73,7 @@
 
 
       } else {
-        $(checkoutFormId).append("<input type='hidden' name='payment_method_nonce' value=" + result.nonce + ">");
+        $(checkoutFormId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + result.nonce + ">");
         $(checkoutFormId).submit();
       }
     },
