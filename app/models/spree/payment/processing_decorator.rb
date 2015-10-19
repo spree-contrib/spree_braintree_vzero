@@ -8,7 +8,6 @@ Spree::Payment::Processing.class_eval do
 
   private
 
-
   def process_settle
     started_processing!
     gateway_action(source, :settle, :started_processing)
