@@ -154,8 +154,8 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
           utils = Spree::Gateway::BraintreeVzeroBase::Utils.new(gateway, other_order)
           data = gateway.send('set_basic_purchase_data', {}, other_order, utils)
 
-          expect(data['billing_address_id']).to eq nil # old_bill_address.reload.braintree_id
-          expect(data['shipping_address_id']).to eq nil # old_ship_address.reload.braintree_id
+          expect(data['billing_address_id']).to eq old_bill_address.reload.braintree_id
+          expect(data['shipping_address_id']).to eq old_ship_address.reload.braintree_id
           expect(data['billing']).to eq nil
           expect(data['shipping']).to eq nil
         end

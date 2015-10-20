@@ -60,7 +60,7 @@ module Spree
           three_d_secure: {
             required: preferred_3dsecure
           }
-        }.merge!(@utils.payment_in_vault)
+        }.merge!(@utils.payment_in_vault(data))
       )
 
       sale(data, order, payment.source)
@@ -77,7 +77,7 @@ module Spree
       data.merge!(
         options: {
           submit_for_settlement: auto_capture?
-        }.merge!(@utils.payment_in_vault)
+        }.merge!(@utils.payment_in_vault(data))
       )
 
       sale(data, order)
