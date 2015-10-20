@@ -79,25 +79,6 @@ module Spree
       sale(data, order)
     end
 
-    def complete_order(order, result, payment_method)
-      return false unless (transaction = result.transaction)
-
-      @utils = Utils.new(self, order)
-      payment = order.payments.create!(
-        source: Spree::BraintreeCheckout.create!(transaction_id: transaction.id,
-                                                 state: transaction.status),
-        amount: order.total,
-        payment_method: payment_method,
-        state: @utils.map_payment_status(transaction.status),
-        response_code: transaction.id
-      )
-
-      payment.save!
-      order.update_attributes(completed_at: Time.zone.now, state: :complete)
-      order.finalize!
-      order.update!
-    end
-
     def settle(amount, checkout, gateway_options)
       result = Transaction.new(provider, checkout.transaction_id).submit_for_settlement(amount / 100.0)
       checkout.update_attribute(:state, result.transaction.status)
