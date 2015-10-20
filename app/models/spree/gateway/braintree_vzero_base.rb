@@ -66,6 +66,10 @@ module Spree
       sale(data, order, payment.source)
     end
 
+    def authorize(money_in_cents, source, gateway_options)
+      purchase money_in_cents, source, gateway_options
+    end
+
     def admin_purchase(token, order, amount)
       @utils = Utils.new(self, order)
       data = { amount: amount, payment_method_token: token }
