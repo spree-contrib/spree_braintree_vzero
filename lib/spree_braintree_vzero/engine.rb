@@ -18,7 +18,7 @@ module SpreeBraintreeVzero
     config.to_prepare &method(:activate).to_proc
 
     initializer "spree.braintree_vzero.payment_methods", :after => "spree.register.payment_methods" do |app|
-      app.config.spree.payment_methods << Spree::Gateway::BraintreeVzeroStandard
+      app.config.spree.payment_methods << Spree::Gateway::BraintreeVzeroDropInUI
       app.config.spree.payment_methods << Spree::Gateway::BraintreeVzeroPaypalExpress
     end
   end
