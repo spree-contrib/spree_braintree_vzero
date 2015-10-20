@@ -10,12 +10,9 @@ Spree::OrdersController.class_eval do
     current_order.save_paypal_address('ship_address', address_params(:ship_address))
     current_order.save_paypal_address('bill_address', address_params(:bill_address))
 
+    current_order.save_paypal_payment(nonce, payment_method.id)
     payment_method.push_order_to_delivery(current_order, params[:order][:email])
-    payment_params = {
-      payment_method_nonce: nonce,
-      payment_method_id: payment_method.id
-    }
-    redirect_to checkout_state_path(current_order.state, payment_params)
+    redirect_to checkout_state_path(current_order.state)
   end
 
   private

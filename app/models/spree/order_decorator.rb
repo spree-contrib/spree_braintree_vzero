@@ -1,9 +1,15 @@
 Spree::Order.class_eval do
+  state_machine.before_transition to: :complete, do: :process_paypal_express_payments
 
   def save_paypal_address(type, address_hash)
     return if address_hash.blank?
 
     update_column("#{type}_id", Spree::Address.create(prepare_address_hash(address_hash)).id)
+  end
+
+  def save_paypal_payment(nonce, payment_method_id)
+    payments.create(braintree_nonce: nonce, payment_method_id: payment_method_id,
+                    source: Spree::BraintreeCheckout.create!)
   end
 
   # override needed to add braintree source attribute
@@ -46,6 +52,13 @@ Spree::Order.class_eval do
     success
   end
 
+  def payment_required?
+    # default payment processing requires order to have state == payment
+    # so there is no need to divide this method for checkout steps and actual payment processing
+    return false if payments.valid.map(&:payment_method).compact.any?{ |p| p.is_a?(Spree::Gateway::BraintreeVzeroPaypalExpress) }
+    total.to_f > 0.0
+  end
+
   def confirmation_required?
     Spree::Config[:always_include_confirm_step] ||
       payments.valid.map(&:payment_method).compact.any?(&:payment_profiles_supported?) ||
@@ -68,5 +81,17 @@ Spree::Order.class_eval do
     hash[:lastname] = full_name.slice!(-1)
     hash[:firstname] = full_name.join(' ')
     hash
+  end
+
+  def process_paypal_express_payments
+    return if payment?
+    return unless payments.valid.map(&:payment_method).compact.any? { |p| p.kind_of?(Spree::Gateway::BraintreeVzeroPaypalExpress) }
+
+    if payments.valid.empty?
+      order.errors.add(:base, Spree.t(:no_payment_found))
+      false
+    else
+      process_payments!
+    end
   end
 end
