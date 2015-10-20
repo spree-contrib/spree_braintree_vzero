@@ -3,9 +3,13 @@ require 'spec_helper'
 describe Spree::Gateway::BraintreeVzeroBase, :vcr do
 
   context 'valid credentials' do
-
     let(:gateway) { create(:vzero_gateway, auto_capture: true) }
+    let(:payment) { create(:braintree_vzero_payment, payment_method: gateway) }
     let(:order) { OrderWalkthrough.up_to(:payment) }
+    let(:complete_order!) do
+      order.payments << payment
+      2.times { order.next! }
+    end
 
     it 'generates token without User' do
       expect(gateway.client_token).to_not be_nil
@@ -163,39 +167,6 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
 
     end
 
-    describe '#complete_order' do
-
-      before do
-        gateway.preferred_3dsecure = false
-      end
-
-      context 'with valid nonce' do
-        before do
-          gateway.complete_order(order, gateway.purchase({payment_method_nonce: 'fake-valid-nonce'}, order), gateway)
-        end
-
-        it 'completes order with valid nonce' do
-          expect(order.completed?).to be true
-        end
-
-        it 'creates Payment object with valid state' do
-          expect(order.payments.first.state).to eq 'pending'
-        end
-
-        it 'updates Order state' do
-          gateway.purchase({payment_method_nonce: 'fake-valid-nonce'}, order)
-          expect(order.payment_state).to eq 'balance_due'
-        end
-      end
-
-
-      it 'returns false when payment cannot be validated' do
-        expect(gateway.complete_order(order, gateway.purchase({payment_method_nonce: 'fake-invalid-nonce'}, order), gateway)).to be false
-        expect(order.completed?).to be false
-      end
-
-    end
-
     describe '#update_states' do
 
       before do
@@ -226,14 +197,13 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
     end
 
     describe '#void' do
-      let(:payment) { order.payments.first }
       let(:payment_source) { payment.payment_source }
-      let(:void) { gateway.void(payment_source.transaction_id, {}) }
+      let(:void) { gateway.void(payment_source.reload.transaction_id, {}) }
       let!(:prepare_gateway) { gateway.preferred_3dsecure = false }
 
       context 'with voidable state' do
-        let!(:complete_order) do
-          gateway.complete_order(order, gateway.purchase({payment_method_nonce: 'fake-valid-nonce'}, order), gateway)
+        before do
+          complete_order!
           void
         end
 
@@ -247,8 +217,9 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
       end
 
       context 'with unvoidable state' do
-        let!(:complete_order) do
-          gateway.complete_order(order, gateway.purchase({payment_method_nonce: 'fake-paypal-one-time-nonce'}, order), gateway)
+        before do
+          payment.update(braintree_nonce: 'fake-paypal-one-time-nonce')
+          complete_order!
           void
         end
 
@@ -257,10 +228,9 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
         end
 
         it 'should not change payment_source state' do
-          expect(payment.reload.state).to eq 'pending'
+          expect(payment.reload.state).to eq 'completed'
         end
       end
-
     end
 
     describe '#settle' do
@@ -326,16 +296,14 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
           expect(refund.success?).to be false
         end
       end
-
     end
+  end
 
-    context 'with invalid credentials' do
-      let(:gateway) { create(:vzero_gateway, merchant_id: 'invalid_id') }
+  context 'with invalid credentials' do
+    let(:gateway) { create(:vzero_gateway, merchant_id: 'invalid_id') }
 
-      it 'raises Braintree error' do
-        expect { gateway.client_token }.to raise_error('Braintree::AuthenticationError')
-      end
-
+    it 'raises Braintree error' do
+      expect { gateway.client_token }.to raise_error('Braintree::AuthenticationError')
     end
   end
 end
