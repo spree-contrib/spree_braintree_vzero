@@ -163,9 +163,13 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
     end
 
     describe '#admin_purchase' do
+      let(:gateway_options) { { order_id: "#{order.number}-#{payment.number}" } }
+      let(:purchase) { gateway.purchase(nil, payment_source, gateway_options) }
+      before { add_payment_to_order! }
+
       it 'returns success with valid token' do
         gateway.preferred_store_payments_in_vault = :store_all
-        token = gateway.purchase({payment_method_nonce: 'fake-valid-nonce'}, order).transaction.credit_card_details.token
+        token = purchase.transaction.credit_card_details.token
         expect(gateway.admin_purchase(token, order, order.total).success?).to be true
       end
 
@@ -177,7 +181,7 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
       it 'creates payment with given amount' do
         amount = 11.21
         gateway.preferred_store_payments_in_vault = :store_all
-        token = gateway.purchase({payment_method_nonce: 'fake-valid-nonce'}, order).transaction.credit_card_details.token
+        token = purchase.transaction.credit_card_details.token
         expect(gateway.admin_purchase(token, order, amount).transaction.amount).to eq amount
       end
 
@@ -187,8 +191,9 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
 
       before do
         gateway.preferred_3dsecure = false
-        gateway.complete_order(order, gateway.purchase({payment_method_nonce: 'fake-valid-nonce'}, order), gateway)
-        order.payments.first.source.update_attribute(:transaction_id, '9drj68') #use already settled transaction
+        payment.update(amount: order.reload.total)
+        complete_order!
+        order.payments.first.source.update_attribute(:transaction_id, 'dw49zp') #use already settled transaction
       end
 
       let!(:result) { Spree::BraintreeCheckout.update_states }
@@ -252,33 +257,31 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
 
       before do
         gateway.update(auto_capture: false)
-        gateway.complete_order(order, gateway.purchase({payment_method_nonce: 'fake-valid-nonce'}, order), gateway)
-        @payment = order.payments.first
+        complete_order!
       end
-
 
       context 'settles authorized amount' do
 
         it 'does not update Order payment_state' do
           expect(order.payment_state).to eq 'balance_due'
-          @payment.settle!
+          payment.reload.settle!
           expect(order.reload.payment_state).to eq 'balance_due'
         end
 
-        it 'updates  Payment state' do
-          expect(@payment.state).to eq 'pending'
-          @payment.settle!
-          expect(@payment.state).to eq 'processing'
+        it 'updates Payment state' do
+          expect(payment.state).to eq 'pending'
+          payment.reload.settle!
+          expect(payment.state).to eq 'processing'
         end
 
         it 'submits Transaction for settlement' do
-          expect(gateway.provider::Transaction.find(@payment.response_code).status).to eq 'authorized'
-          @payment.settle!
-          expect(gateway.provider::Transaction.find(@payment.response_code).status).to eq 'submitted_for_settlement'
+          expect(gateway.provider::Transaction.find(payment.response_code).status).to eq 'authorized'
+          payment.reload.settle!
+          expect(gateway.provider::Transaction.find(payment.response_code).status).to eq 'submitted_for_settlement'
         end
 
         it 'prepares Checkout for status updating' do
-          @payment.settle!
+          payment.reload.settle!
           expect(Spree::BraintreeCheckout.not_in_state(Spree::BraintreeCheckout::FINAL_STATES).count).to eq 1
         end
 
@@ -286,14 +289,13 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
     end
 
     describe '#credit' do
-      let(:payment) { order.payments.first }
-      let(:payment_source) { payment.payment_source }
-      let(:refund) { gateway.credit(1317, payment_source.transaction_id, {}) }
+      let(:refund) { gateway.credit(1317, payment_source.reload.transaction_id, {}) }
       let!(:prepare_gateway) { gateway.preferred_3dsecure = false }
 
       context 'with refundable state' do
-        let!(:complete_order) do
-          gateway.complete_order(order, gateway.purchase({payment_method_nonce: 'fake-paypal-one-time-nonce'}, order), gateway)
+        before do
+          payment.update(braintree_nonce: 'fake-paypal-one-time-nonce')
+          complete_order!
         end
 
         it 'should be a success' do
@@ -303,8 +305,8 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
       end
 
       context 'with unrefundable state' do
-        let!(:complete_order) do
-          gateway.complete_order(order, gateway.purchase({payment_method_nonce: 'fake-valid-nonce'}, order), gateway)
+        before do
+          complete_order!
         end
 
         it 'should not be a success' do
