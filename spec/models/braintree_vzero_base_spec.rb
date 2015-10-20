@@ -5,9 +5,11 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
   context 'valid credentials' do
     let(:gateway) { create(:vzero_gateway, auto_capture: true) }
     let(:payment) { create(:braintree_vzero_payment, payment_method: gateway) }
+    let(:payment_source) { payment.payment_source }
     let(:order) { OrderWalkthrough.up_to(:payment) }
+    let(:add_payment_to_order!) { order.payments << payment }
     let(:complete_order!) do
-      order.payments << payment
+      add_payment_to_order!
       2.times { order.next! }
     end
 
@@ -26,42 +28,56 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
     end
 
     describe '#purchase' do
-      before { gateway.preferred_3dsecure = false }
+      let(:gateway_options) { { order_id: "#{order.number}-#{payment.number}" } }
+      let(:purchase) { gateway.purchase(nil, payment_source, gateway_options) }
       let(:other_order) { OrderWalkthrough.up_to(:payment) }
 
+      before do
+        gateway.preferred_3dsecure = false
+        add_payment_to_order!
+      end
+
       it 'returns suceess with valid nonce' do
-        expect(gateway.purchase({payment_method_nonce: 'fake-valid-nonce'}, order).success?).to be true
+        expect(purchase.success?).to be true
       end
 
       it 'returns false with invalid nonce' do
-        expect(gateway.purchase({payment_method_nonce: 'fake-invalid-nonce'}, order).success?).to be false
+        payment.update(braintree_nonce: 'fake-invalid-nonce')
+        expect(purchase.success?).to be false
       end
 
       it 'does not store Transaction in Vault by default' do
-        expect(gateway.purchase({payment_method_nonce: 'fake-valid-nonce'}, order).transaction.credit_card_details.token).to be_nil
+        expect(purchase.transaction.credit_card_details.token).to be_nil
       end
 
       it 'returns success with valid token' do
         gateway.preferred_store_payments_in_vault = :store_all
-        token = gateway.purchase({payment_method_nonce: 'fake-valid-nonce'}, order).transaction.credit_card_details.token
-        expect(gateway.purchase({payment_method_token: token}, other_order).success?).to be true
+        token = purchase.transaction.credit_card_details.token
+        payment.update(braintree_token: token)
+
+        expect(purchase.success?).to be true
       end
 
       it 'returns false with invalid token' do
         token = 'sometoken'
-        expect(gateway.purchase({payment_method_token: token}, other_order).success?).to be false
+        payment.update(braintree_token: token)
+        expect(purchase.success?).to be false
       end
 
       context 'with 3DSecure option turned on' do
-        before { gateway.preferred_3dsecure = true }
-
-        it 'performs 3DSecure check' do
-          expect(gateway.purchase({payment_method_nonce: 'fake-valid-debit-nonce'}, order).success?).to be false
+        before do
+          gateway.preferred_3dsecure = true
+          payment.update(braintree_nonce: 'fake-valid-debit-nonce')
         end
 
-        it 'adds error to Order' do
-          gateway.purchase({payment_method_nonce: 'fake-valid-debit-nonce'}, order)
-          expect(order.errors.values.flatten.include?(I18n.t(:three_d_secure, scope: 'braintree.error'))).to be true
+        it 'performs 3DSecure check' do
+          expect(purchase.success?).to be false
+        end
+
+        it 'returns error' do
+          response = purchase
+          expect(response.errors.size.zero?).to be true
+          expect(response.transaction.try(:gateway_rejection_reason)).to eq 'three_d_secure'
         end
       end
 
@@ -69,7 +85,7 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
         before { gateway.preferred_store_payments_in_vault = :store_all }
 
         it 'stores Transaction' do
-          card_vault_token = gateway.purchase({payment_method_nonce: 'fake-valid-nonce'}, order).transaction.credit_card_details.token
+          card_vault_token = purchase.transaction.credit_card_details.token
           expect { Braintree::PaymentMethod.find(card_vault_token) }.not_to raise_error
         end
 
@@ -78,7 +94,8 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
           address = create(:address)
           order.update_attribute(:ship_address_id, address.id)
           order.update_attribute(:bill_address_id, address.id)
-          gateway.purchase({payment_method_nonce: 'fake-valid-nonce'}, order)
+          purchase
+          order.reload
 
           bill_id = order.billing_address.braintree_id
           ship_id = order.shipping_address.braintree_id
@@ -91,7 +108,8 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
           gateway.preferred_pass_billing_and_shipping_address = true
           order.update_attribute(:ship_address_id, create(:address, first_name: 'foo').id)
           order.update_attribute(:bill_address_id, create(:address, first_name: 'bar').id)
-          gateway.purchase({payment_method_nonce: 'fake-valid-nonce'}, order)
+          purchase
+          order.reload
 
           bill_id = order.billing_address.braintree_id
           ship_id = order.shipping_address.braintree_id
@@ -124,7 +142,7 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
           order.update(user_id: user.id)
           order.update_attribute(:ship_address_id, old_ship_address.id)
           order.update_attribute(:bill_address_id, old_bill_address.id)
-          gateway.purchase({payment_method_nonce: 'fake-valid-nonce'}, order)
+          purchase
 
           ship_address = create(:address, old_ship_address.attributes.except('id', 'updated_at', 'created_at', 'braintree_id'))
           bill_address = create(:address, old_bill_address.attributes.except('id', 'updated_at', 'created_at', 'braintree_id'))
@@ -141,9 +159,7 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
           expect(data['billing']).to eq nil
           expect(data['shipping']).to eq nil
         end
-
       end
-
     end
 
     describe '#admin_purchase' do
@@ -197,7 +213,6 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
     end
 
     describe '#void' do
-      let(:payment_source) { payment.payment_source }
       let(:void) { gateway.void(payment_source.reload.transaction_id, {}) }
       let!(:prepare_gateway) { gateway.preferred_3dsecure = false }
 
