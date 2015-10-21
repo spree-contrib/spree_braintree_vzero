@@ -74,9 +74,14 @@ module Spree
 
         def payment_in_vault(data = {})
           store_ship_address = data['shipping_address_id'].blank?
-          if gateway.preferred_store_payments_in_vault == 'store_only_on_success'
+          store_payments_in_vault = if gateway.respond_to?(:preferred_store_payments_in_vault)
+                                      gateway.preferred_store_payments_in_vault
+                                    elsif gateway.respond_to?(:preferred_single_use)
+                                      gateway.preferred_single_use ? 'store_all' : 'do_not_store'
+                                    end
+          if store_payments_in_vault == 'store_only_on_success'
             { store_in_vault_on_success: true, store_shipping_address_in_vault: store_ship_address }
-          elsif gateway.preferred_store_payments_in_vault == 'store_all'
+          elsif store_payments_in_vault == 'store_all'
             { store_in_vault: true, store_shipping_address_in_vault: store_ship_address }
           else
             { store_in_vault: false }
