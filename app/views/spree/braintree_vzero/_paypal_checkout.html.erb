@@ -9,7 +9,7 @@
 
     braintree.setup("<%= payment_method.client_token(current_order, current_spree_user) %>", "paypal", {
       container: "paypal-container",
-      singleUse: <%= payment_method.preferred_single_use %>,
+      singleUse: <%= payment_method.preferred_store_payments_in_vault.eql?(:do_not_store) %>,
       amount: <%= @order.total %>,
       currency: "<%= current_currency %>",
       locale: "en_us",
