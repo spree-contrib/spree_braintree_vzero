@@ -248,7 +248,7 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
         end
 
         it 'should not change payment_source state' do
-          expect(payment.reload.state).to eq 'completed'
+          expect(payment.reload.state).to eq 'pending'
         end
       end
     end
