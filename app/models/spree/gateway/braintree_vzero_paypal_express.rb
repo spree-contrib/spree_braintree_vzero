@@ -6,6 +6,7 @@ module Spree
     def push_order_to_delivery(order, email)
       order.update_column(:email, email)
       order.next! until order.state.eql?('delivery')
+      order.update_column(:email, nil)
     end
   end
 end

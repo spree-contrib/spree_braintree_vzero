@@ -9,10 +9,9 @@ Spree::CheckoutController.class_eval do
 
   def check_registration
     return unless Spree::Auth::Config[:registration_step]
-    paypal_express = current_order.payments.valid.map(&:payment_method).compact.any? { |p| p.kind_of?(Spree::Gateway::BraintreeVzeroPaypalExpress) }
-    return if spree_current_user || (!paypal_express && current_order.email)
+    return if spree_current_user || current_order.email
     store_location
-    redirect_to spree.checkout_registration_path
+    redirect_to spree.checkout_registration_path(params)
   end
 
 end
