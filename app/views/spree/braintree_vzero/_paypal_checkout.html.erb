@@ -1,5 +1,5 @@
 <% if (payment_method = Spree::PaymentMethod.where(type: 'Spree::Gateway::BraintreeVzeroPaypalExpress', active: true).last).try(:preferred_paypal_display_on_cart) %>
-  <div id="paypal-container">
+  <div id="paypal-container" class="btn">
     <input type='hidden' name='paypal[payment_method_id]' value='<%= payment_method.id %>'>
   </div>
 
