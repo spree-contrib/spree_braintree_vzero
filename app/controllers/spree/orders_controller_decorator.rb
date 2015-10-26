@@ -7,12 +7,16 @@ Spree::OrdersController.class_eval do
     payment_method = Spree::PaymentMethod.find_by_id(params[:paypal][:payment_method_id])
     return true unless payment_method
 
-    current_order.save_paypal_address('ship_address', address_params(:ship_address))
-    current_order.save_paypal_address('bill_address', address_params(:bill_address))
-
     current_order.save_paypal_payment(nonce, payment_method.id)
     email = params[:order][:email]
-    payment_method.push_order_to_delivery(current_order, email)
+
+    if params[:order][:ship_address].present? && params[:order][:bill_address].present?
+      current_order.save_paypal_address('ship_address', address_params(:ship_address))
+      current_order.save_paypal_address('bill_address', address_params(:bill_address))
+      payment_method.push_order_to_state(current_order, 'delivery', email)
+    else
+      payment_method.push_order_to_state(current_order, 'address', email)
+    end
     redirect_to checkout_state_path(current_order.state, paypal_email: email)
   end
 
