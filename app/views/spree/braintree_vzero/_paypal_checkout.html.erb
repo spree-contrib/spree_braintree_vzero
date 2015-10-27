@@ -15,6 +15,7 @@
       locale: "en_us",
       enableShippingAddress: true,
       enableBillingAddress: true,
+      displayName: "<%= payment_method.preferred_paypal_display_name %>",
 
       onPaymentMethodReceived: function (result) {
         if(shippingAddress = result.details.shippingAddress) {
