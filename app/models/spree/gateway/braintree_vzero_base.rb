@@ -51,6 +51,7 @@ module Spree
 
 
       data = set_basic_purchase_data(identifier_hash, order, @utils)
+      data.merge!(device_data: source.advanced_fraud_data) if preferred_advanced_fraud_tools
       data.merge!(
         descriptor: { name: preferred_descriptor_name.to_s.gsub('/', '*') },
         options: {

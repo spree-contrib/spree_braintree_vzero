@@ -15,9 +15,13 @@ Spree::Order.class_eval do
     update_column("#{type}_id", Spree::Address.create(prepare_address_hash(address_hash)).id)
   end
 
-  def save_paypal_payment(nonce, payment_method_id, email)
+  def save_paypal_payment(options)
+    nonce = options[:nonce]
+    payment_method_id = options[:payment_method_id]
+    email = options[:email]
+    advanced_fraud_data = options[:advanced_fraud_data]
     payments.create(braintree_nonce: nonce, payment_method_id: payment_method_id,
-                    source: Spree::BraintreeCheckout.create!(paypal_email: email))
+                    source: Spree::BraintreeCheckout.create!(paypal_email: email, advanced_fraud_data: advanced_fraud_data))
   end
 
   # override needed to add braintree source attribute
