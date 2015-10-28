@@ -8,7 +8,7 @@ Spree::OrdersController.class_eval do
     return true unless payment_method
 
     email = params[:order][:email]
-    current_order.save_paypal_payment(options_for_payment)
+    current_order.save_paypal_payment(payment_params)
 
     if params[:order][:ship_address].present? && params[:order][:bill_address].present?
       current_order.save_paypal_address('ship_address', address_params(:ship_address))
@@ -26,11 +26,11 @@ Spree::OrdersController.class_eval do
     params[:order].require(key).permit(:firstname, :lastname, :zipcode, :city, :address1, :address2, :phone, :full_name, :country, :state)
   end
 
-  def options_for_payment
+  def payment_params
     {
-      nonce: params[:paypal][:payment_method_nonce],
+      braintree_nonce: params[:paypal][:payment_method_nonce],
       payment_method_id: params[:paypal][:payment_method_id],
-      email: params[:order][:email],
+      paypal_email: params[:order][:email],
       advanced_fraud_data: params[:device_data]
     }
   end
