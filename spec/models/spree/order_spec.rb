@@ -46,4 +46,39 @@ describe Spree::Order, :vcr do
     end
   end
 
+  describe 'checkout steps' do
+    it 'should not include confirmation step by default' do
+      expect(order.checkout_steps).not_to include 'confirm'
+    end
+
+    it 'should include payment step by default' do
+      expect(order.checkout_steps).to include 'payment'
+    end
+
+    context 'with braintree dropin payment' do
+      before { add_payment_to_order! }
+
+      it 'should include confirmation step' do
+        expect(order.checkout_steps).to include 'confirm'
+      end
+
+      it 'should include payment step' do
+        expect(order.checkout_steps).to include 'payment'
+      end
+    end
+
+    context 'with braintree paypal express payment' do
+      let(:gateway) { create(:vzero_paypal_gateway, auto_capture: true) }
+      before { add_payment_to_order! }
+
+      it 'should include confirmation step' do
+        expect(order.checkout_steps).to include 'confirm'
+      end
+
+      it 'should not include payment step' do
+        expect(order.checkout_steps).not_to include 'payment'
+      end
+    end
+  end
+
 end

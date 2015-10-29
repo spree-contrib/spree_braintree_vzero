@@ -30,7 +30,6 @@ describe Spree::CheckoutController, type: :controller do
       end
 
       before do
-        allow(order).to receive_messages(checkout_steps: ['cart', 'address', 'delivery', 'payment'])
         allow(order).to receive_messages state: 'payment'
         allow(controller).to receive_messages check_authorization: true
       end
