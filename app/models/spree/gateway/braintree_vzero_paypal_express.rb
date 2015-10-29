@@ -15,7 +15,7 @@ module Spree
         customer_payment.try(:email).eql?(payment.source.paypal_email)
       end
 
-      if (token = vaulted_payment.try(:braintree_token)).present?
+      if (token = vaulted_payment.try(:token)).present?
         { payment_method_token: token }
       else
         { payment_method_nonce: payment[:braintree_nonce] }
