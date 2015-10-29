@@ -9,5 +9,17 @@ module Spree
       order.next! until order.state.eql?(state)
       order.update_column(:email, nil)
     end
+
+    def find_identifier_hash(payment, utils)
+      vaulted_payment = utils.customer_payment_methods.find do |customer_payment|
+        customer_payment.try(:email).eql?(payment.source.paypal_email)
+      end
+
+      if (token = vaulted_payment.try(:braintree_token)).present?
+        { payment_method_token: token }
+      else
+        { payment_method_nonce: payment[:braintree_nonce] }
+      end
+    end
   end
 end

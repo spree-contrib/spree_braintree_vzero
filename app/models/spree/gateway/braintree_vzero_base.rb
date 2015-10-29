@@ -42,13 +42,9 @@ module Spree
       order_number, payment_number = gateway_options[:order_id].split('-')
       order = Spree::Order.find_by(number: order_number)
       payment = order.payments.find_by(number: payment_number)
-      identifier_hash = if (token = payment[:braintree_token]).present?
-                          { payment_method_token: token }
-                        else
-                          { payment_method_nonce: payment[:braintree_nonce] }
-                        end
-      @utils = Utils.new(self, order)
 
+      @utils = Utils.new(self, order)
+      identifier_hash = find_identifier_hash(payment, @utils)
 
       data = set_basic_purchase_data(identifier_hash, order, @utils)
       data.merge!(device_data: source.advanced_fraud_data) if preferred_advanced_fraud_tools
@@ -160,5 +156,12 @@ module Spree
       data.merge!(utils.get_address('shipping'))
     end
 
+    def find_identifier_hash(payment, _utils)
+      if (token = payment[:braintree_token]).present?
+        { payment_method_token: token }
+      else
+        { payment_method_nonce: payment[:braintree_nonce] }
+      end
+    end
   end
 end
