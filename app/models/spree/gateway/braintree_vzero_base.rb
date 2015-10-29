@@ -18,10 +18,6 @@ module Spree
       super
     end
 
-    def payment_profiles_supported?
-      false
-    end
-
     def provider_class
       Braintree
     end
@@ -43,11 +39,19 @@ module Spree
       braintree_user ? provider::ClientToken.generate(customer_id: user.id) : provider::ClientToken.generate
     end
 
-    def purchase(identifier_hash, order, device_data = nil)
+    def purchase(_money_in_cents, source, gateway_options)
+      order_number, payment_number = gateway_options[:order_id].split('-')
+      order = Spree::Order.find_by(number: order_number)
+      payment = order.payments.find_by(number: payment_number)
+      identifier_hash = if (token = payment[:braintree_token]).present?
+                          { payment_method_token: token }
+                        else
+                          { payment_method_nonce: payment[:braintree_nonce] }
+                        end
       @utils = Utils.new(self, order)
 
+
       data = set_basic_purchase_data(identifier_hash, order, @utils)
-      data.merge!(device_data: device_data) if preferred_advanced_fraud_tools
       data.merge!(
         descriptor: { name: preferred_descriptor_name.to_s.gsub('/', '*') },
         options: {
@@ -56,10 +60,14 @@ module Spree
           three_d_secure: {
             required: preferred_3dsecure
           }
-        }.merge!(@utils.payment_in_vault)
+        }.merge!(@utils.payment_in_vault(data))
       )
 
-      sale(data, order)
+      sale(data, order, payment.source)
+    end
+
+    def authorize(money_in_cents, source, gateway_options)
+      purchase money_in_cents, source, gateway_options
     end
 
     def admin_purchase(token, order, amount)
@@ -69,29 +77,10 @@ module Spree
       data.merge!(
         options: {
           submit_for_settlement: auto_capture?
-        }.merge!(@utils.payment_in_vault)
+        }.merge!(@utils.payment_in_vault(data))
       )
 
       sale(data, order)
-    end
-
-    def complete_order(order, result, payment_method)
-      return false unless (transaction = result.transaction)
-
-      @utils = Utils.new(self, order)
-      payment = order.payments.create!(
-        source: Spree::BraintreeCheckout.create!(transaction_id: transaction.id,
-                                                 state: transaction.status),
-        amount: order.total,
-        payment_method: payment_method,
-        state: @utils.map_payment_status(transaction.status),
-        response_code: transaction.id
-      )
-
-      payment.save!
-      order.update_attributes(completed_at: Time.zone.now, state: :complete)
-      order.finalize!
-      order.update!
     end
 
     def settle(amount, checkout, gateway_options)
@@ -121,11 +110,12 @@ module Spree
 
     private
 
-    def sale(data, order)
+    def sale(data, order, source = nil)
       result = Transaction.new(provider).sale(data)
 
       if result.success?
         update_addresses(result, order)
+        update_source(result, source)
       else
         add_order_errors(result, order)
       end
@@ -146,6 +136,12 @@ module Spree
 
       shipping_address.update_attribute(:braintree_id, transaction.shipping_details.id)
       billing_address.update_attribute(:braintree_id, details_id)
+    end
+
+    def update_source(response, source)
+      return unless source.present?
+      transaction = response.transaction
+      source.update(transaction_id: transaction.id, state: transaction.status)
     end
 
     def add_order_errors(response, order)

@@ -27,7 +27,7 @@ http_interactions:
       message: Unauthorized
     headers:
       Date:
-      - Tue, 13 Oct 2015 14:09:15 GMT
+      - Tue, 20 Oct 2015 08:07:02 GMT
       Content-Type:
       - application/xml; charset=utf-8
       Transfer-Encoding:
@@ -45,9 +45,9 @@ http_interactions:
       Cache-Control:
       - no-cache
       X-Request-Id:
-      - ee98babd2429f4ac00b253f8a7c6ecd0
+      - 2f041ceb08fbf443f4fa54617b30d37e
       X-Runtime:
-      - '0.022773'
+      - '0.025160'
       X-Frame-Options:
       - SAMEORIGIN
       Strict-Transport-Security:
@@ -55,8 +55,8 @@ http_interactions:
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        H4sIAIsQHVYAA/IICQlQcEoszky2UnBMTk4tLlZISc3LTE3R4wIAAAD//wMA
+        H4sIACb2JVYAA/IICQlQcEoszky2UnBMTk4tLlZISc3LTE3R4wIAAAD//wMA
         aO1LWhsAAAA=
     http_version: 
-  recorded_at: Tue, 13 Oct 2015 14:09:15 GMT
+  recorded_at: Tue, 20 Oct 2015 08:07:02 GMT
 recorded_with: VCR 2.9.3

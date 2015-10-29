@@ -14,12 +14,13 @@ module Spree
           @gateway = gateway
         end
 
-
         def get_address(address_type)
           if order.user && (address = order.user.send("#{address_type}_address"))
             braintree_address = BraintreeVzeroBase::Address.new(gateway.provider, order)
-            if address.braintree_id && braintree_address.find(address.braintree_id)
-              { "#{address_type}_address_id" => address.braintree_id }
+            vaulted_duplicate = Spree::Address.vaulted_duplicates(address).first
+
+            if vaulted_duplicate && braintree_address.find(vaulted_duplicate.braintree_id)
+              { "#{address_type}_address_id" => vaulted_duplicate.braintree_id }
             else
               { address_type => address_data(address_type, order.user) }
             end
@@ -71,11 +72,12 @@ module Spree
           @customer.try(:payment_methods) || []
         end
 
-        def payment_in_vault
+        def payment_in_vault(data = {})
+          store_ship_address = data['shipping_address_id'].blank?
           if gateway.preferred_store_payments_in_vault == 'store_only_on_success'
-            { store_in_vault_on_success: true, store_shipping_address_in_vault: true }
+            { store_in_vault_on_success: true, store_shipping_address_in_vault: store_ship_address }
           elsif gateway.preferred_store_payments_in_vault == 'store_all'
-            { store_in_vault: true, store_shipping_address_in_vault: true }
+            { store_in_vault: true, store_shipping_address_in_vault: store_ship_address }
           else
             { store_in_vault: false }
           end

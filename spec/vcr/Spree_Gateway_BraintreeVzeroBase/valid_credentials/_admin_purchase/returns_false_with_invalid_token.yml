@@ -33,7 +33,7 @@ http_interactions:
       message: Unprocessable Entity
     headers:
       Date:
-      - Tue, 13 Oct 2015 14:09:01 GMT
+      - Tue, 20 Oct 2015 11:11:53 GMT
       Content-Type:
       - application/xml; charset=utf-8
       Transfer-Encoding:
@@ -42,9 +42,6 @@ http_interactions:
       - close
       X-Authentication:
       - basic_auth
-      Strict-Transport-Security:
-      - max-age=31536000
-      - max-age=31536000; includeSubDomains
       X-User:
       - 97syg9czj6hrdzyn
       Vary:
@@ -56,15 +53,17 @@ http_interactions:
       Cache-Control:
       - no-cache
       X-Request-Id:
-      - f07031f7b77d5fa9edd499848dddc96f
+      - 5d0ed52589cd9a7cd1a8642d87121acb
       X-Runtime:
-      - '0.130793'
+      - '0.163992'
       X-Frame-Options:
       - SAMEORIGIN
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        H4sIAH0QHVYAA5xSy24CMQy88xXR3kOWSpWoFMKt5x7aMzJgaNQ8VrEXdf++
+        H4sIAHkhJlYAA5xSy24CMQy88xXR3kOWSpWoFMKt5x7aMzJgaNQ8VrEXdf++
         2RcsaNtDb7bHE4/H0dtv78QFE9kYNsVqWRYCwyEebThvio/3V7kutmahobIS
         U4pJJqQqBkKzEEJ3JWrDayK4qXBTQErQFGqAOEEgOHAe0lfm20dsRG95rmRR
         aF5Wz6u1Vl08BYE52X3NOLxHjd9HV5gKGo+Bdx75Mx53HL8waHXtvnvDIxGc
@@ -73,5 +72,5 @@ http_interactions:
         HptwOSaUNsgL1I7NCRy1rPvq1aCH2bo9myFwmdKFvzl3s+s/98r+zXzkHwAA
         AP//AwCH631zBQMAAA==
     http_version: 
-  recorded_at: Tue, 13 Oct 2015 14:09:02 GMT
+  recorded_at: Tue, 20 Oct 2015 11:11:53 GMT
 recorded_with: VCR 2.9.3
