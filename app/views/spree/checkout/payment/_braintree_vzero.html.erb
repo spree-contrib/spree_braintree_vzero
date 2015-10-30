@@ -42,7 +42,7 @@
 
 <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
 <script>
-  var clientToken = "<%= payment_method.client_token(current_order, current_spree_user) %>";
+  var clientToken = "<%= payment_method.client_token(current_order) %>";
   var checkoutFormId = <%= payment_method.preferred_checkout_form_id %>;
   var errorMessagesContainer = <%= payment_method.preferred_error_messages_container_id %>;
 
@@ -59,7 +59,7 @@
         currency: "<%= current_currency %>"
       },
     <% else %>
-      id: '<%= payment_method.preferred_hosted_fields_container %>',
+      id: checkoutFormId,
       hostedFields: {
         number: {
           selector: "<%= payment_method.preferred_hosted_fields_number_selector %>",
@@ -72,6 +72,10 @@
         expirationDate: {
           selector: "<%= payment_method.preferred_hosted_fields_expiration_date_selector %>",
           placeholder: "<%= payment_method.preferred_hosted_fields_expiration_date_placeholder %>"
+        },
+
+        onFieldEvent: function (event) {
+          <%= render partial: 'spree/checkout/payment/braintree_vzero/hosted_fields_on_field_event_callback', formats: [:js] %>
         }
       },
     <% end %>
