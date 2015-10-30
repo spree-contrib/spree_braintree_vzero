@@ -19,6 +19,8 @@
       displayName: "<%= payment_method.preferred_paypal_display_name %>",
 
       onPaymentMethodReceived: function (result) {
+        phone = result.details.phone
+
         if(shippingAddress = result.details.shippingAddress) {
           $(checkoutFormId).append("<input type='hidden' name='order[ship_address][zipcode]' value='" + shippingAddress.postalCode + "'>");
           $(checkoutFormId).append("<input type='hidden' name='order[ship_address][full_name]' value='" + shippingAddress.recipientName + "'>");
@@ -27,6 +29,8 @@
           $(checkoutFormId).append("<input type='hidden' name='order[ship_address][city]' value='" + shippingAddress.locality + "'>");
           $(checkoutFormId).append("<input type='hidden' name='order[ship_address][country]' value='" + shippingAddress.countryCodeAlpha2 + "'>");
           $(checkoutFormId).append("<input type='hidden' name='order[ship_address][state]' value='" + shippingAddress.region + "'>");
+          if(phone)
+            $(checkoutFormId).append("<input type='hidden' name='order[ship_address][phone]' value='" + phone + "'>");
         }
 
         if(billingAddress = result.details.billingAddress) {
@@ -39,8 +43,8 @@
           $(checkoutFormId).append("<input type='hidden' name='order[bill_address][country]' value='" + billingAddress.countryCodeAlpha2 + "'>");
           $(checkoutFormId).append("<input type='hidden' name='order[bill_address][state]' value='" + billingAddress.region + "'>");
           $(checkoutFormId).append("<input type='hidden' name='order[bill_address][phone]' value='" + result.details.phone + "'>");
-
-          $(checkoutFormId).append("<input type='hidden' name='order[ship_address][phone]' value='" + result.details.phone + "'>");
+          if(phone)
+            $(checkoutFormId).append("<input type='hidden' name='order[bill_address][phone]' value='" + phone + "'>");
         }
 
         $(checkoutFormId).append("<input type='hidden' name='order[email]' value=" + result.details.email + ">");
