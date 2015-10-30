@@ -1,4 +1,5 @@
 <% display_payment_methods_list = !payment_method.preferred_3dsecure && (@methods = payment_method.customer_payment_methods(@order)).any? %>
+<% payment_method_type = payment_method.is_a?(Spree::Gateway::BraintreeVzeroDropInUI) ? 'dropin' : 'custom' %>
 <% if display_payment_methods_list %>
   <% @methods.each do |method| %>
     <div class="radio">
@@ -42,39 +43,37 @@
 <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
 <script>
   var clientToken = "<%= payment_method.client_token(current_order, current_spree_user) %>";
-  var checkoutFormId = <%= payment_method.preferred_dropin_checkout_form_id %>;
-  var errorMessagesContainer = <%= payment_method.preferred_dropin_error_messages_container_id %>;
+  var checkoutFormId = <%= payment_method.preferred_checkout_form_id %>;
+  var errorMessagesContainer = <%= payment_method.preferred_error_messages_container_id %>;
 
   SpreeBraintreeVzero.advancedFraudTools = <%= payment_method.preferred_advanced_fraud_tools %>;
   SpreeBraintreeVzero.threeDSecure = <%= payment_method.preferred_3dsecure %>;
 
-  braintree.setup(clientToken, '<%= payment_method.ui_kind %>', {
-    <% if payment_method.ui_kind == 'dropin' %>
-    container: "<%= payment_method.preferred_dropin_container %>",
+  braintree.setup(clientToken, '<%= payment_method_type %>', {
+    <% if payment_method_type == 'dropin' %>
+      container: "<%= payment_method.preferred_dropin_container %>",
 
-    paypal: {
-      singleUse: <%= payment_method.preferred_store_payments_in_vault.eql?(:do_not_store) %>,
-      amount: <%= current_order.total %>,
-      currency: "<%= current_currency %>"
-    },
+      paypal: {
+        singleUse: <%= payment_method.preferred_store_payments_in_vault.eql?(:do_not_store) %>,
+        amount: <%= current_order.total %>,
+        currency: "<%= current_currency %>"
+      },
     <% else %>
-
-    id: '<%= payment_method.preferred_hosted_fields_container %>',
-    hostedFields: {
-      number: {
-        selector: "<%= payment_method.preferred_hosted_fields_number_selector %>",
-        placeholder: "<%= payment_method.preferred_hosted_fields_number_placeholder %>"
+      id: '<%= payment_method.preferred_hosted_fields_container %>',
+      hostedFields: {
+        number: {
+          selector: "<%= payment_method.preferred_hosted_fields_number_selector %>",
+          placeholder: "<%= payment_method.preferred_hosted_fields_number_placeholder %>"
+        },
+        cvv: {
+          selector: "<%= payment_method.preferred_hosted_fields_cvv_selector %>",
+          placeholder: "<%= payment_method.preferred_hosted_fields_cvv_placeholder %>"
+        },
+        expirationDate: {
+          selector: "<%= payment_method.preferred_hosted_fields_expiration_date_selector %>",
+          placeholder: "<%= payment_method.preferred_hosted_fields_expiration_date_placeholder %>"
+        }
       },
-      cvv: {
-        selector: "<%= payment_method.preferred_hosted_fields_cvv_selector %>",
-        placeholder: "<%= payment_method.preferred_hosted_fields_cvv_placeholder %>"
-      },
-      expirationDate: {
-        selector: "<%= payment_method.preferred_hosted_fields_expiration_date_selector %>",
-        placeholder: "<%= payment_method.preferred_hosted_fields_expiration_date_placeholder %>"
-      }
-    },
-
     <% end %>
 
     onPaymentMethodReceived: function (result) {

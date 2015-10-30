@@ -15,8 +15,6 @@ en:
       do_not_store: Do not store
       store_only_on_success: Story only on success
       store_all: Store all
-      dropin: Dropin
-      hosted: Hosted Fields
       placeholder:
         number: Card Number
         cvv: Cvv code

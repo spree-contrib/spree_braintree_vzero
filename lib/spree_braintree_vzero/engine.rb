@@ -20,6 +20,7 @@ module SpreeBraintreeVzero
     initializer "spree.braintree_vzero.payment_methods", :after => "spree.register.payment_methods" do |app|
       app.config.spree.payment_methods << Spree::Gateway::BraintreeVzeroDropInUI
       app.config.spree.payment_methods << Spree::Gateway::BraintreeVzeroPaypalExpress
+      app.config.spree.payment_methods << Spree::Gateway::BraintreeVzeroHostedFields
     end
   end
 end

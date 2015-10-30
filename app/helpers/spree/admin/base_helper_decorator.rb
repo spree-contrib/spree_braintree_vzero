@@ -64,10 +64,9 @@ Spree::Admin::BaseHelper.module_eval do
     get_preference_fields(object, keys, form)
   end
 
-  def braintree_advanced_preference_fields(object, form, reject_prefix = nil)
-    reject_prefix = reject_prefix.nil? ? ' ' : reject_prefix
+  def braintree_advanced_preference_fields(object, form)
     return unless object.respond_to?(:preferences)
-    keys = object.preferences.keys.reject {|k| k.to_s.starts_with? reject_prefix}.reverse - basic_braintree_preference_keys
+    keys = object.preferences.keys.reverse - basic_braintree_preference_keys
     keys_left, keys_right = keys.each_slice((keys.size/2.0).ceil).to_a
 
     content_tag(:div, get_preference_fields(object, keys_left, form), class: 'col-md-6') +

@@ -68,7 +68,7 @@
 
     <div class="panel-body collapsed" id="advanced-preferences" style="display: none;">
       <% unless @object.new_record? %>
-        <%= braintree_advanced_preference_fields(@object, f, @object.try(:reject_preferences)) %>
+        <%= braintree_advanced_preference_fields(@object, f) %>
       <% end %>
     </div>
   </div>
