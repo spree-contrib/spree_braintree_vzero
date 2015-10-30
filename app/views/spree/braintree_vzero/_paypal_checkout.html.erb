@@ -42,7 +42,6 @@
           $(checkoutFormId).append("<input type='hidden' name='order[bill_address][city]' value='" + billingAddress.locality + "'>");
           $(checkoutFormId).append("<input type='hidden' name='order[bill_address][country]' value='" + billingAddress.countryCodeAlpha2 + "'>");
           $(checkoutFormId).append("<input type='hidden' name='order[bill_address][state]' value='" + billingAddress.region + "'>");
-          $(checkoutFormId).append("<input type='hidden' name='order[bill_address][phone]' value='" + result.details.phone + "'>");
           if(phone)
             $(checkoutFormId).append("<input type='hidden' name='order[bill_address][phone]' value='" + phone + "'>");
         }
