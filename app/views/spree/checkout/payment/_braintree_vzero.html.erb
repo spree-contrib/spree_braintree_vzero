@@ -1,29 +1,12 @@
 <% display_payment_methods_list = !payment_method.preferred_3dsecure && (@methods = payment_method.customer_payment_methods(@order)).any? %>
 <% if display_payment_methods_list %>
-  <% @methods.each do |method| %>
-    <div class="radio">
-      <label data-hook="braintree_payment_method_field">
-
-        <% if method.is_a?(Braintree::CreditCard) %>
-          <%= radio_button_tag 'order[payments_attributes][][braintree_token]', method.token %>
-          <%= Spree.t('admin.vaulted_payments.credit_card', card_type: method.card_type, last_4: method.last_4) %>
-        <% end %>
-
-        <% if method.is_a?(Braintree::PayPalAccount) %>
-          <%= radio_button_tag 'order[payments_attributes][][braintree_token]', method.token %>
-          <%= Spree.t('admin.vaulted_payments.paypal', email: method.email) %>
-        <% end %>
-
-      </label>
-    </div>
+  <% if @methods.any? %>
+    <%= select_tag 'order[payments_attributes][][braintree_token]', options_from_braintree_payments(@methods), class: 'form-control' %>
   <% end %>
 
   <div class="radio">
     <label data-hook="braintree_payment_method_field">
-
-      <%= radio_button_tag 'order[payments_attributes][][braintree_token]', '' %>
-      <%= Spree.t(:new) %>
-
+      <%= link_to Spree.t(:new), '', id: 'show-new-payment' %>
     </label>
   </div>
 <% end %>
