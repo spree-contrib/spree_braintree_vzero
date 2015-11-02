@@ -38,4 +38,10 @@ $(document).ready(function() {
     paymentMethodsSelect.val('')
     SpreeBraintreeVzero.updateSaveAndContinueVisibility();
   });
+  $('[name="commit"]:not(#braintree-submit)').click(function (e) {
+    if($('#checkout-step-payment').length) {
+      e.preventDefault();
+      $('#checkout_form_payment').submit();
+    }
+  })
 })

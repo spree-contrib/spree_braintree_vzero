@@ -13,7 +13,7 @@
 
 
 <div id="payment-form" class="<%= display_payment_methods_list ? 'new-braintree-payment-method' : '' %>" style="<%= display_payment_methods_list ? 'display: none;' : '' %>"></div>
-<%= submit_tag Spree.t(:save_and_continue), class: 'btn btn-lg btn-success primary new-braintree-payment-method', style: 'display: none;' %>
+<%= submit_tag Spree.t(:save_and_continue), id: 'braintree-submit', class: 'btn btn-lg btn-success primary new-braintree-payment-method', style: 'display: none;' %>
 
 <hr/>
 <br/>
