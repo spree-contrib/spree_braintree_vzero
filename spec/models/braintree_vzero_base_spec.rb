@@ -162,31 +162,6 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
       end
     end
 
-    describe '#admin_purchase' do
-      let(:gateway_options) { { order_id: "#{order.number}-#{payment.number}" } }
-      let(:purchase) { gateway.purchase(nil, payment_source, gateway_options) }
-      before { add_payment_to_order! }
-
-      it 'returns success with valid token' do
-        gateway.preferred_store_payments_in_vault = :store_all
-        token = purchase.transaction.credit_card_details.token
-        expect(gateway.admin_purchase(token, order, order.total).success?).to be true
-      end
-
-      it 'returns false with invalid token' do
-        token = 'sometoken'
-        expect(gateway.admin_purchase(token, order, order.total).success?).to be false
-      end
-
-      it 'creates payment with given amount' do
-        amount = 11.21
-        gateway.preferred_store_payments_in_vault = :store_all
-        token = purchase.transaction.credit_card_details.token
-        expect(gateway.admin_purchase(token, order, amount).transaction.amount).to eq amount
-      end
-
-    end
-
     describe '#update_states' do
 
       before do

@@ -66,19 +66,6 @@ module Spree
       purchase money_in_cents, source, gateway_options
     end
 
-    def admin_purchase(token, order, amount)
-      @utils = Utils.new(self, order)
-      data = { amount: amount, payment_method_token: token }
-
-      data.merge!(
-        options: {
-          submit_for_settlement: auto_capture?
-        }.merge!(@utils.payment_in_vault(data))
-      )
-
-      sale(data, order)
-    end
-
     def settle(amount, checkout, gateway_options)
       result = Transaction.new(provider, checkout.transaction_id).submit_for_settlement(amount / 100.0)
       checkout.update_attribute(:state, result.transaction.status)
