@@ -126,7 +126,7 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
           order.update_attribute(:bill_address_id, bill_address.id)
 
           utils = Spree::Gateway::BraintreeVzeroBase::Utils.new(gateway, order)
-          data = gateway.send('set_basic_purchase_data', {}, order, utils)
+          data = gateway.send('set_basic_purchase_data', {}, order, utils, order.total * 100)
 
           expect(data['billing'][:first_name]).to eq bill_address.first_name
           expect(data['shipping'][:first_name]).to eq ship_address.first_name
@@ -152,7 +152,7 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
           other_order.update(user_id: user.id)
 
           utils = Spree::Gateway::BraintreeVzeroBase::Utils.new(gateway, other_order)
-          data = gateway.send('set_basic_purchase_data', {}, other_order, utils)
+          data = gateway.send('set_basic_purchase_data', {}, other_order, utils, other_order.total * 100)
 
           expect(data['billing_address_id']).to eq old_bill_address.reload.braintree_id
           expect(data['shipping_address_id']).to eq old_ship_address.reload.braintree_id
