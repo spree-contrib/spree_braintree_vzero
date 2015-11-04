@@ -8,15 +8,16 @@ Spree::OrdersController.class_eval do
     return true unless payment_method
 
     email = params[:order][:email]
+    # when user goes back from checkout, order' state should be resetted to ensure paypal checkout flow
+    current_order.state = 'cart'
     current_order.save_paypal_payment(payment_params)
 
-    if params[:order][:ship_address].present? && params[:order][:bill_address].present?
-      current_order.save_paypal_address('ship_address', address_params(:ship_address))
-      current_order.save_paypal_address('bill_address', address_params(:bill_address))
+    if manage_paypal_addresses
       payment_method.push_order_to_state(current_order, 'delivery', email)
     else
       payment_method.push_order_to_state(current_order, 'address', email)
     end
+
     redirect_to checkout_state_path(current_order.state, paypal_email: email)
   end
 
@@ -33,6 +34,16 @@ Spree::OrdersController.class_eval do
       paypal_email: params[:order][:email],
       advanced_fraud_data: params[:device_data]
     }
+  end
+
+  def manage_paypal_addresses
+    return false unless params[:order][:ship_address].present? && params[:order][:bill_address].present?
+
+    %w(ship_address bill_address).each do |address_type|
+      current_order.save_paypal_address(address_type, address_params(address_type))
+    end
+
+    current_order.ship_address && current_order.bill_address
   end
 
 end
