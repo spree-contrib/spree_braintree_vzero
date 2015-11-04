@@ -19,7 +19,7 @@ Spree::Admin::PaymentsController.class_eval do
         while @order.next; end
         # If "@order.next" didn't trigger payment processing already (e.g. if the order was
         # already complete) then trigger it manually now
-        process_payment if @order.completed? && @payment.checkout?
+        @payment.process! if @order.completed? && @payment.checkout?
         flash[:success] = flash_message_for(@payment, :successfully_created)
         redirect_to admin_order_payments_path(@order)
       else

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Spree::CheckoutController, type: :controller do
+describe Spree::CheckoutController, :vcr, type: :controller do
   let(:user) { create(:user) }
   let(:order) { OrderWalkthrough.up_to(:payment) }
 
@@ -38,6 +38,20 @@ describe Spree::CheckoutController, type: :controller do
         expect(order.payments).to be_empty
         put :update, params
         expect(order.reload.payments.last.source.advanced_fraud_data).to eq params[:device_data]
+      end
+    end
+
+    context 'braintree paypal express payment' do
+      before do
+        order.payments << create(:braintree_vzero_paypal_payment)
+        order.update(state: 'confirm')
+        allow(controller).to receive_messages check_authorization: true
+      end
+
+      it 'amount in payment should be updated' do
+        expect(order.reload.payments.sum(:amount)).to eq 0
+        put :update, state: 'confirm'
+        expect(order.reload.payments.last.amount).to eq order.total
       end
     end
   end
