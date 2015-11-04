@@ -79,6 +79,14 @@ Spree::Order.class_eval do
     payments.valid.map(&:payment_method).compact.any? { |p| p.is_a?(Spree::Gateway::BraintreeVzeroPaypalExpress) }
   end
 
+  def invalidate_paypal_express_payments
+    return unless paid_with_paypal_express?
+
+    payments.valid.each do |payment|
+      payment.invalidate! if payment.payment_method.is_a?(Spree::Gateway::BraintreeVzeroPaypalExpress)
+    end
+  end
+
   private
 
   def prepare_address_hash(hash)
