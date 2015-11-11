@@ -10,6 +10,10 @@ SimpleCov.start do
   add_group 'Libraries', 'lib'
 end
 
+# CodeClimate coverage
+require 'codeclimate-test-reporter'
+CodeClimate::TestReporter.start
+
 # Configure Rails Environment
 ENV['RAILS_ENV'] = 'test'
 
