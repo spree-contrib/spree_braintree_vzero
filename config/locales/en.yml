@@ -15,6 +15,10 @@ en:
       do_not_store: Do not store
       store_only_on_success: Story only on success
       store_all: Store all
+      placeholder:
+        number: Card Number
+        cvv: Cvv code
+        expiration_date: Card Expiration Date
 
   spree:
     3dsecure: 3D Secure
