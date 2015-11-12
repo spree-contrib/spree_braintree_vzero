@@ -17,6 +17,7 @@ Spree::CheckoutController.class_eval do
   end
 
   def update_advanced_fraud_data
+    return true unless current_order
     payment = current_order.payments.last
     return true unless payment
     source = payment.source
