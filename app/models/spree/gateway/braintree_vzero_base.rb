@@ -93,9 +93,7 @@ module Spree
     private
 
     def sale(data, order, source = nil)
-      Rails.logger.info "Sale data: #{data.inspect}"
       result = Transaction.new(provider).sale(data)
-      Rails.logger.info "Risk Data: #{result.transaction.risk_data.inspect}"
 
       if result.success?
         update_addresses(result, order)
