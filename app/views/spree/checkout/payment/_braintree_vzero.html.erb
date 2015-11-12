@@ -1,34 +1,16 @@
 <% display_payment_methods_list = !payment_method.preferred_3dsecure && (@methods = payment_method.customer_payment_methods(@order)).any? %>
 <% payment_method_type = payment_method.is_a?(Spree::Gateway::BraintreeVzeroDropInUI) ? 'dropin' : 'custom' %>
 <% if display_payment_methods_list %>
-  <% @methods.each do |method| %>
-    <div class="radio">
-      <label data-hook="braintree_payment_method_field">
-
-        <% if method.is_a?(Braintree::CreditCard) %>
-          <%= radio_button_tag 'order[payments_attributes][][braintree_token]', method.token %>
-          <%= Spree.t('admin.vaulted_payments.credit_card', card_type: method.card_type, last_4: method.last_4) %>
-        <% end %>
-
-        <% if method.is_a?(Braintree::PayPalAccount) %>
-          <%= radio_button_tag 'order[payments_attributes][][braintree_token]', method.token %>
-          <%= Spree.t('admin.vaulted_payments.paypal', email: method.email) %>
-        <% end %>
-
-      </label>
-    </div>
+  <% if @methods.any? %>
+    <%= select_tag 'order[payments_attributes][][braintree_token]', options_from_braintree_payments(@methods), class: 'form-control' %>
   <% end %>
 
   <div class="radio">
     <label data-hook="braintree_payment_method_field">
-
-      <%= radio_button_tag 'order[payments_attributes][][braintree_token]', '' %>
-      <%= Spree.t(:new) %>
-
+      <%= link_to Spree.t(:new), '', id: 'show-new-payment' %>
     </label>
   </div>
 <% end %>
-
 
 <div id="payment-form" class="<%= display_payment_methods_list ? 'new-braintree-payment-method' : '' %>" style="<%= display_payment_methods_list ? 'display: none;' : '' %>">
   <div id="hosted-fields-number"></div>
@@ -42,7 +24,7 @@
 
 <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
 <script>
-  var clientToken = "<%= payment_method.client_token(current_order, spree_current_user) %>";
+  var clientToken = "<%= payment_method.client_token(current_order) %>";
   var checkoutFormId = <%= payment_method.preferred_checkout_form_id %>;
   var errorMessagesContainer = <%= payment_method.preferred_error_messages_container_id %>;
 

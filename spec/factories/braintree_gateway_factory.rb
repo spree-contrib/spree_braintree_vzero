@@ -13,5 +13,9 @@ FactoryGirl.define do
         gateway.send "preferred_#{preference}=", s.send(preference) || Rails.application.secrets.send(preference)
       end
     end
+
+    factory :vzero_paypal_gateway, class: Spree::Gateway::BraintreeVzeroPaypalExpress do
+      name 'Braintree Vzero PayPal Express'
+    end
   end
 end

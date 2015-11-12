@@ -1,6 +1,5 @@
 module Spree
   class BraintreeCheckout < ActiveRecord::Base
-
     scope :in_state, ->(state) { where(state: state) }
     scope :not_in_state, ->(state) { where.not(state: state) }
 
