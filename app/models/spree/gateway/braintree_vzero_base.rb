@@ -6,7 +6,6 @@ module Spree
     preference :public_key, :string
     preference :private_key, :string
     preference :server, :string, default: :sandbox
-    preference :'3dsecure', :boolean_select, default: false
     preference :pass_billing_and_shipping_address, :boolean_select, default: false
     preference :advanced_fraud_tools, :boolean_select, default: false
     preference :descriptor_name, :string
@@ -54,7 +53,7 @@ module Spree
           submit_for_settlement: auto_capture?,
           add_billing_address_to_payment_method: preferred_pass_billing_and_shipping_address ? true : false,
           three_d_secure: {
-            required: preferred_3dsecure
+            required: try(:preferred_3dsecure)
           }
         }.merge!(@utils.payment_in_vault(data))
       )

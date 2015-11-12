@@ -10,5 +10,6 @@ module Spree
     preference :hosted_fields_expiration_date_selector, :string, default: '#hosted-fields-expiration-date'
     preference :hosted_fields_expiration_date_placeholder, :string, default: I18n.t(:expiration_date, scope: 'braintree.preferences.placeholder')
     preference :store_payments_in_vault, :select, default: -> { { values: [:do_not_store, :store_only_on_success, :store_all] } }
+    preference :'3dsecure', :boolean_select, default: false
   end
 end
