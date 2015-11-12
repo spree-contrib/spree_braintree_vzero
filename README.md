@@ -2,6 +2,14 @@
 
 [![Code Climate](https://codeclimate.com/repos/560308aa6956801375000a4e/badges/9874199a656054d613cd/gpa.svg)](https://codeclimate.com/repos/560308aa6956801375000a4e/feed)  [![Circle CI](https://circleci.com/gh/spark-solutions/spree_braintree_vzero.svg?style=svg&circle-token=3171e5c1f53e64db0b323332e573533a3bdde115)](https://circleci.com/gh/spark-solutions/spree_braintree_vzero)
 
+This is the official Braintree v.zero extension for Spree. It supports:
+* [Braintree Drop-in UI](https://www.braintreepayments.com/features/drop-in)
+* [Braintree Hosted Fields](https://www.braintreepayments.com/features/hosted-fields)
+* [Paypal & PayPall Express Checkout](https://www.braintreepayments.com/features/paypal)
+
+Behind-the-scenes, this extension uses [Braintree Ruby SDK](https://github.com/braintree/braintree_ruby).
+
+
 ## Installation
 
 1. Add this extension to your Gemfile with this line:
