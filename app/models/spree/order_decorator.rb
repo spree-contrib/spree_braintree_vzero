@@ -32,7 +32,7 @@ Spree::Order.class_eval do
       attributes = @updating_params[:order] ? @updating_params[:order].permit(permitted_params).delete_if { |_k, v| v.nil? } : {}
 
       if existing_card_id.present?
-        credit_card = CreditCard.find existing_card_id
+        credit_card = Spree::CreditCard.find existing_card_id
         if credit_card.user_id != user_id || credit_card.user_id.blank?
           raise Core::GatewayError.new Spree.t(:invalid_credit_card)
         end
