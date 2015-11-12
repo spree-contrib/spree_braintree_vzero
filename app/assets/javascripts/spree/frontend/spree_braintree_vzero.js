@@ -28,7 +28,10 @@ SpreeBraintreeVzero = {
 $(document).ready(function() {
   paymentMethodsSelect = $('#order_payments_attributes__braintree_token')
   paymentMethods = $('div[data-hook="checkout_payment_step"] input[type="radio"]').click(function (e) {
-    SpreeBraintreeVzero.showSaveAndContinue();
+    if($('#show-new-payment').length)
+      SpreeBraintreeVzero.showSaveAndContinue();
+    else
+      SpreeBraintreeVzero.updateSaveAndContinueVisibility();
   });
   paymentMethodsSelect.change(function (e) {
     SpreeBraintreeVzero.showSaveAndContinue();
