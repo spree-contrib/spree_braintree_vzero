@@ -23,3 +23,14 @@ For example, use `3-0-stable` if you're using Spree `3-0-stable` or any `3.0.x` 
 4. Restart your server
 
 If your server was running, restart it so that it can find the assets properly.
+
+
+## Heroku installation
+
+Additional to migrations the gem adds a cron task (via the [Whenever gem](https://github.com/javan/whenever)) which is needed for updating transaction states from _submited for settlement_ to _settled_ ([Braintree v.zero transaction states](https://developers.braintreepayments.com/guides/transactions/ruby#status)). To run on Heroku you have to add a task to [Heroku Scheduler](https://devcenter.heroku.com/articles/scheduler): 
+
+```
+rake spree_braintree_vzero:update_states 
+```
+
+Recommended frequency is every 6 hours. 
