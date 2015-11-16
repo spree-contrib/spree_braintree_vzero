@@ -16,9 +16,9 @@ module Spree
         create_shipments
         create_adjustments
         create_braintree_payment
+        cloned_order.update! # update totals when clonning is done
 
         fail ActiveRecord::Rollback if cloned_order.errors.any?
-
       end
       cloned_order
     end
@@ -60,10 +60,11 @@ module Spree
 
     def create_adjustments
       order.all_adjustments.each do |a|
+        next if a.source.is_a?(Spree::TaxRate) # don't copy taxes
         adjustment_data = a.attributes
-        new_adjustment = cloned_order.adjustments.create(adjustment_data.slice('amount', 'label', 'eligible', 'state', 'included').merge(order_id: cloned_order.id))
+        new_adjustment = cloned_order.adjustments.create(adjustment_data.slice('amount', 'label', 'state', 'included').merge(order_id: cloned_order.id, eligible: true, mandatory: true))
         new_adjustment.source = a.source
-        if a.is_a?(Spree::LineItem)
+        if a.adjustable.is_a?(Spree::LineItem)
           new_adjustment.adjustable = cloned_order.line_items.find_by(adjustment_data.slice('variant_id', 'quantity'))
         else
           new_adjustment.adjustable = a.adjustable
@@ -72,7 +73,7 @@ module Spree
         new_adjustment.save
       end
 
-      cloned_order.update!
+      cloned_order.update! # update totals before taxation
     end
 
     def check_products_availability
