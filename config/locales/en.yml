@@ -19,6 +19,9 @@ en:
   spree:
     3dsecure: 3D Secure
     admin:
+      cannot_clone_payment: Cannot clone Braintree Payment
+      cloned_order: "Successfully created cloned Order %{number}"
+      product_unavailable: "Product %{product} is unavailable (missing stock item?)"
       vaulted_payments:
         credit_card: "%{card_type} ending with %{last_4}"
         paypal: "Paypal %{email}"

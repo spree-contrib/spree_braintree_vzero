@@ -2,7 +2,6 @@ module Spree
   class Gateway
     class BraintreeVzeroBase
       class Transaction
-
         attr_reader :transaction_id, :request
 
         def initialize(provider, transaction_id=nil)
@@ -35,6 +34,10 @@ module Spree
           @request.refund(transaction_id, cents)
         end
 
+        def token
+          @request.find(transaction_id).credit_card_details.token
+          # update for paypal
+        end
       end
     end
   end
