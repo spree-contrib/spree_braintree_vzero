@@ -35,8 +35,8 @@ module Spree
         end
 
         def token
-          @request.find(transaction_id).credit_card_details.token
-          # update for paypal
+          transaction = @request.find(transaction_id)
+          transaction.paypal_details.token || transaction.credit_card_details.token
         end
       end
     end

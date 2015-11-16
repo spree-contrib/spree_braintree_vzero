@@ -11,11 +11,11 @@ module Spree
     end
 
     def find_identifier_hash(payment, utils)
-      vaulted_payment = utils.customer_payment_methods.find do |customer_payment|
+      token = payment[:braintree_token] || utils.customer_payment_methods.find do |customer_payment|
         customer_payment.try(:email).eql?(payment.source.paypal_email)
-      end
+      end.try(:token)
 
-      if (token = vaulted_payment.try(:token)).present?
+      if (token).present?
         { payment_method_token: token }
       else
         { payment_method_nonce: payment[:braintree_nonce] }

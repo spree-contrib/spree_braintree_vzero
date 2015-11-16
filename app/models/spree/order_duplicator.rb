@@ -85,12 +85,15 @@ module Spree
         next unless gateway.kind_of? Spree::Gateway::BraintreeVzeroBase
         transaction = Spree::Gateway::BraintreeVzeroBase::Transaction.new(gateway.provider, payment.source.transaction_id)
         source = Spree::BraintreeCheckout.create!
-        token = transaction.token
+        next unless (token = transaction.token) # unvaulted payment
         cloned_order.payments.create!(payment.attributes.slice('amount', 'payment_method_id').merge(state: 'checkout', source: source, braintree_token: token, order_id: cloned_order.id))
       end
-      cloned_order.next!
 
-      cloned_order.errors.add(:base, Spree.t(:cannot_clone_payment, scope: :admin)) unless cloned_order.payments.valid.any?
+      unless cloned_order.payments.valid.any?
+        cloned_order.errors.add(:base, Spree.t(:cannot_clone_payment, scope: :admin))
+        return
+      end
+      cloned_order.next!
     end
   end
 end
