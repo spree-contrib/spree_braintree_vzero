@@ -3,8 +3,8 @@
 [![Code Climate](https://codeclimate.com/repos/560308aa6956801375000a4e/badges/9874199a656054d613cd/gpa.svg)](https://codeclimate.com/repos/560308aa6956801375000a4e/feed)  [![Circle CI](https://circleci.com/gh/spark-solutions/spree_braintree_vzero.svg?style=svg&circle-token=3171e5c1f53e64db0b323332e573533a3bdde115)](https://circleci.com/gh/spark-solutions/spree_braintree_vzero)
 
 This is the official Braintree v.zero extension for Spree. It supports:
-* [Braintree Drop-in UI](https://www.braintreepayments.com/features/drop-in)
-* [Braintree Hosted Fields](https://www.braintreepayments.com/features/hosted-fields)
+* [Braintree Drop-in UI](https://github.com/spark-solutions/spree_braintree_vzero/wiki/Drop-in-UI)
+* [Braintree Hosted Fields](https://github.com/spark-solutions/spree_braintree_vzero/wiki/Hosted-Fields)
 * [Paypal & PayPall Express Checkout](https://www.braintreepayments.com/features/paypal)
 
 Behind-the-scenes, this extension uses [Braintree Ruby SDK](https://github.com/braintree/braintree_ruby).
@@ -36,13 +36,13 @@ If your server was running, restart it so that it can find the assets properly.
 
 ## Heroku installation
 
-Additional to migrations the gem adds a cron task (via the [Whenever gem](https://github.com/javan/whenever)) which is needed for updating transaction states from _submited for settlement_ to _settled_ ([Braintree v.zero transaction states](https://developers.braintreepayments.com/guides/transactions/ruby#status)). To run on Heroku you have to add a task to [Heroku Scheduler](https://devcenter.heroku.com/articles/scheduler): 
+Additional to migrations the gem adds a cron task (via the [Whenever gem](https://github.com/javan/whenever)) which is needed for updating transaction states from _submited for settlement_ to _settled_ ([Braintree v.zero transaction states](https://developers.braintreepayments.com/guides/transactions/ruby#status)). To run on Heroku you have to add a task to [Heroku Scheduler](https://devcenter.heroku.com/articles/scheduler):
 
 ```
-rake spree_braintree_vzero:update_states 
+rake spree_braintree_vzero:update_states
 ```
 
-Recommended frequency is every 6 hours. 
+Recommended frequency is every 6 hours.
 
 
 ## Sample application
