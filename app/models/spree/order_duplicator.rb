@@ -41,7 +41,7 @@ module Spree
 
     def create_order_content
       check_products_availability
-      order.line_items.each { |li| cloned_order.contents.add(li.variant, li.quantity) }
+      order.line_items.each { |li| cloned_order.contents.add(li.variant, li.quantity).update(price: li.price) }
     end
 
     def create_shipments
@@ -66,10 +66,11 @@ module Spree
         new_adjustment.source = a.source
         if a.adjustable.is_a?(Spree::LineItem)
           new_adjustment.adjustable = cloned_order.line_items.find_by(adjustment_data.slice('variant_id', 'quantity'))
+        elsif a.adjustable.is_a?(Spree::Order)
+          new_adjustment.adjustable = cloned_order
         else
           new_adjustment.adjustable = a.adjustable
         end
-        new_adjustment.mandatory = a.eligible
         new_adjustment.save
       end
 
