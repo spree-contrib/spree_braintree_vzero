@@ -5,7 +5,7 @@
 This is the official Braintree v.zero extension for Spree. It supports:
 * [Braintree Drop-in UI](https://github.com/spark-solutions/spree_braintree_vzero/wiki/Drop-in-UI)
 * [Braintree Hosted Fields](https://github.com/spark-solutions/spree_braintree_vzero/wiki/Hosted-Fields)
-* [Paypal & PayPall Express Checkout](https://www.braintreepayments.com/features/paypal)
+* [PayPal Express Checkout](https://github.com/spark-solutions/spree_braintree_vzero/wiki/PayPal-Express)
 
 Behind-the-scenes, this extension uses [Braintree Ruby SDK](https://github.com/braintree/braintree_ruby).
 
