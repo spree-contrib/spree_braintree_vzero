@@ -17,10 +17,12 @@ module SpreeBraintreeVzero
 
     config.to_prepare &method(:activate).to_proc
 
-    initializer "spree.braintree_vzero.payment_methods", :after => "spree.register.payment_methods" do |app|
-      app.config.spree.payment_methods << Spree::Gateway::BraintreeVzeroDropInUI
-      app.config.spree.payment_methods << Spree::Gateway::BraintreeVzeroPaypalExpress
-      app.config.spree.payment_methods << Spree::Gateway::BraintreeVzeroHostedFields
+    initializer 'spree.braintree_vzero.payment_methods', after: 'spree.register.payment_methods' do |app|
+      app.config.spree.payment_methods += [
+        Spree::Gateway::BraintreeVzeroDropInUI,
+        Spree::Gateway::BraintreeVzeroPaypalExpress,
+        Spree::Gateway::BraintreeVzeroHostedFields
+      ]
     end
   end
 end
