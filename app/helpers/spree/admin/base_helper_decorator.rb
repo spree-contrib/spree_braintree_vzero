@@ -9,7 +9,7 @@ Spree::Admin::BaseHelper.module_eval do
       when :string
         content_tag('div', class: 'form-group', 'data-hook' => field) do
           "#{content_tag('div', Spree.t('descriptor_name_information_box_text').html_safe,
-                         class: 'alert alert-warning') if field.eql?('preferred_descriptor_name')}".html_safe +
+                         class: 'promotion-block ') if field.eql?('preferred_descriptor_name')}".html_safe +
           form.text_field(field, preference_field_options(options))
         end
       when :password
@@ -19,12 +19,12 @@ Spree::Admin::BaseHelper.module_eval do
       when :boolean_select
         content_tag('div', class: 'form-group', 'data-hook' => field) do
           label_tag(field, Spree.t(field))
-          form.select(field, {Spree.t(:enabled) => true, Spree.t(:disabled) => false}, {}, class: 'select2')
+          form.select(field, {Spree.t(:enabled) => true, Spree.t(:disabled) => false}, {}, class: 'select2 fullwidth')
         end
       when :select
         content_tag('div', class: 'form-group', 'data-hook' => field) do
           label_tag(field, Spree.t(field))
-          form.select(field, options_for_select(options[:values].map { |key| [I18n.t(key, scope: 'braintree.preferences'), key] }, options[:selected]), {}, class: 'select2')
+          form.select(field, options_for_select(options[:values].map { |key| [I18n.t(key, scope: 'braintree.preferences'), key] }, options[:selected]), {}, class: 'select2 fullwidth')
         end
       else
         form.text_field(field, preference_field_options(options))
@@ -69,8 +69,8 @@ Spree::Admin::BaseHelper.module_eval do
     keys = object.preferences.keys.reverse - basic_braintree_preference_keys
     keys_left, keys_right = keys.each_slice((keys.size/2.0).ceil).to_a
 
-    content_tag(:div, get_preference_fields(object, keys_left, form), class: 'col-md-6') +
-    content_tag(:div, get_preference_fields(object, keys_right, form), class: 'col-md-6')
+    content_tag(:div, get_preference_fields(object, keys_left, form), class: 'alpha six columns') +
+    content_tag(:div, get_preference_fields(object, keys_right, form), class: 'alpha six columns')
   end
 
   def get_preference_fields(object, keys, form)
