@@ -64,21 +64,21 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
         expect(purchase.success?).to be false
       end
 
-  #     context 'with 3DSecure option turned on' do
-  #       before do
-  #         gateway.preferred_3dsecure = true
-  #         payment.update(braintree_nonce: 'fake-valid-debit-nonce')
-  #       end
-  #
-  #       it 'performs 3DSecure check' do
-  #         expect(purchase.success?).to be false
-  #       end
-  #
-  #       it 'returns error' do
-  #         response = purchase
-  #         expect(response.errors.size.zero?).to be true
-  #         expect(response.transaction.try(:gateway_rejection_reason)).to eq 'three_d_secure'
-  #       end
+      context 'with 3DSecure option turned on' do
+        before do
+          gateway.preferred_3dsecure = true
+          payment.update(braintree_nonce: 'fake-valid-debit-nonce')
+        end
+
+        it 'performs 3DSecure check' do
+          expect(purchase.success?).to be false
+        end
+
+        it 'returns error' do
+          response = purchase
+          expect(response.errors.size.zero?).to be true
+          expect(response.transaction.try(:gateway_rejection_reason)).to eq 'three_d_secure'
+        end
       end
   #
   #     context 'using Vault' do
@@ -160,7 +160,7 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
   #         expect(data['shipping']).to eq nil
   #       end
   #     end
-  #   end
+    end
   #
   #   describe '#update_states' do
   #
