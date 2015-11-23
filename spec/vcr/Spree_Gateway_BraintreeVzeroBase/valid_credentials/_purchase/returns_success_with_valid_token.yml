@@ -1,0 +1,116 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://yd57hn7c4r5bhp8g:1cc8b0097ef43165847630438f864834@api.sandbox.braintreegateway.com/merchants/yccdpmn3cvtjbgnr/transactions
+    body:
+      encoding: UTF-8
+      string: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <transaction>
+          <customer>
+          </customer>
+          <payment-method-nonce>fake-valid-nonce</payment-method-nonce>
+          <amount>20.0</amount>
+          <order-id>R261712626</order-id>
+          <descriptor>
+            <name></name>
+          </descriptor>
+          <options>
+            <submit-for-settlement type="boolean">true</submit-for-settlement>
+            <add-billing-address-to-payment-method type="boolean">false</add-billing-address-to-payment-method>
+            <three-d-secure>
+              <required type="boolean">false</required>
+            </three-d-secure>
+            <store-in-vault type="boolean">true</store-in-vault>
+            <store-shipping-address-in-vault type="boolean">true</store-shipping-address-in-vault>
+          </options>
+          <type>sale</type>
+        </transaction>
+    headers:
+      Accept-Encoding:
+      - gzip
+      Accept:
+      - application/xml
+      User-Agent:
+      - Braintree Ruby Gem 2.55.0
+      X-Apiversion:
+      - '4'
+      Content-Type:
+      - application/xml
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Date:
+      - Mon, 23 Nov 2015 11:46:41 GMT
+      Content-Type:
+      - application/xml; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - close
+      X-Frame-Options:
+      - SAMEORIGIN
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      X-Authentication:
+      - basic_auth
+      X-User:
+      - 97syg9czj6hrdzyn
+      Vary:
+      - Accept-Encoding
+      Content-Encoding:
+      - gzip
+      Etag:
+      - '"0252d8d0be7d8438464b6bde8cc4a4bc"'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 287ec512-a324-47f3-ad02-811fc404a007
+      X-Runtime:
+      - '0.750402'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        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
+    http_version: 
+  recorded_at: Mon, 23 Nov 2015 11:46:41 GMT
+recorded_with: VCR 3.0.0

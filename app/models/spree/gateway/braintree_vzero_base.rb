@@ -38,9 +38,9 @@ module Spree
     end
 
     def purchase(money_in_cents, source, gateway_options)
-      order_number, payment_number = gateway_options[:order_id].split('-')
+      order_number, payment_identifier = gateway_options[:order_id].split('-')
       order = Spree::Order.find_by(number: order_number)
-      payment = order.payments.find_by(number: payment_number)
+      payment = order.payments.find_by(identifier: payment_identifier)
 
       @utils = Utils.new(self, order)
       identifier_hash = find_identifier_hash(payment, @utils)
