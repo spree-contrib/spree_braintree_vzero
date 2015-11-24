@@ -80,86 +80,86 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
           expect(response.transaction.try(:gateway_rejection_reason)).to eq 'three_d_secure'
         end
       end
-  #
-  #     context 'using Vault' do
-  #       before { gateway.preferred_store_payments_in_vault = :store_all }
-  #
-  #       it 'stores Transaction' do
-  #         card_vault_token = purchase.transaction.credit_card_details.token
-  #         expect { Braintree::PaymentMethod.find(card_vault_token) }.not_to raise_error
-  #       end
-  #
-  #       it 'saves Braintree::Address id to Spree::Address when address is being saved' do
-  #         gateway.preferred_pass_billing_and_shipping_address = true
-  #         address = create(:address)
-  #         order.update_attribute(:ship_address_id, address.id)
-  #         order.update_attribute(:bill_address_id, address.id)
-  #         purchase
-  #         order.reload
-  #
-  #         bill_id = order.billing_address.braintree_id
-  #         ship_id = order.shipping_address.braintree_id
-  #         expect(order.billing_address.braintree_id).to_not be_nil
-  #         expect(order.shipping_address.braintree_id).to_not be_nil
-  #         expect(bill_id).to eq ship_id
-  #       end
-  #
-  #       it 'saves unique Braintree::Addresses ids' do
-  #         gateway.preferred_pass_billing_and_shipping_address = true
-  #         order.update_attribute(:ship_address_id, create(:address, first_name: 'foo').id)
-  #         order.update_attribute(:bill_address_id, create(:address, first_name: 'bar').id)
-  #         purchase
-  #         order.reload
-  #
-  #         bill_id = order.billing_address.braintree_id
-  #         ship_id = order.shipping_address.braintree_id
-  #         expect(bill_id).to_not be_nil
-  #         expect(ship_id).to_not be_nil
-  #         expect(bill_id).to_not eq ship_id
-  #       end
-  #
-  #       it 'sends address data when address is new' do
-  #         gateway.preferred_pass_billing_and_shipping_address = true
-  #         ship_address = create(:address, first_name: 'foo')
-  #         bill_address = create(:address, first_name: 'bar')
-  #         order.update_attribute(:ship_address_id, ship_address.id)
-  #         order.update_attribute(:bill_address_id, bill_address.id)
-  #
-  #         utils = Spree::Gateway::BraintreeVzeroBase::Utils.new(gateway, order)
-  #         data = gateway.send('set_basic_purchase_data', {}, order, utils, order.total * 100)
-  #
-  #         expect(data['billing'][:first_name]).to eq bill_address.first_name
-  #         expect(data['shipping'][:first_name]).to eq ship_address.first_name
-  #         expect(data['billing_address_id']).to eq nil
-  #         expect(data['shipping_address_id']).to eq nil
-  #       end
-  #
-  #       it 'sends empty address id when address is already in vault' do
-  #         gateway.preferred_pass_billing_and_shipping_address = true
-  #         old_bill_address = create(:address, first_name: 'bar')
-  #         old_ship_address = create(:address, first_name: 'foo')
-  #         user = create(:user, bill_address_id: old_bill_address.id, ship_address_id: old_ship_address.id)
-  #         order.update(user_id: user.id)
-  #         order.update_attribute(:ship_address_id, old_ship_address.id)
-  #         order.update_attribute(:bill_address_id, old_bill_address.id)
-  #         purchase
-  #
-  #         ship_address = create(:address, old_ship_address.attributes.except('id', 'updated_at', 'created_at', 'braintree_id'))
-  #         bill_address = create(:address, old_bill_address.attributes.except('id', 'updated_at', 'created_at', 'braintree_id'))
-  #         other_order.update_attribute(:ship_address_id, ship_address.id)
-  #         other_order.update_attribute(:bill_address_id, bill_address.id)
-  #         user.update(bill_address_id: bill_address.id, ship_address_id: ship_address.id)
-  #         other_order.update(user_id: user.id)
-  #
-  #         utils = Spree::Gateway::BraintreeVzeroBase::Utils.new(gateway, other_order)
-  #         data = gateway.send('set_basic_purchase_data', {}, other_order, utils, other_order.total * 100)
-  #
-  #         expect(data['billing_address_id']).to eq old_bill_address.reload.braintree_id
-  #         expect(data['shipping_address_id']).to eq old_ship_address.reload.braintree_id
-  #         expect(data['billing']).to eq nil
-  #         expect(data['shipping']).to eq nil
-  #       end
-  #     end
+
+      context 'using Vault' do
+        before { gateway.preferred_store_payments_in_vault = :store_all }
+
+        it 'stores Transaction' do
+          card_vault_token = purchase.transaction.credit_card_details.token
+          expect { Braintree::PaymentMethod.find(card_vault_token) }.not_to raise_error
+        end
+
+        it 'saves Braintree::Address id to Spree::Address when address is being saved' do
+          gateway.preferred_pass_billing_and_shipping_address = true
+          address = create(:address)
+          order.update_attribute(:ship_address_id, address.id)
+          order.update_attribute(:bill_address_id, address.id)
+          purchase
+          order.reload
+
+          bill_id = order.billing_address.braintree_id
+          ship_id = order.shipping_address.braintree_id
+          expect(order.billing_address.braintree_id).to_not be_nil
+          expect(order.shipping_address.braintree_id).to_not be_nil
+          expect(bill_id).to eq ship_id
+        end
+
+        it 'saves unique Braintree::Addresses ids' do
+          gateway.preferred_pass_billing_and_shipping_address = true
+          order.update_attribute(:ship_address_id, create(:address, first_name: 'foo').id)
+          order.update_attribute(:bill_address_id, create(:address, first_name: 'bar').id)
+          purchase
+          order.reload
+
+          bill_id = order.billing_address.braintree_id
+          ship_id = order.shipping_address.braintree_id
+          expect(bill_id).to_not be_nil
+          expect(ship_id).to_not be_nil
+          expect(bill_id).to_not eq ship_id
+        end
+
+        it 'sends address data when address is new' do
+          gateway.preferred_pass_billing_and_shipping_address = true
+          ship_address = create(:address, first_name: 'foo')
+          bill_address = create(:address, first_name: 'bar')
+          order.update_attribute(:ship_address_id, ship_address.id)
+          order.update_attribute(:bill_address_id, bill_address.id)
+
+          utils = Spree::Gateway::BraintreeVzeroBase::Utils.new(gateway, order)
+          data = gateway.send('set_basic_purchase_data', {}, order, utils, order.total * 100)
+
+          expect(data['billing'][:first_name]).to eq bill_address.first_name
+          expect(data['shipping'][:first_name]).to eq ship_address.first_name
+          expect(data['billing_address_id']).to eq nil
+          expect(data['shipping_address_id']).to eq nil
+        end
+
+        it 'sends empty address id when address is already in vault' do
+          gateway.preferred_pass_billing_and_shipping_address = true
+          old_bill_address = create(:address, first_name: 'bar')
+          old_ship_address = create(:address, first_name: 'foo')
+          user = create(:user, bill_address_id: old_bill_address.id, ship_address_id: old_ship_address.id)
+          order.update(user_id: user.id)
+          order.update_attribute(:ship_address_id, old_ship_address.id)
+          order.update_attribute(:bill_address_id, old_bill_address.id)
+          purchase
+
+          ship_address = create(:address, old_ship_address.attributes.except('id', 'updated_at', 'created_at', 'braintree_id'))
+          bill_address = create(:address, old_bill_address.attributes.except('id', 'updated_at', 'created_at', 'braintree_id'))
+          other_order.update_attribute(:ship_address_id, ship_address.id)
+          other_order.update_attribute(:bill_address_id, bill_address.id)
+          user.update(bill_address_id: bill_address.id, ship_address_id: ship_address.id)
+          other_order.update(user_id: user.id)
+
+          utils = Spree::Gateway::BraintreeVzeroBase::Utils.new(gateway, other_order)
+          data = gateway.send('set_basic_purchase_data', {}, other_order, utils, other_order.total * 100)
+
+          expect(data['billing_address_id']).to eq old_bill_address.reload.braintree_id
+          expect(data['shipping_address_id']).to eq old_ship_address.reload.braintree_id
+          expect(data['billing']).to eq nil
+          expect(data['shipping']).to eq nil
+        end
+      end
     end
   #
   #   describe '#update_states' do

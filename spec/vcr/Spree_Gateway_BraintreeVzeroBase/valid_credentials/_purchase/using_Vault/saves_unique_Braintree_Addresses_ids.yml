@@ -1,0 +1,147 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://yd57hn7c4r5bhp8g:1cc8b0097ef43165847630438f864834@api.sandbox.braintreegateway.com/merchants/yccdpmn3cvtjbgnr/transactions
+    body:
+      encoding: UTF-8
+      string: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <transaction>
+          <customer>
+          </customer>
+          <payment-method-nonce>fake-valid-nonce</payment-method-nonce>
+          <amount>20.0</amount>
+          <order-id>R132505321</order-id>
+          <billing>
+            <company>Company</company>
+            <country-code-alpha2>US</country-code-alpha2>
+            <country-code-alpha3>USA</country-code-alpha3>
+            <country-code-numeric type="integer">840</country-code-numeric>
+            <country-name>United States of America</country-name>
+            <first-name>bar</first-name>
+            <last-name>Doe</last-name>
+            <locality>Herndon</locality>
+            <postal-code>35005</postal-code>
+            <region>AL</region>
+            <street-address>10 Lovely Street</street-address>
+            <extended-address>Northwest</extended-address>
+          </billing>
+          <shipping>
+            <company>Company</company>
+            <country-code-alpha2>US</country-code-alpha2>
+            <country-code-alpha3>USA</country-code-alpha3>
+            <country-code-numeric type="integer">840</country-code-numeric>
+            <country-name>United States of America</country-name>
+            <first-name>foo</first-name>
+            <last-name>Doe</last-name>
+            <locality>Herndon</locality>
+            <postal-code>35005</postal-code>
+            <region>AL</region>
+            <street-address>10 Lovely Street</street-address>
+            <extended-address>Northwest</extended-address>
+          </shipping>
+          <descriptor>
+            <name></name>
+          </descriptor>
+          <options>
+            <submit-for-settlement type="boolean">true</submit-for-settlement>
+            <add-billing-address-to-payment-method type="boolean">true</add-billing-address-to-payment-method>
+            <three-d-secure>
+              <required type="boolean">false</required>
+            </three-d-secure>
+            <store-in-vault type="boolean">true</store-in-vault>
+            <store-shipping-address-in-vault type="boolean">true</store-shipping-address-in-vault>
+          </options>
+          <type>sale</type>
+        </transaction>
+    headers:
+      Accept-Encoding:
+      - gzip
+      Accept:
+      - application/xml
+      User-Agent:
+      - Braintree Ruby Gem 2.55.0
+      X-Apiversion:
+      - '4'
+      Content-Type:
+      - application/xml
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Date:
+      - Tue, 24 Nov 2015 08:21:49 GMT
+      Content-Type:
+      - application/xml; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - close
+      X-Frame-Options:
+      - SAMEORIGIN
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      X-Authentication:
+      - basic_auth
+      X-User:
+      - 97syg9czj6hrdzyn
+      Vary:
+      - Accept-Encoding
+      Content-Encoding:
+      - gzip
+      Etag:
+      - '"0ff839c3025cd91a674030e1509ad733"'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 81d005e8-cde0-4b70-a148-553b49baa1fd
+      X-Runtime:
+      - '1.220482'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAB0eVFYAA+xYX5ObNhB/z6fw+F0H2L6Lk+HIXJp2Op30JpPk2k5ebgRa
+        jGKQqCR8dj59VyAwGEjSh04f2qczuz+t9v+uLnx1LPLFAZTmUtwugyt/uQCR
+        SMbF7nb58PEnsl2+ip6FRlGhaWIQFT1bLELOos+HbHc4hR7+tBRtqKl0pKu4
+        4MYAe0yletRgTA4FCBN6DmCx5lRCpGkOoVf/tLSkUgpvPhGuJUEFIPrx4X3o
+        jckWTAtZCROt/CvfDz33ZRkFqCSjwhCaJJZIUDtdUrXXMq+s9lqXX6QMvSmg
+        FSAVA2U/3gfr1bV/vV4FodcRa0UVULSPULOwyt8uGX4aXsAS9QmuSRCQ1eaj
+        v325Cl5utp/QhO5Afb4q2d87fz7gHKWNRPXtRxOJ59c3Wz94sW1jgdSUK22I
+        oAUsBM9vl0ZVsPQcM6fzvEQWJRWnCQ4UlOcT9CeINTdTsspMiil6So+XVBvo
+        s1lhzPMcM/Bs4v75pHFRTFXo9b4vDIzeSMyx8+fAxuiH5i/e7QgNWxsFgInB
+        mAKto8BfvJUHyE+LDzXDZvIA4NxzNCCYDZMj30tlsifQeGDEc2rKhObcnKKf
+        QQkmBWraUhqAgp0tuLu3oed+OsdKLKa8KYf1te9fh16f1FqJaa1OjeEPAkPE
+        0ALMJL2Q6eIOXc0Tam3vwYYnrTBC8zKjq+jhwxnap8+dWOOJu6kj66kjoqrV
+        ibYb/+JMy6lzpJcW6Ju0EgyLcpRKHUe7AqNK0dOAiaHodbQpIdgzDEeHnjvY
+        xYkp4bQymVT8y7fF98TG1CTZJCbjZTmogu1mugpS29H+r4L/SBX088JNA5Jy
+        yJl2WXjQBJSSiqCXSxx5UAsZ5ZfF9Rw2REe/4lz9KqAVMcyDaSlfxdRmHA7j
+        k2Oihe4weE/0hJzP0NQXzlctxbiElUzwNvRDW5e0hteS/Pt3v3/C0f5V0FDK
+        UJXAt6vHHHfmpMEaiO5K5ByATZ6uEbVrGeNWE3T+GDay9SB5YgOUYuDxBOZL
+        DGrskcouPXhLs9DMoAw9kmalmmTBEYqy3V1iKXOgYhmlNNd2nesA7a6EVpCE
+        qrZrGbkHEcXmuNdPCK+/Gk7MRbTxg9V2axu96DexTRRst4FrYZu2dFAoqdfH
+        37i2Jdx9t62o5KoJZiGFyaJgZXvQBXGEPQFVuIit/AG4prp73aJCbJuqF+K6
+        K4yoZy0zmdfunt64eEF3QCqVR5kxpX7peVTjeNBXsaJc2MJxGX+FDdor6clO
+        jccCMFvZYy530jug/Vel2L0CceBKCgu41VSwWB5xYHTyXdtUUFKcIvfSJmDz
+        u+FkQHOToca2U+6FfMJe3KM1IAYxN2d+8+lYlcLAYRbuqtxurD3UJacbQXYP
+        xzl7hvZoTl96UjLvIVqCc5/WFTZDHKNif8YMqMNWK1NiuVQkMOzOfUbrKsmq
+        pH4bnG8/0xpQJfifFbhiQjI6n2M7VlESxwEL1uskZpt1uqHAbli8ec5WySbe
+        rG4wG2ePNpIPIApJNNvPFFvHdxv0sNjci4xkHDNTnQbrSjfjawSgIBdDW6H4
+        FEFGUX7n86TDdxLcS++8DfUffzVi7v3WOFSjBwqacnSQbp1hFeutVFpiK4OI
+        lgiaoDfmeWP7/mGTv+f1+286oKO4pGimQk6nd9Qq1oni5ewO2+N3Pbxe0EmJ
+        24pkBNc9Yn050fUukKiWMpNYVPniHjsaCU7BiQWccV1X8yQPGimyLa+Zfjz3
+        asUOOtZtKBRXVfv/CrRrpmI7fjMdMyoEjKVizA92nKcAc4PYXiufSBPNERfd
+        EFdKN+8LBgYf7u22PWRNx6b3OJm+fogZ/YvmO+FwtA7A2aSm1bAPNcxUXGyn
+        BFaJ3YkmIjJju7W8rOzeP04NN1QJF7ioVs1jzy4STUd9tB019OZAw1WvZ+hw
+        I+xve7Ogb8uq98NvyeqWSMX13kaZnt+Q63e/rP3Xb25e/HH9uveaZJBwXT+z
+        mu3Upraj1G4dSApNhmsJwbK1+QzoklQOIzFoStGzvwAAAP//AwApqvNWZxQA
+        AA==
+    http_version: 
+  recorded_at: Tue, 24 Nov 2015 08:21:49 GMT
+recorded_with: VCR 3.0.0
