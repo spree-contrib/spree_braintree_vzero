@@ -4,12 +4,13 @@
 <div class="well clearfix %>">
   <% if display_payment_methods_list %>
     <% if @methods.any? %>
+      <%= label_tag 'saved_payment_methods', I18n.t('braintree.checkout.saved_payment_method') %>
       <%= select_tag 'order[payments_attributes][][braintree_token]', options_from_braintree_payments(@methods), class: 'form-control' %>
     <% end %>
 
     <div class="radio">
       <label data-hook="braintree_payment_method_field">
-        <%= link_to Spree.t(:new), '', id: 'show-new-payment' %>
+        <%= link_to Spree.t(:add_new_credit_card), '', id: 'show-new-payment' %>
       </label>
     </div>
   <% end %>

@@ -15,9 +15,12 @@ en:
       do_not_store: Do not store
       store_only_on_success: Story only on success
       store_all: Store all
+    checkout:
+      saved_payment_method: Saved payment method
 
   spree:
     3dsecure: 3D Secure
+    add_new_credit_card: Add new credit card
     admin:
       vaulted_payments:
         credit_card: "%{card_type} ending with %{last_4}"
