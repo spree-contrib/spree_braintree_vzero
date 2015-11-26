@@ -1,0 +1,58 @@
+<div id="paypal-container">
+  <span class="btn btn-lg btn-success primary new-braintree-payment-method braintree-submit" id="paypal-submit" style="display: none;">
+  <%= Spree.t(:save_and_continue) %>
+</span>
+</div>
+<script src="https://js.braintreegateway.com/v2/braintree.js"></script>
+<script src="https://js.braintreegateway.com/v1/braintree-data.js" async=true></script>
+<script type="text/javascript">
+  $('#order_payments_attributes__payment_method_id_<%= payment_method.id %>').click(function (e) {
+    SpreeBraintreeVzero.paypal_express = true;
+    SpreeBraintreeVzero.advancedFraudTools = <%= payment_method.preferred_advanced_fraud_tools %>;
+    SpreeBraintreeVzero.paymentMethodID = "<%= payment_method.id %>";
+
+    var checkoutFormId = <%= payment_method.preferred_checkout_form_id %>;
+    var errorMessagesContainer = <%= payment_method.preferred_error_messages_container_id %>;
+    var checkout;
+
+    braintree.setup("<%= payment_method.client_token(current_order) %>", "paypal", {
+      container: "paypal-container",
+      singleUse: <%= payment_method.preferred_store_payments_in_vault.eql?('do_not_store') %>,
+      amount: <%= @order.total %>,
+      currency: "<%= current_currency %>",
+      locale: "en_us",
+      enableShippingAddress: true,
+      enableBillingAddress: true,
+      displayName: "<%= payment_method.preferred_paypal_display_name %>",
+
+      onReady: function (integration)  { checkout = integration; },
+      headless: true,
+
+      onPaymentMethodReceived: function (result) {
+        if (result.nonce.length) {
+          $(checkoutFormId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + result.nonce + ">");
+          $(checkoutFormId).append("<input type='hidden' name='paypal_email' value=" + result.details.email + ">");
+          paymentMethodSelect = $("#order_payments_attributes__braintree_token")
+          if(paymentMethodSelect.length)
+            paymentMethodSelect.val("");
+          $(checkoutFormId).submit();
+        } else {
+          $(errorMessagesContainer).prepend("<div class='alert alert-error'><%= I18n.t(:gateway_error, scope: 'braintree.error') %>></div>")
+        }
+      }
+    });
+
+    if (<%= payment_method.preferred_advanced_fraud_tools %>) {
+      var BraintreeEnv = "<%= payment_method.preferred_server %>";
+      var BraintreeMerchantId = "<%= payment_method.preferred_merchant_id %>";
+
+      window.onBraintreeDataLoad = function () {
+        BraintreeData.setup(BraintreeMerchantId, checkoutFormId, BraintreeData.environments[BraintreeEnv]);
+      }
+    }
+
+    document.querySelector("#paypal-submit").addEventListener("click", function () { checkout.paypal.initAuthFlow(); }, false);
+  });
+</script>
+<hr/>
+<br/>
