@@ -6,7 +6,7 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
     let(:gateway) { create(:vzero_gateway, auto_capture: true) }
     let(:payment) { create(:braintree_vzero_payment, payment_method: gateway) }
     let(:payment_source) { payment.payment_source }
-    let(:order) { OrderWalkthrough.up_to(:payment) }
+    let(:order) { OrderWalkthrough.up_to(:delivery) }
     let(:add_payment_to_order!) { order.payments << payment }
     let(:complete_order!) do
       add_payment_to_order!
@@ -30,7 +30,7 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
     describe '#purchase' do
       let(:gateway_options) { { order_id: "#{order.number}-#{payment.identifier}" } }
       let(:purchase) { gateway.purchase(order.total * 100, payment_source, gateway_options) }
-      let(:other_order) { OrderWalkthrough.up_to(:payment) }
+      let(:other_order) { OrderWalkthrough.up_to(:delivery) }
 
       before do
         gateway.preferred_3dsecure = false
@@ -192,41 +192,42 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
   #
   #   end
   #
-  #   describe '#void' do
-  #     let(:void) { gateway.void(payment_source.reload.transaction_id, {}) }
-  #     let!(:prepare_gateway) { gateway.preferred_3dsecure = false }
-  #
-  #     context 'with voidable state' do
-  #       before do
-  #         complete_order!
-  #         void
-  #       end
-  #
-  #       it 'should change payment_source state to voided' do
-  #         expect(payment_source.reload.state).to eq 'voided'
-  #       end
-  #
-  #       it 'should change payment_source state to voided' do
-  #         expect(payment.reload.state).to eq 'void'
-  #       end
-  #     end
-  #
-  #     context 'with unvoidable state' do
-  #       before do
-  #         payment.update(braintree_nonce: 'fake-paypal-one-time-nonce')
-  #         complete_order!
-  #         void
-  #       end
-  #
-  #       it 'should not change payment_source state' do
-  #         expect(payment_source.reload.state).to eq 'settling'
-  #       end
-  #
-  #       it 'should not change payment_source state' do
-  #         expect(payment.reload.state).to eq 'pending'
-  #       end
-  #     end
-  #   end
+    describe '#void' do
+
+      let(:void) { gateway.void(payment_source.reload.transaction_id, {}) }
+      let!(:prepare_gateway) { gateway.preferred_3dsecure = false }
+
+      context 'with voidable state' do
+        before do
+          complete_order!
+          void
+        end
+
+        it 'should change payment_source state to voided' do
+          expect(payment_source.reload.state).to eq 'voided' #TODO void?
+        end
+
+        it 'should change payment_source state to voided' do
+          expect(payment.reload.state).to eq 'void'
+        end
+      end
+
+      context 'with unvoidable state' do
+        before do
+          payment.update(braintree_nonce: 'fake-paypal-one-time-nonce')
+          complete_order!
+          void
+        end
+
+        it 'should not change payment_source state' do
+          expect(payment_source.reload.state).to eq 'settling'
+        end
+
+        it 'should not change payment_source state' do
+          expect(payment.reload.state).to eq 'pending'
+        end
+      end
+    end
   #
   #   describe '#settle' do
   #
