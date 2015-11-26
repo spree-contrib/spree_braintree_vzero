@@ -266,6 +266,7 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
 
     describe '#credit' do
       let(:refund) { gateway.credit(1273, payment_source.reload.transaction_id, {}) }
+      let(:refund_partially) { gateway.credit(73, payment_source.reload.transaction_id, {}) }
       let!(:prepare_gateway) { gateway.preferred_3dsecure = false }
 
       context 'with refundable state' do
@@ -277,6 +278,11 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
         it 'should be a success' do
           expect(refund.success?).to be true
           expect(refund.transaction.amount).to eq 12.73
+        end
+
+        it 'should be possible to refund partially' do
+          expect(refund_partially.success?).to be true
+          expect(refund_partially.transaction.amount).to eq 0.73
         end
       end
 
