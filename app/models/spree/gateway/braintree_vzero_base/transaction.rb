@@ -31,8 +31,8 @@ module Spree
           @request.void(transaction_id)
         end
 
-        def refund(cents)
-          @request.refund(transaction_id, cents)
+        def refund(amount)
+          @request.refund(transaction_id, amount)
         end
 
       end
