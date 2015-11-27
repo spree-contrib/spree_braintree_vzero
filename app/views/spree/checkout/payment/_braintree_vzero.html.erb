@@ -123,7 +123,11 @@
       var BraintreeMerchantId = "<%= payment_method.preferred_merchant_id %>";
 
       window.onBraintreeDataLoad = function () {
-        BraintreeData.setup(BraintreeMerchantId, checkoutFormId.id, BraintreeData.environments[BraintreeEnv]);
+        if("<%= payment_method.preferred_kount_merchant_id %>".length)
+          var env = BraintreeData.environments[BraintreeEnv]
+        else
+          var env = BraintreeData.environments[BraintreeEnv].withId("<%= payment_method.preferred_kount_merchant_id %>")
+        BraintreeData.setup(BraintreeMerchantId, checkoutFormId.id, env);
       };
     }
   });
