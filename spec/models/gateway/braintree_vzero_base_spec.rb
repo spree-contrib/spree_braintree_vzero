@@ -264,32 +264,32 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
   #     end
   #   end
   #
-  #   describe '#credit' do
-  #     let(:refund) { gateway.credit(1317, payment_source.reload.transaction_id, {}) }
-  #     let!(:prepare_gateway) { gateway.preferred_3dsecure = false }
-  #
-  #     context 'with refundable state' do
-  #       before do
-  #         payment.update(braintree_nonce: 'fake-paypal-one-time-nonce')
-  #         complete_order!
-  #       end
-  #
-  #       it 'should be a success' do
-  #         expect(refund.success?).to be true
-  #         expect(refund.transaction.amount).to eq 13.17
-  #       end
-  #     end
-  #
-  #     context 'with unrefundable state' do
-  #       before do
-  #         complete_order!
-  #       end
-  #
-  #       it 'should not be a success' do
-  #         expect(refund.success?).to be false
-  #       end
-  #     end
-  #   end
+    describe '#credit' do
+      let(:refund) { gateway.credit(1273, payment_source.reload.transaction_id, {}) }
+      let!(:prepare_gateway) { gateway.preferred_3dsecure = false }
+
+      context 'with refundable state' do
+        before do
+          payment.update(braintree_nonce: 'fake-paypal-one-time-nonce')
+          complete_order!
+        end
+
+        it 'should be a success' do
+          expect(refund.success?).to be true
+          expect(refund.transaction.amount).to eq 12.73
+        end
+      end
+
+      context 'with unrefundable state' do
+        before do
+          complete_order!
+        end
+
+        it 'should not be a success' do
+          expect(refund.success?).to be false
+        end
+      end
+    end
   end
   #
   # context 'with invalid credentials' do
