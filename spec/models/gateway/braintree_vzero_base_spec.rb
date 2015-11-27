@@ -204,7 +204,7 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
         end
 
         it 'should change payment_source state to voided' do
-          expect(payment_source.reload.state).to eq 'voided' #TODO void?
+          expect(payment_source.reload.state).to eq 'voided'
         end
 
         it 'should change payment_source state to voided' do
@@ -228,42 +228,42 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
         end
       end
     end
-  #
-  #   describe '#settle' do
-  #
-  #     before do
-  #       gateway.update(auto_capture: false)
-  #       complete_order!
-  #     end
-  #
-  #     context 'settles authorized amount' do
-  #
-  #       it 'does not update Order payment_state' do
-  #         expect(order.payment_state).to eq 'balance_due'
-  #         payment.reload.settle!
-  #         expect(order.reload.payment_state).to eq 'balance_due'
-  #       end
-  #
-  #       it 'updates Payment state' do
-  #         expect(payment.state).to eq 'pending'
-  #         payment.reload.settle!
-  #         expect(payment.state).to eq 'processing'
-  #       end
-  #
-  #       it 'submits Transaction for settlement' do
-  #         expect(gateway.provider::Transaction.find(payment.response_code).status).to eq 'authorized'
-  #         payment.reload.settle!
-  #         expect(gateway.provider::Transaction.find(payment.response_code).status).to eq 'submitted_for_settlement'
-  #       end
-  #
-  #       it 'prepares Checkout for status updating' do
-  #         payment.reload.settle!
-  #         expect(Spree::BraintreeCheckout.not_in_state(Spree::BraintreeCheckout::FINAL_STATES).count).to eq 1
-  #       end
-  #
-  #     end
-  #   end
-  #
+
+    describe '#settle' do
+
+      before do
+        gateway.update(auto_capture: false)
+        complete_order!
+      end
+
+      context 'settles authorized amount' do
+
+        it 'does not update Order payment_state' do
+          expect(order.payment_state).to eq 'balance_due'
+          payment.reload.settle!
+          expect(order.reload.payment_state).to eq 'balance_due'
+        end
+
+        it 'updates Payment state' do
+          expect(payment.state).to eq 'pending'
+          payment.reload.settle!
+          expect(payment.state).to eq 'processing'
+        end
+
+        it 'submits Transaction for settlement' do
+          expect(gateway.provider::Transaction.find(payment.response_code).status).to eq 'authorized'
+          payment.reload.settle!
+          expect(gateway.provider::Transaction.find(payment.response_code).status).to eq 'submitted_for_settlement'
+        end
+
+        it 'prepares Checkout for status updating' do
+          payment.reload.settle!
+          expect(Spree::BraintreeCheckout.not_in_state(Spree::BraintreeCheckout::FINAL_STATES).count).to eq 1
+        end
+
+      end
+    end
+
     describe '#credit' do
       let(:refund) { gateway.credit(1273, payment_source.reload.transaction_id, {}) }
       let!(:prepare_gateway) { gateway.preferred_3dsecure = false }
