@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :vzero_gateway, class: Spree::Gateway::BraintreeVzeroDropInUI do
     name 'Braintree Vzero DropInUI'
+    # preferences {{advanced_fraud_tools: true}}
 
     transient do
       merchant_id nil
@@ -24,6 +25,11 @@ FactoryGirl.define do
 
     factory :vzero_hosted_fields_gateway, class: Spree::Gateway::BraintreeVzeroHostedFields do
       name 'Braintree Vzero Hosted Fields'
+    end
+
+    factory :vzero_dropin_with_advanced_fraud_tools, class: Spree::Gateway::BraintreeVzeroDropInUI do
+      name 'Braintree Vzero Dropin with Advanced Fraud Tools'
+      preferences {{advanced_fraud_tools: true}}
     end
   end
 end

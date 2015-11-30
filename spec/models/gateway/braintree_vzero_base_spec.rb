@@ -37,6 +37,15 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
         add_payment_to_order!
       end
 
+      context 'with advanced fraud tool enabled' do
+        let (:gateway) { create(:vzero_dropin_with_advanced_fraud_tools) }
+        it 'todo' do
+          binding.pry
+          response = purchase
+          expect(purchase).to be_success
+        end
+      end
+
       it 'returns suceess with valid nonce' do
         expect(purchase.success?).to be true
       end
