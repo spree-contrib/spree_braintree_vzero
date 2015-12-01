@@ -17,6 +17,7 @@ module Spree
 
     def disable_dropin_gateways
       Spree::Gateway::BraintreeVzeroDropInUI.update_all(active: false)
+      Spree::Gateway::BraintreeVzeroHostedFields.where.not(id: id).update_all(active: false)
     end
   end
 end
