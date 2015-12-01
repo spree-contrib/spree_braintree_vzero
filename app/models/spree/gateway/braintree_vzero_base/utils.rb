@@ -37,9 +37,9 @@ module Spree
           end
         end
 
-        def order_data(identifier)
+        def order_data(identifier, amount)
           identifier.merge(
-            amount: order.total,
+            amount: amount,
             order_id: order.number
           )
         end

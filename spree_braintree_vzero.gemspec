@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.requirements << 'none'
 
-  s.add_dependency 'spree_core', '~> 3.0.4'
+  s.add_dependency 'spree_core', '~> 3.0.0'
   s.add_dependency 'braintree'
   s.add_dependency 'whenever'
 
@@ -40,5 +40,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'vcr'
   s.add_development_dependency 'webmock'
   s.add_development_dependency 'therubyracer'
+  s.add_development_dependency 'codeclimate-test-reporter'
 
 end
