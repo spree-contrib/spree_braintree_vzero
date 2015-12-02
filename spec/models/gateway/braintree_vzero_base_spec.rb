@@ -161,37 +161,37 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
         end
       end
     end
-  #
-  #   describe '#update_states' do
-  #
-  #     before do
-  #       gateway.preferred_3dsecure = false
-  #       payment.update(amount: order.reload.total)
-  #       complete_order!
-  #       order.payments.first.source.update_attribute(:transaction_id, 'dw49zp') #use already settled transaction
-  #     end
-  #
-  #     let!(:result) { Spree::BraintreeCheckout.update_states }
-  #
-  #     it 'updates payment State' do
-  #       expect(result[:changed]).to eq 1
-  #     end
-  #
-  #     it 'does not update completed Checkout on subsequent runs' do
-  #       expect(result[:changed]).to eq 1
-  #       expect(Spree::BraintreeCheckout.update_states[:changed]).to eq 0
-  #     end
-  #
-  #     it 'updates Order payment_state when Checkout is updated' do
-  #       expect(order.reload.payment_state).to eq 'paid'
-  #     end
-  #
-  #     it 'updates Payment state when Checkout is updated' do
-  #       expect(order.reload.payments.first.state).to eq 'completed'
-  #     end
-  #
-  #   end
-  #
+
+    describe '#update_states' do
+
+      before do
+        gateway.preferred_3dsecure = false
+        payment.update(amount: order.reload.total)
+        complete_order!
+        order.payments.first.source.update_attribute(:transaction_id, 'dw49zp') #use already settled transaction
+      end
+
+      let!(:result) { Spree::BraintreeCheckout.update_states }
+
+      it 'updates payment State' do
+        expect(result[:changed]).to eq 1
+      end
+
+      it 'does not update completed Checkout on subsequent runs' do
+        expect(result[:changed]).to eq 1
+        expect(Spree::BraintreeCheckout.update_states[:changed]).to eq 0
+      end
+
+      it 'updates Order payment_state when Checkout is updated' do
+        expect(order.reload.payment_state).to eq 'paid'
+      end
+
+      it 'updates Payment state when Checkout is updated' do
+        expect(order.reload.payments.first.state).to eq 'completed'
+      end
+
+    end
+  
     describe '#void' do
 
       let(:void) { gateway.void(payment_source.reload.transaction_id, {}) }
