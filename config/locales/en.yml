@@ -22,6 +22,8 @@ en:
     3dsecure: 3D Secure
     add_new_credit_card: Add new credit card
     admin:
+      risk_id: Braintree Risk ID
+      risk_decision: Braintree Risk Decision
       vaulted_payments:
         credit_card: "%{card_type} ending with %{last_4}"
         paypal: "Paypal %{email}"

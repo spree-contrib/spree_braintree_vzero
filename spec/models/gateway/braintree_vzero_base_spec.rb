@@ -29,7 +29,7 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
 
     describe '#purchase' do
       let(:gateway_options) { { order_id: "#{order.number}-#{payment.number}" } }
-      let(:purchase) { gateway.purchase(nil, payment_source, gateway_options) }
+      let(:purchase) { gateway.purchase(10000, payment_source, gateway_options) }
       let(:other_order) { OrderWalkthrough.up_to(:payment) }
 
       before do
@@ -62,6 +62,22 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
         token = 'sometoken'
         payment.update(braintree_token: token)
         expect(purchase.success?).to be false
+      end
+
+      context 'with advanced fraud tool enabled' do
+        before do
+          gateway.preferences[:advanced_fraud_data] = true
+          payment_source = create(:braintree_checkout_with_fraud_data)
+        end
+
+        it 'returns success' do
+          expect(purchase).to be_success
+        end
+
+        it 'returns fraud data' do
+          risk_data = purchase.transaction.risk_data
+          expect(risk_data.id.present? && risk_data.decision.present?).to be true
+        end
       end
 
       context 'with 3DSecure option turned on' do

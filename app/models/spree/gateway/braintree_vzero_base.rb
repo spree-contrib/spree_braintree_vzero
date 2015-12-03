@@ -125,7 +125,12 @@ module Spree
     def update_source(response, source)
       return unless source.present?
       transaction = response.transaction
-      source.update(transaction_id: transaction.id, state: transaction.status)
+      if (risk_data = transaction.risk_data).present?
+        source.update(transaction_id: transaction.id, state: transaction.status,
+                      risk_id: risk_data.id, risk_decision: risk_data.decision)
+      else
+        source.update(transaction_id: transaction.id, state: transaction.status)
+      end
     end
 
     def add_order_errors(response, order)
