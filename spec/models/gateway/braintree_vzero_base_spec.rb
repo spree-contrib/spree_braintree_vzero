@@ -6,7 +6,7 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
     let(:gateway) { create(:vzero_gateway, auto_capture: true) }
     let(:payment) { create(:braintree_vzero_payment, payment_method: gateway) }
     let(:payment_source) { payment.payment_source }
-    let(:order) { OrderWalkthrough.up_to(:payment) }
+    let(:order) { OrderWalkthrough.up_to(:delivery) }
     let(:add_payment_to_order!) { order.payments << payment }
     let(:complete_order!) do
       add_payment_to_order!
@@ -30,7 +30,7 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
     describe '#purchase' do
       let(:gateway_options) { { order_id: "#{order.number}-#{payment.identifier}" } }
       let(:purchase) { gateway.purchase(order.total * 100, payment_source, gateway_options) }
-      let(:other_order) { OrderWalkthrough.up_to(:payment) }
+      let(:other_order) { OrderWalkthrough.up_to(:delivery) }
 
       before do
         gateway.preferred_3dsecure = false
@@ -169,134 +169,141 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
         end
       end
     end
-  #
-  #   describe '#update_states' do
-  #
-  #     before do
-  #       gateway.preferred_3dsecure = false
-  #       payment.update(amount: order.reload.total)
-  #       complete_order!
-  #       order.payments.first.source.update_attribute(:transaction_id, 'dw49zp') #use already settled transaction
-  #     end
-  #
-  #     let!(:result) { Spree::BraintreeCheckout.update_states }
-  #
-  #     it 'updates payment State' do
-  #       expect(result[:changed]).to eq 1
-  #     end
-  #
-  #     it 'does not update completed Checkout on subsequent runs' do
-  #       expect(result[:changed]).to eq 1
-  #       expect(Spree::BraintreeCheckout.update_states[:changed]).to eq 0
-  #     end
-  #
-  #     it 'updates Order payment_state when Checkout is updated' do
-  #       expect(order.reload.payment_state).to eq 'paid'
-  #     end
-  #
-  #     it 'updates Payment state when Checkout is updated' do
-  #       expect(order.reload.payments.first.state).to eq 'completed'
-  #     end
-  #
-  #   end
-  #
-  #   describe '#void' do
-  #     let(:void) { gateway.void(payment_source.reload.transaction_id, {}) }
-  #     let!(:prepare_gateway) { gateway.preferred_3dsecure = false }
-  #
-  #     context 'with voidable state' do
-  #       before do
-  #         complete_order!
-  #         void
-  #       end
-  #
-  #       it 'should change payment_source state to voided' do
-  #         expect(payment_source.reload.state).to eq 'voided'
-  #       end
-  #
-  #       it 'should change payment_source state to voided' do
-  #         expect(payment.reload.state).to eq 'void'
-  #       end
-  #     end
-  #
-  #     context 'with unvoidable state' do
-  #       before do
-  #         payment.update(braintree_nonce: 'fake-paypal-one-time-nonce')
-  #         complete_order!
-  #         void
-  #       end
-  #
-  #       it 'should not change payment_source state' do
-  #         expect(payment_source.reload.state).to eq 'settling'
-  #       end
-  #
-  #       it 'should not change payment_source state' do
-  #         expect(payment.reload.state).to eq 'pending'
-  #       end
-  #     end
-  #   end
-  #
-  #   describe '#settle' do
-  #
-  #     before do
-  #       gateway.update(auto_capture: false)
-  #       complete_order!
-  #     end
-  #
-  #     context 'settles authorized amount' do
-  #
-  #       it 'does not update Order payment_state' do
-  #         expect(order.payment_state).to eq 'balance_due'
-  #         payment.reload.settle!
-  #         expect(order.reload.payment_state).to eq 'balance_due'
-  #       end
-  #
-  #       it 'updates Payment state' do
-  #         expect(payment.state).to eq 'pending'
-  #         payment.reload.settle!
-  #         expect(payment.state).to eq 'processing'
-  #       end
-  #
-  #       it 'submits Transaction for settlement' do
-  #         expect(gateway.provider::Transaction.find(payment.response_code).status).to eq 'authorized'
-  #         payment.reload.settle!
-  #         expect(gateway.provider::Transaction.find(payment.response_code).status).to eq 'submitted_for_settlement'
-  #       end
-  #
-  #       it 'prepares Checkout for status updating' do
-  #         payment.reload.settle!
-  #         expect(Spree::BraintreeCheckout.not_in_state(Spree::BraintreeCheckout::FINAL_STATES).count).to eq 1
-  #       end
-  #
-  #     end
-  #   end
-  #
-  #   describe '#credit' do
-  #     let(:refund) { gateway.credit(1317, payment_source.reload.transaction_id, {}) }
-  #     let!(:prepare_gateway) { gateway.preferred_3dsecure = false }
-  #
-  #     context 'with refundable state' do
-  #       before do
-  #         payment.update(braintree_nonce: 'fake-paypal-one-time-nonce')
-  #         complete_order!
-  #       end
-  #
-  #       it 'should be a success' do
-  #         expect(refund.success?).to be true
-  #         expect(refund.transaction.amount).to eq 13.17
-  #       end
-  #     end
-  #
-  #     context 'with unrefundable state' do
-  #       before do
-  #         complete_order!
-  #       end
-  #
-  #       it 'should not be a success' do
-  #         expect(refund.success?).to be false
-  #       end
-  #     end
-  #   end
+
+    describe '#update_states' do
+
+      before do
+        gateway.preferred_3dsecure = false
+        payment.update(amount: order.reload.total)
+        complete_order!
+        order.payments.first.source.update_attribute(:transaction_id, 'dw49zp') #use already settled transaction
+      end
+
+      let!(:result) { Spree::BraintreeCheckout.update_states }
+
+      it 'updates payment State' do
+        expect(result[:changed]).to eq 1
+      end
+
+      it 'does not update completed Checkout on subsequent runs' do
+        expect(result[:changed]).to eq 1
+        expect(Spree::BraintreeCheckout.update_states[:changed]).to eq 0
+      end
+
+      it 'updates Order payment_state when Checkout is updated' do
+        expect(order.reload.payment_state).to eq 'paid'
+      end
+
+      it 'updates Payment state when Checkout is updated' do
+        expect(order.reload.payments.first.state).to eq 'completed'
+      end
+
+    end
+  
+    describe '#void' do
+
+      let(:void) { gateway.void(payment_source.reload.transaction_id, {}) }
+      let!(:prepare_gateway) { gateway.preferred_3dsecure = false }
+
+      context 'with voidable state' do
+        before do
+          complete_order!
+          void
+        end
+
+        it 'should change payment_source state to voided' do
+          expect(payment_source.reload.state).to eq 'voided'
+        end
+
+        it 'should change payment_source state to voided' do
+          expect(payment.reload.state).to eq 'void'
+        end
+      end
+
+      context 'with unvoidable state' do
+        before do
+          payment.update(braintree_nonce: 'fake-paypal-one-time-nonce')
+          complete_order!
+          void
+        end
+
+        it 'should not change payment_source state' do
+          expect(payment_source.reload.state).to eq 'settling'
+        end
+
+        it 'should not change payment_source state' do
+          expect(payment.reload.state).to eq 'pending'
+        end
+      end
+    end
+
+    describe '#settle' do
+
+      before do
+        gateway.update(auto_capture: false)
+        complete_order!
+      end
+
+      context 'settles authorized amount' do
+
+        it 'does not update Order payment_state' do
+          expect(order.payment_state).to eq 'balance_due'
+          payment.reload.settle!
+          expect(order.reload.payment_state).to eq 'balance_due'
+        end
+
+        it 'updates Payment state' do
+          expect(payment.state).to eq 'pending'
+          payment.reload.settle!
+          expect(payment.state).to eq 'processing'
+        end
+
+        it 'submits Transaction for settlement' do
+          expect(gateway.provider::Transaction.find(payment.response_code).status).to eq 'authorized'
+          payment.reload.settle!
+          expect(gateway.provider::Transaction.find(payment.response_code).status).to eq 'submitted_for_settlement'
+        end
+
+        it 'prepares Checkout for status updating' do
+          payment.reload.settle!
+          expect(Spree::BraintreeCheckout.not_in_state(Spree::BraintreeCheckout::FINAL_STATES).count).to eq 1
+        end
+
+      end
+    end
+
+    describe '#credit' do
+      let(:refund) { gateway.credit(1273, payment_source.reload.transaction_id, {}) }
+      let(:refund_partially) { gateway.credit(73, payment_source.reload.transaction_id, {}) }
+      let!(:prepare_gateway) { gateway.preferred_3dsecure = false }
+
+      context 'with refundable state' do
+        before do
+          payment.update(braintree_nonce: 'fake-paypal-one-time-nonce')
+          complete_order!
+        end
+
+        it 'should be a success' do
+          expect(refund.success?).to be true
+          expect(refund.transaction.amount).to eq 12.73
+        end
+
+        it 'should be possible to refund partially' do
+          expect(refund_partially.success?).to be true
+          expect(refund_partially.transaction.amount).to eq 0.73
+        end
+      end
+
+      context 'with unrefundable state' do
+        before do
+          complete_order!
+        end
+
+        it 'should not be a success' do
+          expect(refund.success?).to be false
+        end
+      end
+    end
   end
   #
   # context 'with invalid credentials' do
