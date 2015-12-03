@@ -12,6 +12,7 @@ module Spree
 
     def disable_hosted_gateways
       Spree::Gateway::BraintreeVzeroHostedFields.update_all(active: false)
+      Spree::Gateway::BraintreeVzeroDropInUI.where.not(id: id).update_all(active: false)
     end
   end
 end
