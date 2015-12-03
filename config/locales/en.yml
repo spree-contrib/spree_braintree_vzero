@@ -33,9 +33,11 @@ en:
     dropin_checkout_form_id: DropinUI Checkout Form
     dropin_container: DropinUI Container
     dropin_error_messages_container_id: DropinUI Error Messages Container
+    how_paypal_works: How PayPal works?
     merchant_id: Merchant
     pass_billing_and_shipping_address: Pass Billing and Shipping Address
     private_key: Private Key
     public_key: Public Key
     store_payments_in_vault: Store Payments In Vault
     settle: Settle
+    what_is_paypal: What is PayPal?
