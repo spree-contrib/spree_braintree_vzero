@@ -68,7 +68,7 @@
         <h1 class="panel-title"><%= Spree.t(:advanced_settings)%></h1>
       </div>
 
-      <div class="panel-body collapsed" id="advanced-preferences">
+      <div class="panel-body" id="advanced-preferences">
         <% unless @object.new_record? %>
           <%= braintree_advanced_preference_fields(@object, f) %>
         <% end %>
