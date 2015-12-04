@@ -65,10 +65,18 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
       end
 
       context 'with advanced fraud tool enabled' do
-        let (:gateway) { create(:vzero_dropin_with_advanced_fraud_tools) }
+        before do
+          gateway.preferences[:advanced_fraud_data] = true
+          payment_source = create(:braintree_checkout_with_fraud_data)
+        end
 
         it 'returns success' do
           expect(purchase).to be_success
+        end
+
+        it 'returns fraud data' do
+          risk_data = purchase.transaction.risk_data
+          expect(risk_data.id.present? && risk_data.decision.present?).to be true
         end
       end
 
@@ -199,7 +207,7 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
       end
 
     end
-  
+
     describe '#void' do
 
       let(:void) { gateway.void(payment_source.reload.transaction_id, {}) }

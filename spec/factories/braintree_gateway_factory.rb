@@ -31,11 +31,6 @@ FactoryGirl.define do
       name 'Braintree Vzero Hosted Fields'
     end
 
-    factory :vzero_dropin_with_advanced_fraud_tools, class: Spree::Gateway::BraintreeVzeroDropInUI do
-      name 'Braintree Vzero Dropin with Advanced Fraud Tools'
-      preferences {{advanced_fraud_tools: true}}
-    end
-
     factory :vzero_hosted_fields_gateway_2, class: Spree::Gateway::BraintreeVzeroHostedFields do
       name 'Braintree Vzero Hosted Fields 2'
       active false
