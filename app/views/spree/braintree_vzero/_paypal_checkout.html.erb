@@ -1,7 +1,7 @@
 <% if (payment_method = Spree::PaymentMethod.where(type: 'Spree::Gateway::BraintreeVzeroPaypalExpress', active: true).last).try(:preferred_paypal_display_on_cart) %>
-  <div id="paypal-container" class="btn">
+  <button id="paypal-container" class="braintree-paypal-button">
     <input type='hidden' name='paypal[payment_method_id]' value='<%= payment_method.id %>'>
-  </div>
+  </button>
 
   <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
   <script src="https://js.braintreegateway.com/v1/braintree-data.js" async=true></script>
