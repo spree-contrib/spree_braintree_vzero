@@ -75,6 +75,10 @@ Spree::Order.class_eval do
       state == 'confirm'
   end
 
+  def paid_with_braintree?
+    payments.valid.map(&:payment_method).compact.any? { |p| p.is_a?(Spree::Gateway::BraintreeVzeroBase) }
+  end
+
   def paid_with_paypal_express?
     payments.valid.map(&:payment_method).compact.any? { |p| p.is_a?(Spree::Gateway::BraintreeVzeroPaypalExpress) }
   end

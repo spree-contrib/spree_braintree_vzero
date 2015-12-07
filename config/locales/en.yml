@@ -19,6 +19,8 @@ en:
   spree:
     3dsecure: 3D Secure
     admin:
+      risk_id: Braintree Risk ID
+      risk_decision: Braintree Risk Decision
       vaulted_payments:
         credit_card: "%{card_type} ending with %{last_4}"
         paypal: "Paypal %{email}"
