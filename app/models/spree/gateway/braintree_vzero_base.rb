@@ -7,6 +7,7 @@ module Spree
     preference :private_key, :string
     preference :server, :string, default: :sandbox
     preference :pass_billing_and_shipping_address, :boolean_select, default: false
+    preference :kount_merchant_id, :string
     preference :advanced_fraud_tools, :boolean_select, default: false
     preference :descriptor_name, :string
 

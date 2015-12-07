@@ -28,7 +28,9 @@ SpreeBraintreeVzero = {
 $(document).ready(function() {
   paymentMethodsSelect = $('#order_payments_attributes__braintree_token')
   paymentMethods = $('div[data-hook="checkout_payment_step"] input[type="radio"]').click(function (e) {
-    if($('#show-new-payment').length)
+    if(SpreeBraintreeVzero.paypal_express && (!SpreeBraintreeVzero.paymentMethodID || (SpreeBraintreeVzero.checkedPaymentMethod().val() == SpreeBraintreeVzero.paymentMethodID)))
+      SpreeBraintreeVzero.hideSaveAndContinue();
+    else if($('#show-new-payment').length)
       SpreeBraintreeVzero.showSaveAndContinue();
     else
       SpreeBraintreeVzero.updateSaveAndContinueVisibility();
@@ -41,7 +43,7 @@ $(document).ready(function() {
     paymentMethodsSelect.val('')
     SpreeBraintreeVzero.updateSaveAndContinueVisibility();
   });
-  $('[name="commit"]:not(#braintree-submit)').click(function (e) {
+  $('[name="commit"]:not(.braintree-submit)').click(function (e) {
     if($('#checkout-step-payment').length) {
       e.preventDefault();
       $('#checkout_form_payment').submit();

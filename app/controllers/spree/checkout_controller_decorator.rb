@@ -1,7 +1,7 @@
 Spree::CheckoutController.class_eval do
   after_action :allow_braintree_iframe
 
-  after_action :update_advanced_fraud_data,  only: :update, if: proc { params[:state].eql?('payment') }
+  after_action :update_source_data,  only: :update, if: proc { params[:state].eql?('payment') }
 
   private
 
@@ -16,12 +16,21 @@ Spree::CheckoutController.class_eval do
     redirect_to spree.checkout_registration_path(params)
   end
 
-  def update_advanced_fraud_data
+  def update_source_data
     return true unless current_order
     payment = current_order.payments.last
     return true unless payment
     source = payment.source
     return true unless source.is_a?(Spree::BraintreeCheckout)
+    update_advanced_fraud_data(source)
+    update_paypal_express_email(source)
+  end
+
+  def update_advanced_fraud_data(source)
     source.update(advanced_fraud_data: params[:device_data])
+  end
+
+  def update_paypal_express_email(source)
+    source.update(paypal_email: params[:paypal_email])
   end
 end

@@ -15,9 +15,12 @@ en:
       do_not_store: Do not store
       store_only_on_success: Story only on success
       store_all: Store all
+    checkout:
+      saved_payment_method: Saved payment method
 
   spree:
     3dsecure: 3D Secure
+    add_new_credit_card: Add new credit card
     admin:
       risk_id: Braintree Risk ID
       risk_decision: Braintree Risk Decision
@@ -27,14 +30,26 @@ en:
         cant_create_note: Can't create payment. No payment methods stored for this user.
     advanced_fraud_tools: Advanced Fraud Tools
     advanced_settings: Advanced settings
+    checkout_form_id: Checkout Form
+    cvv_placeholder: CVV Placeholder
+    cvv_selector: CVV Selector
     descriptor_name: Card or Bank Statement Name
     descriptor_name_information_box_text: "This field will be displayed on the consumer’s bank or card statement.<br/><br/>If this field is not enabled by Braintree, please call Sales Rep or Braintree Support to set this up."
-    dropin_checkout_form_id: DropinUI Checkout Form
-    dropin_container: DropinUI Container
+    dropin_container: Drop-in UI Container
     dropin_error_messages_container_id: DropinUI Error Messages Container
-    merchant_id: Merchant
+    error_messages_container_id: Error Messages Container
+    expiration_date_placeholder: Expiration Date Placeholder
+    expiration_date_selector: Expiration Date Selector
+    how_paypal_works: How PayPal works?
+    kount_merchant_id: Kount Merchant
+    merchant_id: Merchant ID
+    number_placeholder: Number Placeholder
+    numner_selector: Number Selector
     pass_billing_and_shipping_address: Pass Billing and Shipping Address
+    paypal_display_name: PayPal Display Name
+    paypal_display_on_cart: PayPal Display on Cart
     private_key: Private Key
     public_key: Public Key
     store_payments_in_vault: Store Payments In Vault
     settle: Settle
+    what_is_paypal: What is PayPal?
