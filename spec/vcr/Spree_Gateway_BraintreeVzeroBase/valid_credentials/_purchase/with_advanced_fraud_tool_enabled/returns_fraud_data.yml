@@ -43,11 +43,7 @@ http_interactions:
       message: Created
     headers:
       Date:
-<<<<<<< HEAD
-      - Mon, 07 Dec 2015 11:14:09 GMT
-=======
       - Mon, 07 Dec 2015 11:00:05 GMT
->>>>>>> 2-4-dev
       Content-Type:
       - application/xml; charset=utf-8
       Transfer-Encoding:
@@ -65,15 +61,6 @@ http_interactions:
       X-Ua-Compatible:
       - IE=Edge,chrome=1
       Etag:
-<<<<<<< HEAD
-      - '"929a7a10a52d806658a16d08353bc6ff"'
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      X-Request-Id:
-      - 8884b906e049f408c96afaf49daf584b
-      X-Runtime:
-      - '2.348270'
-=======
       - '"2d69942e029667198ab7a87ad9bafa3a"'
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -81,7 +68,6 @@ http_interactions:
       - 73aa11b674f0bb799dbca3b48664c967
       X-Runtime:
       - '1.664398'
->>>>>>> 2-4-dev
       X-Frame-Options:
       - SAMEORIGIN
       Strict-Transport-Security:
@@ -89,41 +75,6 @@ http_interactions:
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-<<<<<<< HEAD
-        H4sIAAFqZVYAA+RYS2/jNhC+768wfKdleZ11EigKCrRFCrSL7nbTBXoJaGls
-        cS2RKh+OnV/foUS9IirJpcUCvVkzH4fDmeHMR0e3pyKfHUEqJvjNPFws5zPg
-        iUgZ39/M77/8TC7nt/G7SEvKFU00ouJ3s1nE0nizzj7wdRTgTytRmmqjYmW2
-        BdMa0oedkA8KtM6hAK6jwAEsVp9LiBXNIQqqn1aWGClx5zNhShB0AOKf7j9H
-        wVhswbQQhut4tVwsl1HgvqyiAJlklGtCk8QKCXqnSioPSuTGeq9U+SREFPiA
-        1oCQKUj78TncXF2sPlyu8IitsHJUAsXzEapn1vmbeYqfmhUwR3/CCxKuyHLz
-        JQyvw/X1cvMXHqFdUK03Zfr29Ve4vlvgAqW0QPftR5WJGWf5zVxLA/PACXdM
-        Kk04LcCjzOm0LhFFSfnZo4GCstwjf4StYtpnq8wE98l39PRcavPcnSrasjzH
-        AvyPT6i0BMCCSFMJSvlCcNLAU5uJSUguEpoz7TMvYY/154uTwKuR18V9tQ6X
-        myjoixq3sUjlefpUtdquIDQvM7p6E+r9ayhuMCksGSeslyM82s7wlIwT1WmU
-        K3YqJT0PlBjPXnfxGcH7qxmGo+smz1b4jFOjMyHZ0+vme2a3VCeZF5Oxsvxf
-        luQLBfLd1GI/O64/kh2DPFWuFo6KgJRCEoxRiUMAvEercL2jD9HxbzhpXgQ0
-        JoZZewb6pbbyIqY6xvE43n8stNA9jodHekbNN6irHCeOGic2KqVIcDeMQ3M7
-        aAWvLG1WF18//oq95yXQ0MrQlXBph/GUdmKlxgqOfyhRc4TUu7pCVKFNU2Y9
-        weCPYaOzHgVLbIJ2mHhcgbWzBTmOiLE0AHepR/wEStMTqUmGVwUnKMpmmm+F
-        yIHyebyjubIEpwU07AFPQRIqU1fiWhzAdwe3jMfrZbi6vLTNlvf7yDoOLy/D
-        KHAf7qqgSVLRqT+Zolgr7XfTKkom61QWgussDldRMBKOsGegEonJajkAV1K3
-        r5vcxDaaiiDe/9HN807aeZmJvAq2v32wgu6BGJnHmdalug4CqrBFq8VWUsbt
-        tXH1vsC+GZT0bDv3QwFYq+lDLvYiOOL5FyXf3wI/Mim4BdwoytOtOCFfbe27
-        XiehpMjtPgpbfvXvWpMBzXWGHkN8zw9cPPIo6MlqUApbpjt9/elURmLisAb3
-        JrcMrod6rmkHgeWlOOs6aE/m/KVnKfIeohG48CllsBXiKOOHDjOQDlur2BGr
-        pTyB2G43ljZxEqlJKqLcbd3JapDh7G8D7h6hGCPPsBOPrpS9oMALQVR6mLg4
-        rd4RxOHFce8NkjGsM3keEIB2eFYIQEMuI/a2IdFGRVG+kXy3+NaCe8d0/KL/
-        tKkQU6+TOkIKSe43kzOjnhacphgneOJnpPmq4fTWzR5lUQKbFMS0ZOjOWF4f
-        Nhif9l8OwFteet9POFqJK5i6++fUzwjNViWSlZOMsadvu3VFh0mJDEWkBEkZ
-        sZH19vUBEt2S2otFl5/tY0cgwWnnobspU9XV9eqgtiKalj3ReacebNgrx74N
-        jSKVtC91PNfEbW719RTEpzeHsVXM+dGO7R3A1MC124pHUmdzpMUwbI1UNZtP
-        QeObVTXdeKDy56b3FPBvP8SM/px4IxxONgA4haTfDfsswkpFAuszaJLEw/Qx
-        IxNntycvjQZfabjxSRhHQmrqp5WlDHW3fbDdNgqmQENK1zvokPn1Wd0k6HVb
-        FQ98zVZLFiVTB5tl2r7Y4ve/3/24vLu723xdfWr+tqpuR8Lsv18NC7Wl7SRV
-        WAeWIp0hASF4bW09A4ZkJ4aZGDSl+N0/AAAA//8DAMyF+9ZhEwAA
-    http_version:
-  recorded_at: Mon, 07 Dec 2015 11:14:12 GMT
-=======
         H4sIALVmZVYAA+RYS2/jNhC+51cYvjOSnJc3UBQU2BbtIUGb3RRFLwEljS3G
         EqmSlGPvr9+hRL0iKsmlD6A3a+bjkPPgzEeHt4ciX+xBKib4zTI49ZcL4IlI
         Gd/eLB+//kTWy9voJNSSckUTjajoZLEIWRo9vxxX2+fQw59GojTVlYpUFRdM
@@ -157,5 +108,4 @@ http_interactions:
         JBsxzsSoKUUn3wEAAP//AwDLWdA7RRMAAA==
     http_version:
   recorded_at: Mon, 07 Dec 2015 11:00:05 GMT
->>>>>>> 2-4-dev
 recorded_with: VCR 3.0.0
