@@ -1,12 +1,14 @@
 <% if (payment_method = Spree::PaymentMethod.where(type: 'Spree::Gateway::BraintreeVzeroPaypalExpress', active: true).last).try(:preferred_paypal_display_on_cart) %>
   <button id="paypal-container" class="braintree-paypal-button">
     <input type='hidden' name='paypal[payment_method_id]' value='<%= payment_method.id %>'>
+    <img src="https://www.paypalobjects.com/en_US/i/btn/btn_xpressCheckout.gif" id="btnOpenFlow">
   </button>
 
   <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
   <script src="https://js.braintreegateway.com/v1/braintree-data.js" async=true></script>
   <script type="text/javascript">
     var checkoutFormId = '#update-cart';
+    var checkout;
 
     braintree.setup("<%= payment_method.client_token(current_order) %>", "paypal", {
       container: "paypal-container",
@@ -18,7 +20,11 @@
       enableBillingAddress: true,
       displayName: "<%= payment_method.preferred_paypal_display_name %>",
 
+      onReady: function (integration)  { checkout = integration; },
+      headless: true,
+
       onPaymentMethodReceived: function (result) {
+        $('#paypal-container').hide()
         phone = result.details.phone
 
         if(shippingAddress = result.details.shippingAddress) {
@@ -59,9 +65,15 @@
       var BraintreeMerchantId = "<%= payment_method.preferred_merchant_id %>";
 
       window.onBraintreeDataLoad = function () {
+        if("<%= payment_method.preferred_kount_merchant_id %>".length)
+          var env = BraintreeData.environments[BraintreeEnv]
+        else
+          var env = BraintreeData.environments[BraintreeEnv].withId("<%= payment_method.preferred_kount_merchant_id %>")
         BraintreeData.setup(BraintreeMerchantId, 'update-cart', BraintreeData.environments[BraintreeEnv]);
       }
     }
+
+    document.querySelector('#btnOpenFlow').addEventListener('click', function () { checkout.paypal.initAuthFlow(); }, false);
   </script>
 <% else %>
   &nbsp;
