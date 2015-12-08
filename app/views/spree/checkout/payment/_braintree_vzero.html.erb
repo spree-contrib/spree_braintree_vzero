@@ -5,7 +5,9 @@
   <% if display_payment_methods_list %>
     <% if @methods.any? %>
       <%= label_tag 'saved_payment_methods', I18n.t('braintree.checkout.saved_payment_method') %>
+      <br/>
       <%= select_tag 'order[payments_attributes][][braintree_token]', options_from_braintree_payments(@methods), class: 'form-control' %>
+      <br/><br/>
     <% end %>
 
     <div class="radio">
@@ -19,15 +21,15 @@
     <% if payment_method_type.eql?('custom') %>
       <%= label_tag 'card_number_label', payment_method.preferred_number_placeholder %>
       <span class="required">*</span><br />
-      <p id="hosted-fields-number" class="form-control"></p>
+      <div id="hosted-fields-number" class="hosted-fields-input"></div>
 
       <%= label_tag 'cvv_label', payment_method.preferred_cvv_placeholder %>
       <span class="required">*</span><br />
-      <p id="hosted-fields-cvv" class="form-control"></p>
+      <p id="hosted-fields-cvv" class="hosted-fields-input"></p>
 
       <%= label_tag 'expiration_date_label', payment_method.preferred_expiration_date_placeholder %>
       <span class="required">*</span><br />
-      <p id="hosted-fields-expiration-date" class="form-control"></p>
+      <p id="hosted-fields-expiration-date" class="hosted-fields-input"></p>
     <% end %>
   </div>
   <%= submit_tag Spree.t(:save_and_continue), class: 'btn btn-lg btn-success primary new-braintree-payment-method braintree-submit', style: 'display: none;' %>

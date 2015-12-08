@@ -13,3 +13,9 @@ the installer will append this file to the app vendored assets here: 'vendor/ass
   background-color: transparent;
   border: none
 }
+
+.hosted-fields-input {
+    border: 1px solid #d9d9db;
+    padding: 5px;
+    height: 14px;
+}
