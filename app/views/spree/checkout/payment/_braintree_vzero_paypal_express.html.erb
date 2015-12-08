@@ -33,8 +33,8 @@
           $(checkoutFormId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + result.nonce + ">");
           $(checkoutFormId).append("<input type='hidden' name='paypal_email' value=" + result.details.email + ">");
           paymentMethodSelect = $("#order_payments_attributes__braintree_token")
-          if(paymentMethodSelect.length)
-            paymentMethodSelect.val("");
+          if(paymentMethodSelect.length) paymentMethodSelect.val("");
+          $("#paypal-submit").prop("disabled", true);
           $(checkoutFormId).submit();
         } else {
           $(errorMessagesContainer).prepend("<div class='alert alert-error'><%= I18n.t(:gateway_error, scope: 'braintree.error') %>></div>")
