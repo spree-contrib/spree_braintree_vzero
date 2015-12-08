@@ -134,7 +134,6 @@ module Spree
       end
     end
 
-
     def add_order_errors(response, order)
       response.errors.each { |e| order.errors.add(:base, I18n.t(e.message), scope: 'braintree.error') }
       return unless response.errors.size.zero? && response.transaction.try(:gateway_rejection_reason)
