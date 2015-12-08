@@ -19,3 +19,7 @@ the installer will append this file to the app vendored assets here: 'vendor/ass
     padding: 5px;
     height: 14px;
 }
+
+img#paypal-logo {
+  vertical-align: middle;
+}
