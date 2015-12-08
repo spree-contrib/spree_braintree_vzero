@@ -55,7 +55,7 @@
       }
     }
 
-    document.querySelector("#paypal-submit").addEventListener("click", function () { checkout.paypal.initAuthFlow(); }, false);
+    document.querySelector("#paypal-submit").addEventListener("click", function (e) { e.preventDefault(); checkout.paypal.initAuthFlow(); }, false);
   });
 </script>
 <hr/>
