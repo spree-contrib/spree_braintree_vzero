@@ -1,6 +1,6 @@
 Deface::Override.new(
   virtual_path: 'spree/checkout/_payment',
-  name: 'Removes Paypal Express payment method from checkout',
+  name: 'Modifies Paypal Express payment method on checkout',
   surround: 'erb[loud]:contains("Spree.t(method.name, :scope => :payment_methods, :default => method.name)")',
   text: %Q{
     <% if method.is_a?(Spree::Gateway::BraintreeVzeroPaypalExpress) %>
