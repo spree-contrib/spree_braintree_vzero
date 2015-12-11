@@ -8,7 +8,7 @@ Deface::Override.new(
               <strong><%= Spree.t("admin.risk_id") %>:</strong>
             </td>
             <td id="risk_id">
-              <%= @order.payments.valid.take.try(:source).risk_id %>
+              <%= @order.payments.valid.take.try(:source).try(:risk_id) %>
             </td>
           </tr>
           <tr>
@@ -16,7 +16,7 @@ Deface::Override.new(
               <strong><%= Spree.t("admin.risk_decision") %>:</strong>
             </td>
             <td id="risk_id">
-              <%= @order.payments.valid.take.try(:source).risk_decision %>
+              <%= @order.payments.valid.take.try(:source).try(:risk_decision) %>
             </td>
           </tr>
         <% end %>'

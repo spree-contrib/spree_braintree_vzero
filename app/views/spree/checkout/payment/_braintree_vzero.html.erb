@@ -15,7 +15,7 @@
     </div>
   <% end %>
 
-  <div id="payment-form" class="<%= display_payment_methods_list ? 'new-braintree-payment-method' : '' %>" style="<%= display_payment_methods_list ? 'display: none;' : '' %>">
+  <div class="<%= display_payment_methods_list ? 'new-braintree-payment-method' : '' %>" style="<%= display_payment_methods_list ? 'display: none;' : '' %>">
     <% if payment_method_type.eql?('custom') %>
       <%= label_tag 'card_number_label', payment_method.preferred_number_placeholder %>
       <span class="required">*</span><br />
@@ -28,6 +28,8 @@
       <%= label_tag 'expiration_date_label', payment_method.preferred_expiration_date_placeholder %>
       <span class="required">*</span><br />
       <p id="hosted-fields-expiration-date" class="form-control"></p>
+    <% else %>
+      <div id="payment-form"/>
     <% end %>
   </div>
   <%= submit_tag Spree.t(:save_and_continue), class: 'btn btn-lg btn-success primary new-braintree-payment-method braintree-submit', style: 'display: none;' %>
@@ -42,16 +44,21 @@
     var checkoutFormId = <%= payment_method.preferred_checkout_form_id %>;
     var errorMessagesContainer = <%= payment_method.preferred_error_messages_container_id %>;
 
+    <% if payment_method_type.eql?('dropin') %>
+      var container = "<%= payment_method.preferred_dropin_container %>";
+      $('#' + container).empty();
+    <% end %>
+
     SpreeBraintreeVzero.advancedFraudTools = <%= payment_method.preferred_advanced_fraud_tools %>;
     SpreeBraintreeVzero.threeDSecure = <%= payment_method.preferred_3dsecure %>;
     SpreeBraintreeVzero.paypal_express = false;
 
     braintree.setup(clientToken, '<%= payment_method_type %>', {
       <% if payment_method_type.eql?('dropin') %>
-        container: "<%= payment_method.preferred_dropin_container %>",
+        container: container,
 
         paypal: {
-          singleUse: <%= payment_method.preferred_store_payments_in_vault.eql?(:do_not_store) %>,
+          singleUse: <%= payment_method.preferred_store_payments_in_vault.eql?('do_not_store') %>,
           amount: <%= current_order.total %>,
           currency: "<%= current_currency %>"
         },
@@ -106,7 +113,6 @@
       },
 
       onReady: function (integration) {
-        SpreeBraintreeVzero.advancedFraudTools = integration;
         <%= render partial: 'spree/checkout/payment/braintree_vzero/dropin_on_ready_callback', formats: [:js] %>
       },
 

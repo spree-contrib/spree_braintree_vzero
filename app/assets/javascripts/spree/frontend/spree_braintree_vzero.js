@@ -46,6 +46,8 @@ $(document).ready(function() {
   $('[name="commit"]:not(.braintree-submit)').click(function (e) {
     if($('#checkout-step-payment').length) {
       e.preventDefault();
+      if(!SpreeBraintreeVzero.paymentMethodID || (SpreeBraintreeVzero.checkedPaymentMethod().val() != SpreeBraintreeVzero.paymentMethodID))
+        paymentMethodsSelect.val('')
       $('#checkout_form_payment').submit();
     }
   })
