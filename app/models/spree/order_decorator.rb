@@ -95,10 +95,10 @@ Spree::Order.class_eval do
   private
 
   def prepare_address_hash(hash)
-    country_id = Spree::Country.find_by(iso: hash.delete(:country)).id
+    country_id = Spree::Country.find_by(iso: hash.delete(:country)).try(:id)
 
     hash[:country_id] = country_id
-    hash[:state_id] = Spree::State.find_by(abbr: hash.delete(:state), country_id: country_id).id
+    hash[:state_id] = Spree::State.find_by(abbr: hash.delete(:state), country_id: country_id).try(:id)
 
     return hash if hash[:full_name].blank?
 
