@@ -1,3 +1,4 @@
+<% shipping_address = @order.shipping_address %>
 <div id="paypal-container">
   <span class="btn btn-lg btn-success primary new-braintree-payment-method braintree-submit" id="paypal-submit" style="display: none;">
   <%= Spree.t(:save_and_continue) %>
@@ -21,9 +22,19 @@
       amount: <%= @order.total %>,
       currency: "<%= current_currency %>",
       locale: "en_us",
-      enableShippingAddress: true,
-      enableBillingAddress: true,
       displayName: "<%= payment_method.preferred_paypal_display_name %>",
+      enableShippingAddress: true,
+      shippingAddressOverride: {
+        recipientName: '<%= "#{shipping_address.firstname} #{shipping_address.lastname}" %>',
+        streetAddress: '<%= shipping_address.address1 %>',
+        extendedAddress: '<%= shipping_address.address2 %>',
+        locality: '<%= shipping_address.city %>',
+        countryCodeAlpha2: '<%= shipping_address.country.try(:iso) %>',
+        postalCode: '<%= shipping_address.zipcode %>',
+        region: '<%= shipping_address.state.try(:abbr) %>',
+        phone: '<%= shipping_address.phone %>',
+        editable: false
+      },
 
       onReady: function (integration)  { checkout = integration; },
       headless: true,
