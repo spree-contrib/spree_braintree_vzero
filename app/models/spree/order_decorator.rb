@@ -98,7 +98,10 @@ Spree::Order.class_eval do
     country_id = Spree::Country.find_by(iso: hash.delete(:country)).try(:id)
 
     hash[:country_id] = country_id
-    hash[:state_id] = Spree::State.find_by(abbr: hash.delete(:state), country_id: country_id).try(:id)
+    state_param = hash.delete(:state)
+    state = Spree::State.where('spree_states.abbr = :abbr OR lower(spree_states.name) = :name',
+                               abbr: state_param, name: state_param.downcase).find_by(country_id: country_id)
+    hash[:state_id] = state.try(:id)
 
     return hash if hash[:full_name].blank?
 
