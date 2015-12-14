@@ -30,6 +30,7 @@ Spree::Order.class_eval do
       existing_card_id = @updating_params[:order] ? @updating_params[:order].delete(:existing_card) : nil
 
       attributes = @updating_params[:order] ? @updating_params[:order].permit(permitted_params).delete_if { |_k, v| v.nil? } : {}
+      payment_attributes = attributes[:payments_attributes].first if attributes[:payments_attributes].present?
 
       if existing_card_id.present?
         credit_card = Spree::CreditCard.find existing_card_id
@@ -39,17 +40,30 @@ Spree::Order.class_eval do
 
         credit_card.verification_value = params[:cvc_confirm] if params[:cvc_confirm].present?
 
-        attributes[:payments_attributes].first[:source] = credit_card
-        attributes[:payments_attributes].first[:payment_method_id] = credit_card.payment_method_id
-        attributes[:payments_attributes].first.delete :source_attributes
+        payment_attributes[:source] = credit_card
+        payment_attributes[:payment_method_id] = credit_card.payment_method_id
+        payment_attributes.delete :source_attributes
       end
 
-      if attributes[:payments_attributes].present? && (attributes[:payments_attributes].first[:braintree_token].present? || attributes[:payments_attributes].first[:braintree_nonce].present?)
-        attributes[:payments_attributes].first[:source] = Spree::BraintreeCheckout.create!
-      end
+      if payment_attributes.present?
+        payment_attributes[:request_env] = request_env
 
-      if attributes[:payments_attributes]
-        attributes[:payments_attributes].first[:request_env] = request_env
+        if (token = payment_attributes[:braintree_token]).present?
+          gateway = Spree::PaymentMethod.find(payment_attributes[:payment_method_id])
+          vault_data = gateway.vault_data(token)
+          paypal_email = vault_data.try(:email)
+          card_type = vault_data.try(:card_type)
+          last_4 = vault_data.try(:last_4)
+          payment_attributes[:source] = Spree::BraintreeCheckout.create!(
+                                                              paypal_email: paypal_email,
+                                                              braintree_last_digits: last_4,
+                                                              braintree_card_type: card_type)
+        elsif (payment_attributes[:braintree_nonce].present?)
+          payment_attributes[:source] = Spree::BraintreeCheckout.create!(
+                                                              paypal_email: params[:paypal_email],
+                                                              braintree_last_digits: params[:braintree_last_two],
+                                                              braintree_card_type: params[:braintree_card_type])
+        end
       end
 
       success = update_attributes(attributes)
@@ -74,7 +88,7 @@ Spree::Order.class_eval do
       payments.valid.map(&:payment_method).compact.any? { |p| p.kind_of?(Spree::Gateway::BraintreeVzeroBase) } ||
       state == 'confirm'
   end
-  
+
   def paid_with_braintree?
     payments.valid.map(&:payment_method).compact.any? { |p| p.is_a?(Spree::Gateway::BraintreeVzeroBase) }
   end
