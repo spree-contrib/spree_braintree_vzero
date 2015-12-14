@@ -95,6 +95,7 @@ Spree::Order.class_eval do
   private
 
   def prepare_address_hash(hash)
+    hash.delete_if { |e| hash[e].eql?('undefined') }
     country_id = Spree::Country.find_by(iso: hash.delete(:country)).try(:id)
 
     hash[:country_id] = country_id
