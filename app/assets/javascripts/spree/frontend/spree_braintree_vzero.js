@@ -54,5 +54,9 @@ $(document).ready(function() {
       $('#checkout_form_payment').submit();
     }
   });
+  $('#paypal-submit').click(function (e) {
+    e.preventDefault();
+    $("#paypal-submit").prop("disabled", true);
+  });
   SpreeBraintreeVzero.setSaveAndContinueVisibility();
 })
