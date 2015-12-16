@@ -1,5 +1,6 @@
 <% display_payment_methods_list = !payment_method.preferred_3dsecure && (@methods = payment_method.customer_payment_methods(@order)).any? %>
 <% payment_method_type = payment_method.is_a?(Spree::Gateway::BraintreeVzeroDropInUI) ? 'dropin' : 'custom' %>
+<% shipping_address = @order.shipping_address %>
 
 <div class="well clearfix %>">
   <% if display_payment_methods_list %>
@@ -60,9 +61,21 @@
         container: container,
 
         paypal: {
-          singleUse: <%= payment_method.preferred_store_payments_in_vault.eql?(:do_not_store) %>,
+          singleUse: <%= payment_method.preferred_store_payments_in_vault.eql?('do_not_store') %>,
           amount: <%= current_order.total %>,
-          currency: "<%= current_currency %>"
+          currency: "<%= current_currency %>",
+          enableShippingAddress: true,
+          shippingAddressOverride: {
+            recipientName: '<%= "#{shipping_address.firstname} #{shipping_address.lastname}" %>',
+            streetAddress: '<%= shipping_address.address1 %>',
+            extendedAddress: '<%= shipping_address.address2 %>',
+            locality: '<%= shipping_address.city %>',
+            countryCodeAlpha2: '<%= shipping_address.country.try(:iso) %>',
+            postalCode: '<%= shipping_address.zipcode %>',
+            region: '<%= shipping_address.state.try(:abbr) %>',
+            phone: '<%= shipping_address.phone %>',
+            editable: false
+          }
         },
       <% else %>
         id: checkoutFormId,
