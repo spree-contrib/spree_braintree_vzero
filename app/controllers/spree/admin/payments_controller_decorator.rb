@@ -6,7 +6,7 @@ Spree::Admin::PaymentsController.class_eval do
     if @payment.payment_method.source_required?
       if params[:card].present? and params[:card] != 'new'
         @payment.source = @payment.payment_method.payment_source_class.find_by_id(params[:card])
-      elsif @payment.payment_source.is_a?(Spree::Gateway::BraintreeVzeroDropInUI)
+      elsif @payment.payment_source.kind_of?(Spree::Gateway::BraintreeVzeroBase)
         @payment.braintree_token = params[:payment_method_token]
         @payment.source = Spree::BraintreeCheckout.create!
       end

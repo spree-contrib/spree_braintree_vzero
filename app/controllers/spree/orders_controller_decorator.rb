@@ -40,9 +40,12 @@ Spree::OrdersController.class_eval do
   end
 
   def manage_paypal_addresses
-    return false unless params[:order][:ship_address].present? && params[:order][:bill_address].present?
+    # addresses need to be cleared for restarted checkout orders
+    current_order.ship_address_id = nil
+    current_order.bill_address_id = nil
 
     %w(ship_address bill_address).each do |address_type|
+      next if params[:order][address_type].blank?
       current_order.save_paypal_address(address_type, address_params(address_type))
     end
 
