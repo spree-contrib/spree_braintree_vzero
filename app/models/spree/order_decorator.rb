@@ -42,14 +42,14 @@ Spree::Order.class_eval do
 
         credit_card.verification_value = params[:cvc_confirm] if params[:cvc_confirm].present?
 
-        payment_attributes[:source] = credit_card
-        payment_attributes[:payment_method_id] = credit_card.payment_method_id
-        payment_attributes.delete :source_attributes
+        attributes[:payments_attributes].first[:source] = credit_card
+        attributes[:payments_attributes].first[:payment_method_id] = credit_card.payment_method_id
+        attributes[:payments_attributes].first.delete :source_attributes
       end
 
       if payment_attributes.present?
         payment_attributes[:request_env] = request_env
-        
+
         if (token = payment_attributes[:braintree_token]).present?
           payment_attributes[:source] = Spree::BraintreeCheckout.create_from_token(token, payment_attributes[:payment_method_id])
         elsif (payment_attributes[:braintree_nonce].present?)
