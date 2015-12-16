@@ -101,6 +101,20 @@
       <% end %>
 
       onPaymentMethodReceived: function (result) {
+        function submitWithAttributes() {
+          switch (result.type) {
+            case "CreditCard":
+              $(checkoutFormId).append("<input type='hidden' name='braintree_last_two' value=" + result.details.lastTwo + ">");
+              $(checkoutFormId).append("<input type='hidden' name='braintree_card_type' value=" + result.details.cardType + ">");
+              break;
+            case "PayPalAccount":
+              $(checkoutFormId).append("<input type='hidden' name='paypal_email' value=" + (result.details.email)+ ">");
+              break;
+          }
+          $(checkoutFormId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + result.nonce + ">");
+          $(checkoutFormId).submit();
+        }
+
         if (SpreeBraintreeVzero.threeDSecure && result.type == "CreditCard") {
           var client = new braintree.api.Client({
             clientToken: clientToken
@@ -111,17 +125,13 @@
             creditCard: result.nonce
           }, function (error, response) {
             if (!error) {
-              $(checkoutFormId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + response.nonce + ">");
-              $(checkoutFormId).submit();
+              submitWithAttributes();
             } else {
               $(errorMessagesContainer).prepend("<div class='alert alert-error'><%= I18n.t(:gateway_error, scope: 'braintree.error') %>></div>")
             }
           });
-
-
         } else {
-          $(checkoutFormId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + result.nonce + ">");
-          $(checkoutFormId).submit();
+            submitWithAttributes();
         }
       },
 

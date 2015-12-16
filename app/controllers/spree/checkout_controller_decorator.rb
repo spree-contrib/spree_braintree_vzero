@@ -23,14 +23,9 @@ Spree::CheckoutController.class_eval do
     source = payment.source
     return true unless source.is_a?(Spree::BraintreeCheckout)
     update_advanced_fraud_data(source)
-    update_paypal_express_email(source)
   end
 
   def update_advanced_fraud_data(source)
     source.update(advanced_fraud_data: params[:device_data])
-  end
-
-  def update_paypal_express_email(source)
-    source.update(paypal_email: params[:paypal_email])
   end
 end

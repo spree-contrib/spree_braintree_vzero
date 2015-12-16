@@ -32,6 +32,7 @@ Spree::Order.class_eval do
       existing_card_id = @updating_params[:order] ? @updating_params[:order].delete(:existing_card) : nil
 
       attributes = @updating_params[:order] ? @updating_params[:order].permit(permitted_params).delete_if { |_k, v| v.nil? } : {}
+      payment_attributes = attributes[:payments_attributes].first if attributes[:payments_attributes].present?
 
       if existing_card_id.present?
         credit_card = Spree::CreditCard.find existing_card_id
@@ -46,12 +47,14 @@ Spree::Order.class_eval do
         attributes[:payments_attributes].first.delete :source_attributes
       end
 
-      if attributes[:payments_attributes].present? && (attributes[:payments_attributes].first[:braintree_token].present? || attributes[:payments_attributes].first[:braintree_nonce].present?)
-        attributes[:payments_attributes].first[:source] = Spree::BraintreeCheckout.create!
-      end
+      if payment_attributes.present?
+        payment_attributes[:request_env] = request_env
 
-      if attributes[:payments_attributes]
-        attributes[:payments_attributes].first[:request_env] = request_env
+        if (token = payment_attributes[:braintree_token]).present?
+          payment_attributes[:source] = Spree::BraintreeCheckout.create_from_token(token, payment_attributes[:payment_method_id])
+        elsif (payment_attributes[:braintree_nonce].present?)
+          payment_attributes[:source] = Spree::BraintreeCheckout.create_from_params(params)
+        end
       end
 
       success = update_attributes(attributes)

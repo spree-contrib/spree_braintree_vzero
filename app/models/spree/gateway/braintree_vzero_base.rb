@@ -91,6 +91,10 @@ module Spree
       @utils.customer_payment_methods
     end
 
+    def vaulted_payment_method(token)
+      self.provider::PaymentMethod.find(token)
+    end
+
     private
 
     def sale(data, order, source = nil)

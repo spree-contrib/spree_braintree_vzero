@@ -39,6 +39,20 @@ describe Spree::CheckoutController, :vcr, type: :controller do
         put :update, params
         expect(order.reload.payments.last.source.advanced_fraud_data).to eq params[:device_data]
       end
+
+      it 'when nonce, credit card data in source should be updated from params' do
+        params[:order][:payments_attributes].first.delete('braintree_token')
+        params[:braintree_last_two] = '12'
+        put :update, params
+        expect(order.reload.payments.last.source.braintree_last_digits).to eq params[:braintree_last_two]
+      end
+
+      it 'when token, credit card data in source should be updated from Braintree Vault' do
+        token = params[:order][:payments_attributes].first['braintree_token']
+        vaulted_payment_method = braintree_payment_method.vaulted_payment_method(token)
+        put :update, params
+        expect(order.reload.payments.last.source.braintree_last_digits).to eq vaulted_payment_method.last_4
+      end
     end
 
     context 'braintree paypal express payment' do
