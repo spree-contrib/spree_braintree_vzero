@@ -47,22 +47,11 @@ Spree::Order.class_eval do
 
       if payment_attributes.present?
         payment_attributes[:request_env] = request_env
-
+        
         if (token = payment_attributes[:braintree_token]).present?
-          gateway = Spree::PaymentMethod.find(payment_attributes[:payment_method_id])
-          vault_data = gateway.vault_data(token)
-          paypal_email = vault_data.try(:email)
-          card_type = vault_data.try(:card_type)
-          last_4 = vault_data.try(:last_4)
-          payment_attributes[:source] = Spree::BraintreeCheckout.create!(
-                                                              paypal_email: paypal_email,
-                                                              braintree_last_digits: last_4,
-                                                              braintree_card_type: card_type)
+          payment_attributes[:source] = Spree::BraintreeCheckout.create_from_token(token, payment_attributes[:payment_method_id])
         elsif (payment_attributes[:braintree_nonce].present?)
-          payment_attributes[:source] = Spree::BraintreeCheckout.create!(
-                                                              paypal_email: params[:paypal_email],
-                                                              braintree_last_digits: params[:braintree_last_two],
-                                                              braintree_card_type: params[:braintree_card_type])
+          payment_attributes[:source] = Spree::BraintreeCheckout.create_from_params(params)
         end
       end
 
