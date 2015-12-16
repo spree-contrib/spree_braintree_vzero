@@ -31,6 +31,7 @@ en:
     advanced_fraud_tools: Advanced Fraud Tools
     advanced_settings: Advanced settings
     checkout_form_id: Checkout Form
+    cc_type: Type
     cvv_placeholder: CVV Placeholder
     cvv_selector: CVV Selector
     descriptor_name: Card or Bank Statement Name
