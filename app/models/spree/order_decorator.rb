@@ -1,12 +1,4 @@
 Spree::Order.class_eval do
-  checkout_flow do
-    go_to_state :address
-    go_to_state :delivery
-    go_to_state :payment, if: ->(order) { order.payment_required? }
-    go_to_state :confirm, if: ->(order) { order.confirmation_required? }
-    go_to_state :complete
-  end
-
   state_machine.before_transition to: :complete, do: :process_paypal_express_payments
 
   def save_paypal_address(type, address_hash)
@@ -76,7 +68,7 @@ Spree::Order.class_eval do
     Spree::Config[:always_include_confirm_step] ||
       payments.valid.map(&:payment_method).compact.any?(&:payment_profiles_supported?) ||
       # setting payment_profiles_supported? for braintree gateways would require few additional changes in payments profiles system
-      paid_with_braintree? || state == 'confirm'
+      (paid_with_braintree? && !paid_with_paypal_express?) || state == 'confirm'
   end
 
   def paid_with_braintree?
