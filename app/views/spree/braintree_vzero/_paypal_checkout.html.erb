@@ -25,6 +25,7 @@
 
       onPaymentMethodReceived: function (result) {
         $('#paypal-container').hide()
+        $('#checkout-link').prop("disabled", true);
         phone = result.details.phone
 
         if(shippingAddress = result.details.shippingAddress) {
