@@ -17,5 +17,5 @@
 <% end %>
 
 <% if @methods.count.zero? %>
-  <div class="alert alert-warning"><%= Spree.t('admin.vaulted_payments.cant_create_note') %></div>
+  <div class="errorExplanation"><%= Spree.t('admin.vaulted_payments.cant_create_note') %></div>
 <% end %>
