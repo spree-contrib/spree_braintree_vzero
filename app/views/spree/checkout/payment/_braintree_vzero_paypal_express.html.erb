@@ -1,7 +1,8 @@
+<% shipping_address = @order.shipping_address %>
 <div id="paypal-container">
-  <span class="btn btn-lg btn-success primary new-braintree-payment-method braintree-submit" id="paypal-submit" style="display: none;">
-  <%= Spree.t(:save_and_continue) %>
-</span>
+  <button class="btn btn-lg btn-success primary new-braintree-payment-method braintree-submit" id="paypal-submit" style="display: none;">
+    <%= Spree.t(:save_and_continue) %>
+  </button>
 </div>
 <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
 <script src="https://js.braintreegateway.com/v1/braintree-data.js" async=true></script>
@@ -21,11 +22,23 @@
       amount: <%= @order.total %>,
       currency: "<%= current_currency %>",
       locale: "en_us",
-      enableShippingAddress: true,
-      enableBillingAddress: true,
       displayName: "<%= payment_method.preferred_paypal_display_name %>",
+      enableShippingAddress: true,
+      shippingAddressOverride: {
+        recipientName: '<%= "#{shipping_address.firstname} #{shipping_address.lastname}" %>',
+        streetAddress: '<%= shipping_address.address1 %>',
+        extendedAddress: '<%= shipping_address.address2 %>',
+        locality: '<%= shipping_address.city %>',
+        countryCodeAlpha2: '<%= shipping_address.country.try(:iso) %>',
+        postalCode: '<%= shipping_address.zipcode %>',
+        region: '<%= shipping_address.state.try(:abbr) %>',
+        phone: '<%= shipping_address.phone %>',
+        editable: false
+      },
 
       onReady: function (integration)  { checkout = integration; },
+      onCancelled: function ()  { $("#paypal-submit").prop("disabled", false); },
+      onUnsupported: function ()  { $("#paypal-submit").prop("disabled", false); },
       headless: true,
 
       onPaymentMethodReceived: function (result) {
@@ -34,7 +47,6 @@
           $(checkoutFormId).append("<input type='hidden' name='paypal_email' value=" + result.details.email + ">");
           paymentMethodSelect = $("#order_payments_attributes__braintree_token")
           if(paymentMethodSelect.length) paymentMethodSelect.val("");
-          $("#paypal-submit").prop("disabled", true);
           $(checkoutFormId).submit();
         } else {
           $(errorMessagesContainer).prepend("<div class='alert alert-error'><%= I18n.t(:gateway_error, scope: 'braintree.error') %>></div>")

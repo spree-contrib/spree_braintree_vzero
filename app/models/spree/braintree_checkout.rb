@@ -10,6 +10,20 @@ module Spree
     has_one :payment, foreign_key: :source_id, inverse_of: :source
     has_one :order, through: :payment
 
+    def self.create_from_params(params)
+      create!(paypal_email: params[:paypal_email],
+                   braintree_last_digits: params[:braintree_last_two],
+                   braintree_card_type: params[:braintree_card_type])
+    end
+
+    def self.create_from_token(token, payment_method_id)
+      gateway = Spree::PaymentMethod.find(payment_method_id)
+      vaulted_payment_method = gateway.vaulted_payment_method(token)
+      create!(paypal_email: vaulted_payment_method.try(:email),
+                   braintree_last_digits: vaulted_payment_method.try(:last_4),
+                   braintree_card_type: vaulted_payment_method.try(:card_type))
+    end
+
     def self.update_states
       braintree = Gateway::BraintreeVzeroDropInUI.first.provider
       result = {changed: 0, unchanged: 0}

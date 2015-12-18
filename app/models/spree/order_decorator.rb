@@ -1,18 +1,12 @@
 Spree::Order.class_eval do
-  checkout_flow do
-    go_to_state :address
-    go_to_state :delivery
-    go_to_state :payment, if: ->(order) { order.payment_required? }
-    go_to_state :confirm, if: ->(order) { order.confirmation_required? }
-    go_to_state :complete
-  end
-
   state_machine.before_transition to: :complete, do: :process_paypal_express_payments
 
   def save_paypal_address(type, address_hash)
     return if address_hash.blank?
+    address = Spree::Address.new(prepare_address_hash(address_hash))
+    return unless address.save
 
-    update_column("#{type}_id", Spree::Address.create(prepare_address_hash(address_hash)).id)
+    update_column("#{type}_id", address.id)
   end
 
   def save_paypal_payment(options)
@@ -30,6 +24,7 @@ Spree::Order.class_eval do
       existing_card_id = @updating_params[:order] ? @updating_params[:order].delete(:existing_card) : nil
 
       attributes = @updating_params[:order] ? @updating_params[:order].permit(permitted_params).delete_if { |_k, v| v.nil? } : {}
+      payment_attributes = attributes[:payments_attributes].first if attributes[:payments_attributes].present?
 
       if existing_card_id.present?
         credit_card = Spree::CreditCard.find existing_card_id
@@ -44,12 +39,14 @@ Spree::Order.class_eval do
         attributes[:payments_attributes].first.delete :source_attributes
       end
 
-      if attributes[:payments_attributes].present? && (attributes[:payments_attributes].first[:braintree_token].present? || attributes[:payments_attributes].first[:braintree_nonce].present?)
-        attributes[:payments_attributes].first[:source] = Spree::BraintreeCheckout.create!
-      end
+      if payment_attributes.present?
+        payment_attributes[:request_env] = request_env
 
-      if attributes[:payments_attributes]
-        attributes[:payments_attributes].first[:request_env] = request_env
+        if (token = payment_attributes[:braintree_token]).present?
+          payment_attributes[:source] = Spree::BraintreeCheckout.create_from_token(token, payment_attributes[:payment_method_id])
+        elsif (payment_attributes[:braintree_nonce].present?)
+          payment_attributes[:source] = Spree::BraintreeCheckout.create_from_params(params)
+        end
       end
 
       success = update_attributes(attributes)
@@ -71,7 +68,7 @@ Spree::Order.class_eval do
     Spree::Config[:always_include_confirm_step] ||
       payments.valid.map(&:payment_method).compact.any?(&:payment_profiles_supported?) ||
       # setting payment_profiles_supported? for braintree gateways would require few additional changes in payments profiles system
-      paid_with_braintree? || state == 'confirm'
+      (paid_with_braintree? && !paid_with_paypal_express?) || state == 'confirm'
   end
 
   def paid_with_braintree?
@@ -93,10 +90,14 @@ Spree::Order.class_eval do
   private
 
   def prepare_address_hash(hash)
-    country_id = Spree::Country.find_by(iso: hash.delete(:country)).id
+    hash.delete_if { |e| hash[e].eql?('undefined') }
+    country_id = Spree::Country.find_by(iso: hash.delete(:country)).try(:id)
 
     hash[:country_id] = country_id
-    hash[:state_id] = Spree::State.find_by(abbr: hash.delete(:state), country_id: country_id).id
+    state_param = hash.delete(:state)
+    state = Spree::State.where('spree_states.abbr = :abbr OR lower(spree_states.name) = :name',
+                               abbr: state_param, name: state_param.downcase).find_by(country_id: country_id)
+    hash[:state_id] = state.try(:id)
 
     return hash if hash[:full_name].blank?
 
