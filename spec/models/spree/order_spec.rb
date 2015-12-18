@@ -160,6 +160,19 @@ describe Spree::Order, :vcr do
         save_paypal_address!
         expect(order.reload.ship_address.address2).to eq nil
       end
+
+      context 'billing address from shipping_address' do
+        it 'should be set when empty' do
+          order.update_column(:bill_address_id, nil)
+          order.set_billing_address
+          expect(order.reload.bill_address.attributes.slice(*attr)).to match order.ship_address.attributes.slice(*attr)
+        end
+
+        it 'should not be set when exists' do
+          order.set_billing_address
+          expect(order.reload.bill_address.attributes.slice(*attr)).not_to match address_hash.slice(*attr)
+        end
+      end
     end
   end
 end
