@@ -14,6 +14,14 @@ Spree::Order.class_eval do
     payments.create(options.slice(:braintree_nonce, :payment_method_id, :source))
   end
 
+  def set_billing_address
+    return if bill_address_id
+    return unless ship_address_id
+
+    address = Spree::Address.create(shipping_address.attributes.except('id', 'updated_at', 'created_at', 'braintree_id'))
+    update_column(:bill_address_id, address.try(:id))
+  end
+
   # override needed to add braintree source attribute
   def update_from_params(params, permitted_params, request_env = {})
     success = false
