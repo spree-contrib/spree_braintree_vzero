@@ -1,4 +1,4 @@
-<% (@methods = payment_method.customer_payment_methods(@order)).each do |method| %>
+<% (@methods = payment_method.customer_payment_methods(@order, type)).each do |method| %>
   <div class="radio">
     <label data-hook="braintree_payment_method_field">
 
