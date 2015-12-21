@@ -17,7 +17,7 @@ module Spree
     end
 
     def find_identifier_hash(payment, utils)
-      vaulted_payment = utils.customer_payment_methods.find do |customer_payment|
+      vaulted_payment = utils.customer_payment_methods('paypal').find do |customer_payment|
         customer_payment.try(:email).eql?(payment.source.paypal_email)
       end
 
