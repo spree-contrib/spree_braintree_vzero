@@ -1,5 +1,5 @@
-<% display_payment_methods_list = !payment_method.preferred_3dsecure && (@methods = payment_method.customer_payment_methods(@order)).any? %>
 <% payment_method_type = payment_method.is_a?(Spree::Gateway::BraintreeVzeroDropInUI) ? 'dropin' : 'custom' %>
+<% display_payment_methods_list = !payment_method.preferred_3dsecure && (@methods = payment_method.customer_payment_methods(@order, payment_method_type)).any? %>
 <% shipping_address = @order.shipping_address %>
 
 <div class="well clearfix %>">
@@ -33,7 +33,7 @@
       <div id="payment-form"/>
     <% end %>
   </div>
-  <%= submit_tag Spree.t(:save_and_continue), class: 'btn btn-lg btn-success primary new-braintree-payment-method braintree-submit', style: 'display: none;' %>
+  <%= submit_tag Spree.t(:save_and_continue), id: 'cc-submit', class: 'btn btn-lg btn-success primary new-braintree-payment-method braintree-submit', style: 'display: none;' %>
 </div>
 <hr/>
 <br/>

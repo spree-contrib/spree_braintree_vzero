@@ -1,8 +1,20 @@
 <% shipping_address = @order.shipping_address %>
-<div id="paypal-container">
-  <button class="btn btn-lg btn-success primary new-braintree-payment-method braintree-submit" id="paypal-submit" style="display: none;">
-    <%= Spree.t(:save_and_continue) %>
-  </button>
+<% display_payment_methods_list = (@methods = payment_method.customer_payment_methods(@order, 'paypal')).any? %>
+
+<div class="well clearfix %>">
+  <% if display_payment_methods_list %>
+    <% if @methods.any? %>
+      <%= label_tag 'saved_payment_methods', I18n.t('braintree.checkout.saved_payment_method') %>
+      <%= select_tag 'order[payments_attributes][][braintree_token]', options_from_braintree_payments(@methods, true), class: 'form-control saved-paypal-methods' %>
+    <% end %>
+  <% end %>
+  <br/>
+
+  <div id="paypal-container">
+    <button class="btn btn-lg btn-success primary new-braintree-payment-method braintree-submit" id="paypal-submit" style="display: none;">
+      <%= Spree.t(:save_and_continue) %>
+    </button>
+  </div>
 </div>
 <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
 <script src="https://js.braintreegateway.com/v1/braintree-data.js" async=true></script>
@@ -67,7 +79,19 @@
       }
     }
 
-    document.querySelector("#paypal-submit").addEventListener("click", function () { checkout.paypal.initAuthFlow(); }, false);
+    document.querySelector("#paypal-submit").addEventListener(
+      "click",
+      function () {
+        paymentMethodSelect = $('.saved-paypal-methods');
+        if(paymentMethodSelect.val()) {
+          $(checkoutFormId).submit();
+        } else {
+          paymentMethodSelect.val("");
+          checkout.paypal.initAuthFlow();
+        }
+      },
+      false
+    );
   });
 </script>
 <hr/>

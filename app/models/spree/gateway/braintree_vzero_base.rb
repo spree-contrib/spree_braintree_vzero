@@ -86,9 +86,9 @@ module Spree
       Transaction.new(provider, transaction_id).refund(credit_cents.to_f / 100)
     end
 
-    def customer_payment_methods(order)
+    def customer_payment_methods(order, payment_method_type)
       @utils = Utils.new(self, order)
-      @utils.customer_payment_methods
+      @utils.customer_payment_methods(payment_method_type)
     end
 
     def vaulted_payment_method(token)

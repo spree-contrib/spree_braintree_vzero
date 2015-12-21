@@ -2,7 +2,6 @@ module Spree
   class Gateway
     class BraintreeVzeroBase
       class Utils
-
         attr_reader :order, :customer, :gateway
 
         def initialize(gateway, order)
@@ -68,8 +67,16 @@ module Spree
           address_data('billing', user).slice(:first_name, :last_name, :company, :phone).merge!(id: user.id, email: user.email)
         end
 
-        def customer_payment_methods
-          @customer.try(:payment_methods) || []
+        def customer_payment_methods(payment_method_type)
+          payment_methods = @customer.try(:payment_methods) || []
+
+          if payment_method_type.eql?('custom')
+            payment_methods.select { |pm| pm.is_a?(Braintree::CreditCard) }
+          elsif payment_method_type.eql?('paypal')
+            payment_methods.select { |pm| pm.is_a?(Braintree::PayPalAccount) }
+          else
+            payment_methods
+          end
         end
 
         def payment_in_vault(data = {})
