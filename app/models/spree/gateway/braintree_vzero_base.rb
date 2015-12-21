@@ -29,10 +29,6 @@ module Spree
       Braintree
     end
 
-    def method_type
-      'braintree_vzero'
-    end
-
     def client_token(order = nil, user = nil)
       braintree_user = Gateway::BraintreeVzeroBase::User.new(provider, user, order).user
       braintree_user ? provider::ClientToken.generate(customer_id: user.id) : provider::ClientToken.generate

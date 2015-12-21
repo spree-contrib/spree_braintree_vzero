@@ -24,9 +24,7 @@ SpreeBraintreeVzero = {
     $(".new-braintree-payment-method").hide();
   },
   setSaveAndContinueVisibility: function() {
-    if(SpreeBraintreeVzero.paypal_express && (!SpreeBraintreeVzero.paymentMethodID || (SpreeBraintreeVzero.checkedPaymentMethod().val() == SpreeBraintreeVzero.paymentMethodID)))
-      SpreeBraintreeVzero.hideSaveAndContinue();
-    else if($('#show-new-payment').length)
+    if($('#saved_payment_methods_for_' + SpreeBraintreeVzero.paymentMethodID).val())
       SpreeBraintreeVzero.showSaveAndContinue();
     else
       SpreeBraintreeVzero.updateSaveAndContinueVisibility();
@@ -34,34 +32,28 @@ SpreeBraintreeVzero = {
 }
 
 $(document).ready(function() {
-  paymentMethodsSelect = $('#order_payments_attributes__braintree_token:not(.saved-paypal-methods)')
   paymentMethods = $('div[data-hook="checkout_payment_step"] input[type="radio"]').click(function (e) {
     SpreeBraintreeVzero.setSaveAndContinueVisibility();
   });
-  paymentMethodsSelect.change(function (e) {
-    SpreeBraintreeVzero.showSaveAndContinue();
+  $('.saved-payment-methods').change(function (e) {
+    if($(this).val())
+      SpreeBraintreeVzero.showSaveAndContinue();
+    else
+      SpreeBraintreeVzero.hideSaveAndContinue();
   });
   $('#show-new-payment').click(function (e) {
     e.preventDefault();
-    paymentMethodsSelect.val('')
+    $('#saved_payment_methods_for_' + SpreeBraintreeVzero.paymentMethodID).val('')
     SpreeBraintreeVzero.updateSaveAndContinueVisibility();
   });
   $('[name="commit"]:not(.braintree-submit)').click(function (e) {
     if($('#checkout-step-payment').length) {
       e.preventDefault();
-      $('.saved-paypal-methods').val('')
-      if(!SpreeBraintreeVzero.paymentMethodID || (SpreeBraintreeVzero.checkedPaymentMethod().val() != SpreeBraintreeVzero.paymentMethodID))
-        paymentMethodsSelect.val('')
+      token = $('#saved_payment_methods_for_' + SpreeBraintreeVzero.paymentMethodID).val()
+      if(token)
+        $(SpreeBraintreeVzero.checkoutFormId).append("<input type='hidden' name='order[payments_attributes][][braintree_token]' value=" + token + ">");
       $('#checkout_form_payment').submit();
     }
-  });
-  $('#paypal-submit').click(function (e) {
-    e.preventDefault();
-    $("#paypal-submit").prop("disabled", true);
-  });
-  $('#cc-submit').click(function (e) {
-    e.preventDefault();
-    $('.saved-paypal-methods').val('')
   });
   SpreeBraintreeVzero.setSaveAndContinueVisibility();
 })
