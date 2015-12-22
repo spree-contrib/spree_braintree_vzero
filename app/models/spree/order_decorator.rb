@@ -116,7 +116,6 @@ Spree::Order.class_eval do
   end
 
   def process_paypal_express_payments
-    return if payment?
     return unless paid_with_paypal_express?
 
     if payments.valid.empty?
