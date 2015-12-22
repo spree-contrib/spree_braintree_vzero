@@ -1,21 +1,6 @@
-<% (@methods = payment_method.customer_payment_methods(@order, type)).each do |method| %>
-  <div class="radio">
-    <label data-hook="braintree_payment_method_field">
-
-      <% if method.is_a?(Braintree::CreditCard) %>
-        <%= radio_button_tag 'payment_method_token', method.token %>
-        <%= Spree.t('admin.vaulted_payments.credit_card', card_type: method.card_type, last_4: method.last_4) %>
-      <% end %>
-
-      <% if method.is_a?(Braintree::PayPalAccount) %>
-        <%= radio_button_tag 'payment_method_token', method.token %>
-        <%= Spree.t('admin.vaulted_payments.paypal', email: method.email) %>
-      <% end %>
-
-    </label>
-  </div>
-<% end %>
-
-<% if @methods.count.zero? %>
+<% if (@methods = payment_method.customer_payment_methods(@order, type)).count.zero? %>
   <div class="alert alert-warning"><%= Spree.t('admin.vaulted_payments.cant_create_note') %></div>
+<% else %>
+  <%= label_tag 'saved_payment_methods', I18n.t('braintree.checkout.saved_payment_method') %>
+  <%= select_tag 'payment_method_token', options_from_braintree_payments(@methods, true), class: 'form-control saved-payment-methods', required: true %>
 <% end %>

@@ -62,7 +62,7 @@ module Spree
       purchase money_in_cents, source, gateway_options
     end
 
-    def settle(amount, checkout, gateway_options)
+    def settle(amount, checkout, _gateway_options)
       result = Transaction.new(provider, checkout.transaction_id).submit_for_settlement(amount / 100.0)
       checkout.update_attribute(:state, result.transaction.status)
       result
@@ -88,12 +88,13 @@ module Spree
     end
 
     def vaulted_payment_method(token)
-      self.provider::PaymentMethod.find(token)
+      provider::PaymentMethod.find(token)
     end
 
     private
 
     def sale(data, order, source = nil)
+      return invalid_payment_error(data) if(data[:payment_method_nonce].blank? && data[:payment_method_token].blank?)
       Rails.logger.info "Sale data: #{data.inspect}"
       result = Transaction.new(provider).sale(data)
       Rails.logger.info "Risk Data: #{result.transaction.risk_data.inspect}" if result.success?
@@ -156,6 +157,13 @@ module Spree
       else
         { payment_method_nonce: payment[:braintree_nonce] }
       end
+    end
+
+    def invalid_payment_error(data)
+      # We want only direct choice of payment method (token or nonce), not by customer_id
+      message = 'Payment method identification was not specified'
+      errors = { errors: [{ code: '0', attribute: '', message: message }] }
+      Braintree::ErrorResult.new(:transaction, params: data, errors: { transaction: errors }, message: message)
     end
   end
 end
