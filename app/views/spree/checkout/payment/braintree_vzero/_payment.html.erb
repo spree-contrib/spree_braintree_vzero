@@ -46,9 +46,9 @@
       <div id="payment-form"/>
     </div>
   <% else %>
-    <span id="paypal-submit", class="new-braintree-payment-method braintree-submit", style="display: none;" %>
+    <button id="paypal-submit", class="new-braintree-payment-method braintree-submit", style="display: none;" %>
       <%= Spree.t(:place_order) %>
-    </span>
+    </button>
   <% end %>
 
   <% unless paypal %>

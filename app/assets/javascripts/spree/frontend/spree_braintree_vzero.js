@@ -46,6 +46,9 @@ $(document).ready(function() {
     $('#saved_payment_methods_for_' + SpreeBraintreeVzero.paymentMethodID).val('')
     SpreeBraintreeVzero.updateSaveAndContinueVisibility();
   });
+  $('#paypal-submit').click(function (e) {
+    e.preventDefault();
+  });
   $('[name="commit"]:not(.braintree-submit)').click(function (e) {
     if($('#checkout-step-payment').length) {
       e.preventDefault();
