@@ -48,8 +48,8 @@ Spree::OrdersController.class_eval do
       next if params[:order][address_type].blank?
       current_order.save_paypal_address(address_type, address_params(address_type))
     end
+    current_order.set_billing_address
 
     current_order.ship_address && current_order.bill_address
   end
-
 end

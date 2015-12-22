@@ -1,12 +1,4 @@
 Spree::Order.class_eval do
-  checkout_flow do
-    go_to_state :address
-    go_to_state :delivery
-    go_to_state :payment, if: ->(order) { order.payment_required? }
-    go_to_state :confirm, if: ->(order) { order.confirmation_required? }
-    go_to_state :complete
-  end
-
   state_machine.before_transition to: :complete, do: :process_paypal_express_payments
 
   def save_paypal_address(type, address_hash)
@@ -20,6 +12,14 @@ Spree::Order.class_eval do
   def save_paypal_payment(options)
     options[:source] = Spree::BraintreeCheckout.create!(options.slice(:paypal_email, :advanced_fraud_data))
     payments.create(options.slice(:braintree_nonce, :payment_method_id, :source))
+  end
+
+  def set_billing_address
+    return if bill_address_id
+    return unless ship_address_id
+
+    address = Spree::Address.create(shipping_address.attributes.except('id', 'updated_at', 'created_at', 'braintree_id'))
+    update_column(:bill_address_id, address.try(:id))
   end
 
   # override needed to add braintree source attribute
@@ -76,7 +76,7 @@ Spree::Order.class_eval do
     Spree::Config[:always_include_confirm_step] ||
       payments.valid.map(&:payment_method).compact.any?(&:payment_profiles_supported?) ||
       # setting payment_profiles_supported? for braintree gateways would require few additional changes in payments profiles system
-      paid_with_braintree? || state == 'confirm'
+      (paid_with_braintree? && !paid_with_paypal_express?) || state == 'confirm'
   end
 
   def paid_with_braintree?
