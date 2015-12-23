@@ -76,7 +76,14 @@
       }
     }
 
-    document.querySelector('#btnOpenFlow').addEventListener('click', function () { checkout.paypal.initAuthFlow(); }, false);
+    document.querySelector('#btnOpenFlow').addEventListener(
+      'click',
+      function (e) {
+        e.preventDefault();
+        checkout.paypal.initAuthFlow();
+      },
+      false
+    );
   </script>
 <% else %>
   &nbsp;
