@@ -1,0 +1,6 @@
+<% if (@methods = payment_method.customer_payment_methods(@order, type)).count.zero? %>
+  <div class="alert alert-warning"><%= Spree.t('admin.vaulted_payments.cant_create_note') %></div>
+<% else %>
+  <%= label_tag 'saved_payment_methods', I18n.t('braintree.checkout.saved_payment_method') %>
+  <%= select_tag 'payment_method_token', options_from_braintree_payments(@methods, true), class: 'form-control saved-payment-methods', required: true %>
+<% end %>
