@@ -13,6 +13,8 @@ en:
       gateway_error: An error occured, please try again
     preferences:
       do_not_store: Do not store
+      production: production
+      sandbox: sandbox
       store_only_on_success: Story only on success
       store_all: Store all
     checkout:
