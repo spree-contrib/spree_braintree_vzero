@@ -67,7 +67,7 @@
     SpreeBraintreeVzero.paymentMethodID = "<%= payment_method.id %>";
     SpreeBraintreeVzero.checkoutFormId = <%= payment_method.preferred_checkout_form_id %>;
     SpreeBraintreeVzero.paymentMethodID = "<%= payment_method.id %>";
-    SpreeBraintreeVzero.threeDSecure = "<%= payment_method.try(:preferred_3dsecure) %>";
+    SpreeBraintreeVzero.threeDSecure = <%= payment_method.try(:preferred_3dsecure) || false %>;
 
     var clientToken = "<%= payment_method.client_token(current_order) %>";
     var checkoutFormId = SpreeBraintreeVzero.checkoutFormId

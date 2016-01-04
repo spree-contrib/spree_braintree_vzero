@@ -5,7 +5,7 @@ module Spree
     preference :merchant_id, :string
     preference :public_key, :string
     preference :private_key, :string
-    preference :server, :string, default: :sandbox
+    preference :server, :select, default: -> { { values: [:sandbox, :production] } }
     preference :pass_billing_and_shipping_address, :boolean_select, default: false
     preference :kount_merchant_id, :string
     preference :advanced_fraud_tools, :boolean_select, default: false
@@ -22,7 +22,7 @@ module Spree
     end
 
     def provider
-      Braintree::Configuration.environment = preferred_server.present? ? preferred_server.to_sym : :sandbox
+      Braintree::Configuration.environment = preferred_server.to_sym
       Braintree::Configuration.merchant_id = preferred_merchant_id
       Braintree::Configuration.public_key = preferred_public_key
       Braintree::Configuration.private_key = preferred_private_key
