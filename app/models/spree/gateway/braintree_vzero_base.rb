@@ -35,9 +35,7 @@ module Spree
     end
 
     def purchase(money_in_cents, source, gateway_options)
-      order_number, payment_number = gateway_options[:order_id].split('-')
-      order = Spree::Order.find_by(number: order_number)
-      payment = order.payments.find_by(number: payment_number)
+      order, payment = order_data_from_options(gateway_options)
 
       @utils = Utils.new(self, order)
       identifier_hash = find_identifier_hash(payment, @utils)
@@ -164,6 +162,13 @@ module Spree
       message = 'Payment method identification was not specified'
       errors = { errors: [{ code: '0', attribute: '', message: message }] }
       Braintree::ErrorResult.new(:transaction, params: data, errors: { transaction: errors }, message: message)
+    end
+
+    def order_data_from_options(options)
+      order_number, payment_number = options[:order_id].split('-')
+      order = Spree::Order.find_by(number: order_number)
+      payment = order.payments.find_by(number: payment_number)
+      [order, payment]
     end
   end
 end
