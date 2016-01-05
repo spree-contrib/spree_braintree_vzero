@@ -6,17 +6,15 @@
 
 <div class="well clearfix %>">
   <% if display_payment_methods_list %>
-    <% if @methods.any? %>
-      <%= label_tag 'saved_payment_methods', I18n.t('braintree.checkout.saved_payment_method') %>
-      <%= select_tag "saved_payment_methods_for_#{payment_method.id}", options_from_braintree_payments(@methods, paypal), class: 'form-control saved-payment-methods' %>
+    <%= label_tag 'saved_payment_methods', I18n.t('braintree.checkout.saved_payment_method') %>
+    <%= select_tag "saved_payment_methods_for_#{payment_method.id}", options_from_braintree_payments(@methods, paypal), class: 'form-control saved-payment-methods' %>
 
-      <% unless paypal %>
-        <div class="radio">
-          <label data-hook="braintree_payment_method_field">
-            <%= link_to Spree.t(dropin ? :add_new_payment_method : :add_new_credit_card), '', id: 'show-new-payment' %>
-          </label>
-        </div>
-      <% end %>
+    <% unless paypal %>
+      <div class="radio">
+        <label data-hook="braintree_payment_method_field">
+          <%= link_to Spree.t(dropin ? :add_new_payment_method : :add_new_credit_card), '', id: 'show-new-payment' %>
+        </label>
+      </div>
     <% end %>
   <% end %>
   <br/>
