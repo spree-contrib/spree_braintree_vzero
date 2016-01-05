@@ -58,6 +58,11 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
         expect(purchase.success?).to be true
       end
 
+      it 'returns false when neither nonce nor token is present' do
+        payment.update(braintree_nonce: nil, braintree_token: nil)
+        expect(purchase.success?).to be false
+      end
+
       it 'returns false with invalid token' do
         token = 'sometoken'
         payment.update(braintree_token: token)

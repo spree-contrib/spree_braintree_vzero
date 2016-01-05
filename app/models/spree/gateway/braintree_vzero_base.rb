@@ -53,6 +53,7 @@ module Spree
         }.merge!(@utils.payment_in_vault(data))
       )
 
+      return invalid_payment_error(data) if identifier_hash.values.all?(&:blank?)
       sale(data, order, payment.source)
     end
 
@@ -92,7 +93,6 @@ module Spree
     private
 
     def sale(data, order, source = nil)
-      return invalid_payment_error(data) if(data[:payment_method_nonce].blank? && data[:payment_method_token].blank?)
       Rails.logger.info "Sale data: #{data.inspect}"
       result = Transaction.new(provider).sale(data)
       Rails.logger.info "Risk Data: #{result.transaction.risk_data.inspect}" if result.success?
