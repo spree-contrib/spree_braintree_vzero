@@ -21,6 +21,10 @@ hostedFields: {
   }
 },
 
+onError: function (error) {
+  SpreeBraintreeVzero.enableSubmitButton();
+},
+
 onPaymentMethodReceived: function (result) {
   function submitWithAttributes() {
     switch (result.type) {
@@ -52,7 +56,7 @@ onPaymentMethodReceived: function (result) {
       }
     });
   } else {
-      submitWithAttributes();
+    submitWithAttributes();
   }
 }
 

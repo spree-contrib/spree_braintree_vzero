@@ -57,6 +57,7 @@ onReady: function (integration) {
 },
 
 onError: function (error) {
+  SpreeBraintreeVzero.enableSubmitButton();
   <%= render partial: 'spree/checkout/payment/braintree_vzero/dropin_on_error_callback', formats: [:js] %>
 }
 
