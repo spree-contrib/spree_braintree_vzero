@@ -59,7 +59,8 @@ describe Spree::Order, :vcr do
       before { add_payment_to_order! }
 
       it 'should include confirmation step' do
-        expect(order.checkout_steps).to include 'confirm'
+        order.update(state: 'payment')
+        expect(order.confirmation_required?).to be true
       end
 
       it 'should include payment step' do
@@ -71,8 +72,14 @@ describe Spree::Order, :vcr do
       let(:gateway) { create(:vzero_paypal_gateway, auto_capture: true) }
       before { add_payment_to_order! }
 
-      it 'should not include confirmation step' do
-        expect(order.checkout_steps).not_to include 'confirm'
+      it 'should not include confirmation step when payed by paypal express from cart' do
+        order.update(state: 'delivery')
+        expect(order.confirmation_required?).to be false
+      end
+
+      it 'should include confirmation step when payed by paypal express from payment step' do
+        order.update(state: 'payment')
+        expect(order.confirmation_required?).to be true
       end
 
       it 'should not include payment step' do
