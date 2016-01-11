@@ -47,7 +47,7 @@ rake spree_braintree_vzero:update_states
 Recommended frequency is every 6 hours.
 
 
-## Sample application
+## Example application
 
 If you want to see a working instance of Spree with this gem please see our [sample application repository](https://github.com/spark-solutions/spree_braintree_vzero_example)
 
