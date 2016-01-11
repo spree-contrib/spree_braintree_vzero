@@ -80,4 +80,12 @@ Starting point:
 
 [1]: http://www.fsf.org/licensing/essays/free-sw.html
 [2]: https://github.com/spark-solutions/spree_braintree_vzero/issues
-[3]: https://github.com/spark-solutions/spree_braintree_vzero/blob/master/LICENSE
+
+## License
+
+Spree Braintree V.zero is copyright © 2015-2016
+[Spark Solutions Sp. z o.o.](http://sparksolutions.co?utm_source=github). It is free software,
+and may be redistributed under the terms specified in the
+[LICENCE](LICENSE) file.
+
+[LICENSE]: https://github.com/spark-solutions/spree_braintree_vzero/blob/master/LICENSE
