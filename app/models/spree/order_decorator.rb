@@ -76,7 +76,7 @@ Spree::Order.class_eval do
     Spree::Config[:always_include_confirm_step] ||
       payments.valid.map(&:payment_method).compact.any?(&:payment_profiles_supported?) ||
       # setting payment_profiles_supported? for braintree gateways would require few additional changes in payments profiles system
-      (paid_with_braintree? && !paid_with_paypal_express?) || state == 'confirm'
+      braintree_confirmation_required? || state == 'confirm'
   end
 
   def paid_with_braintree?
@@ -96,6 +96,10 @@ Spree::Order.class_eval do
   end
 
   private
+
+  def braintree_confirmation_required?
+    paid_with_braintree? && state.eql?('payment')
+  end
 
   def prepare_address_hash(hash)
     hash.delete_if { |e| hash[e].eql?('undefined') }

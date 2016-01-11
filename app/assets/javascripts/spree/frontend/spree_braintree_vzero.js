@@ -28,6 +28,9 @@ SpreeBraintreeVzero = {
       SpreeBraintreeVzero.showSaveAndContinue();
     else
       SpreeBraintreeVzero.updateSaveAndContinueVisibility();
+  },
+  enableSubmitButton: function() {
+    $('.braintree-submit:disabled').attr('disabled', false).removeClass('disabled').addClass('primary');
   }
 }
 

@@ -5,4 +5,5 @@ the installer will append this file to the app vendored assets here: 'vendor/ass
 
 
 .btn.action-settle { @extend .btn-success; }
-.icon-settle { @extend .icon-capture }
+.icon-settle { @extend .icon-capture; }
+
