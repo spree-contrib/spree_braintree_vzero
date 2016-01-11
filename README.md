@@ -61,8 +61,19 @@ pull request.
 ## License
 
 Spree Braintree V.zero is copyright © 2015-2016
-[Spark Solutions Sp. z o.o.](http://sparksolutions.co?utm_source=github). It is free software,
+[Spark Solutions Sp. z o.o.][spark]. It is free software,
 and may be redistributed under the terms specified in the
 [LICENCE](LICENSE) file.
 
 [LICENSE]: https://github.com/spark-solutions/spree_braintree_vzero/blob/master/LICENSE
+
+## About Spark Solutions
+[![Spark Solutions](http://sparksolutions.co/wp-content/uploads/2015/01/logo-ss-tr-221x100.png)][spark]
+
+Spree Braintree V.zero is maintained by [Spark Solutions Sp. z o.o.](http://sparksolutions.co?utm_source=github) and funded by [PayPal, Inc.](http://paypal.com)
+The names and logos are trademarks of PayPal, inc.
+
+We are passionate about open source software.
+We are [available for hire][spark].
+
+[spark]:http://sparksolutions.co?utm_source=github
