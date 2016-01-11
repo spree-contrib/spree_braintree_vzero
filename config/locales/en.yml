@@ -13,7 +13,9 @@ en:
       gateway_error: An error occured, please try again
     preferences:
       do_not_store: Do not store
-      store_only_on_success: Story only on success
+      production: production
+      sandbox: sandbox
+      store_only_on_success: Store only on success
       store_all: Store all
     checkout:
       saved_payment_method: Saved payment method
@@ -21,6 +23,7 @@ en:
   spree:
     3dsecure: 3D Secure
     add_new_credit_card: Add new credit card
+    add_new_payment_method: Add new payment method
     admin:
       risk_id: Braintree Risk ID
       risk_decision: Braintree Risk Decision

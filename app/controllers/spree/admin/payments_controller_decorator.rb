@@ -1,4 +1,7 @@
 Spree::Admin::PaymentsController.class_eval do
+  include Spree::OrdersHelper
+  helper_method :options_from_braintree_payments
+
   def create
     invoke_callbacks(:create, :before)
     @payment ||= @order.payments.build(object_params)

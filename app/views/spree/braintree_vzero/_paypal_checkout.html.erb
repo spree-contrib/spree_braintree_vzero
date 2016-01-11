@@ -25,11 +25,14 @@
 
       onPaymentMethodReceived: function (result) {
         $('#paypal-container').hide()
+        $('#checkout-link').prop("disabled", true);
         phone = result.details.phone
 
         if(shippingAddress = result.details.shippingAddress) {
           $(checkoutFormId).append("<input type='hidden' name='order[ship_address][zipcode]' value='" + shippingAddress.postalCode + "'>");
           $(checkoutFormId).append("<input type='hidden' name='order[ship_address][full_name]' value='" + shippingAddress.recipientName + "'>");
+          $(checkoutFormId).append("<input type='hidden' name='order[ship_address][firstname]' value='" + result.details.firstName + "'>");
+          $(checkoutFormId).append("<input type='hidden' name='order[ship_address][lastname]' value='" + result.details.lastName + "'>");
           $(checkoutFormId).append("<input type='hidden' name='order[ship_address][address1]' value='" + shippingAddress.streetAddress + "'>");
           $(checkoutFormId).append("<input type='hidden' name='order[ship_address][address2]' value='" + shippingAddress.extendedAddress + "'>");
           $(checkoutFormId).append("<input type='hidden' name='order[ship_address][city]' value='" + shippingAddress.locality + "'>");
@@ -73,7 +76,14 @@
       }
     }
 
-    document.querySelector('#btnOpenFlow').addEventListener('click', function () { checkout.paypal.initAuthFlow(); }, false);
+    document.querySelector('#btnOpenFlow').addEventListener(
+      'click',
+      function (e) {
+        e.preventDefault();
+        checkout.paypal.initAuthFlow();
+      },
+      false
+    );
   </script>
 <% else %>
   &nbsp;

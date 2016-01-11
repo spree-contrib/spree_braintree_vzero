@@ -8,6 +8,10 @@ module Spree
 
     after_save :disable_hosted_gateways, if: proc { active? && (active_changed? || id_changed?) }
 
+    def method_type
+      'braintree_vzero_dropin_ui'
+    end
+
     private
 
     def disable_hosted_gateways
