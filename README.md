@@ -1,6 +1,6 @@
 # Braintree v.zero extension for Spree Commerce
 
-[![Code Climate](https://codeclimate.com/repos/560308aa6956801375000a4e/badges/9874199a656054d613cd/gpa.svg)](https://codeclimate.com/repos/560308aa6956801375000a4e/feed) [![Test Coverage](https://codeclimate.com/repos/560308aa6956801375000a4e/badges/9874199a656054d613cd/coverage.svg)](https://codeclimate.com/repos/560308aa6956801375000a4e/coverage) [![Circle CI](https://circleci.com/gh/spark-solutions/spree_braintree_vzero.svg?style=svg&circle-token=3171e5c1f53e64db0b323332e573533a3bdde115)](https://circleci.com/gh/spark-solutions/spree_braintree_vzero) 
+[![Code Climate](https://codeclimate.com/repos/560308aa6956801375000a4e/badges/9874199a656054d613cd/gpa.svg)](https://codeclimate.com/repos/560308aa6956801375000a4e/feed) [![Test Coverage](https://codeclimate.com/repos/560308aa6956801375000a4e/badges/9874199a656054d613cd/coverage.svg)](https://codeclimate.com/repos/560308aa6956801375000a4e/coverage) [![Circle CI](https://circleci.com/gh/spark-solutions/spree_braintree_vzero.svg?style=svg&circle-token=3171e5c1f53e64db0b323332e573533a3bdde115)](https://circleci.com/gh/spark-solutions/spree_braintree_vzero)
 
 This is the official Braintree v.zero extension for Spree. It supports:
 * [Braintree Drop-in UI](https://github.com/spark-solutions/spree_braintree_vzero/wiki/Drop-in-UI)
@@ -47,37 +47,33 @@ rake spree_braintree_vzero:update_states
 Recommended frequency is every 6 hours.
 
 
-## Sample application
+## Example application
 
 If you want to see a working instance of Spree with this gem please see our [sample application repository](https://github.com/spark-solutions/spree_braintree_vzero_example)
 
 
 ## Contributing
 
-In the spirit of [free software][1], **everyone** is encouraged to help improve this project.
+If you'd like to contribute, please take a look at the
+[instructions](CONTRIBUTING.md) for installing dependencies and crafting a good
+pull request.
 
-Here are some ways *you* can contribute:
+## License
 
-* by using prerelease versions
-* by reporting [bugs][2]
-* by suggesting new features
-* by writing or editing documentation
-* by writing specifications
-* by writing code (*no patch is too small*: fix typos, add comments, clean up inconsistent whitespace)
-* by refactoring code
-* by resolving [issues][2]
-* by reviewing patches
+Spree Braintree V.zero is copyright © 2015-2016
+[Spark Solutions Sp. z o.o.][spark]. It is free software,
+and may be redistributed under the terms specified in the
+[LICENCE](LICENSE) file.
 
-Starting point:
+[LICENSE]: https://github.com/spark-solutions/spree_braintree_vzero/blob/master/LICENSE
 
-* Fork the repo
-* Clone your repo
-* Run `bundle install`
-* Run `bundle exec rake test_app` to create the test application in `spec/dummy`
-* Make your changes
-* Ensure specs pass by running `bundle exec rspec spec`
-* Submit your pull request
+## About Spark Solutions
+[![Spark Solutions](http://sparksolutions.co/wp-content/uploads/2015/01/logo-ss-tr-221x100.png)][spark]
 
-[1]: http://www.fsf.org/licensing/essays/free-sw.html
-[2]: https://github.com/spark-solutions/spree_braintree_vzero/issues
-[3]: https://github.com/spark-solutions/spree_braintree_vzero/blob/master/LICENSE
+Spree Braintree V.zero is maintained by [Spark Solutions Sp. z o.o.](http://sparksolutions.co?utm_source=github) and funded by [PayPal, Inc.](http://paypal.com)
+The names and logos are trademarks of PayPal, inc.
+
+We are passionate about open source software.
+We are [available for hire][spark].
+
+[spark]:http://sparksolutions.co?utm_source=github
