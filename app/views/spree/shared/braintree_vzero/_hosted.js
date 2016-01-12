@@ -50,7 +50,7 @@ onPaymentMethodReceived: function (result) {
       if (!error) {
         submitWithAttributes();
       } else {
-        $(errorMessagesContainer).prepend("<div class='alert alert-error'><%= I18n.t(:gateway_error, scope: 'braintree.error') %>></div>")
+        $(errorMessagesContainer).prepend("<div class='alert alert-error'><%= I18n.t(:gateway_error, scope: 'braintree.error') %></div>")
       }
     });
   } else {

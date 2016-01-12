@@ -18,21 +18,22 @@ paypal: {
 },
 
 onPaymentMethodReceived: function (result) {
+  var formId = "#" + checkoutFormId;
   function submitWithAttributes() {
     switch (result.type) {
       case "CreditCard":
-        $(checkoutFormId).append("<input type='hidden' name='braintree_last_two' value=" + result.details.lastTwo + ">");
-        $(checkoutFormId).append("<input type='hidden' name='braintree_card_type' value=" + result.details.cardType + ">");
+        $(formId).append("<input type='hidden' name='braintree_last_two' value=" + result.details.lastTwo + ">");
+        $(formId).append("<input type='hidden' name='braintree_card_type' value=" + result.details.cardType + ">");
         break;
       case "PayPalAccount":
-        $(checkoutFormId).append("<input type='hidden' name='paypal_email' value=" + (result.details.email)+ ">");
+        $(formId).append("<input type='hidden' name='paypal_email' value=" + (result.details.email)+ ">");
         break;
     }
     if(SpreeBraintreeVzero.admin)
-      $(checkoutFormId).append("<input type='hidden' name='payment_method_nonce' value=" + result.nonce + ">");
+      $(formId).append("<input type='hidden' name='payment_method_nonce' value=" + result.nonce + ">");
     else
-      $(checkoutFormId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + result.nonce + ">");
-    $(checkoutFormId).submit();
+      $(formId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + result.nonce + ">");
+    $(formId).submit();
   }
 
   if (SpreeBraintreeVzero.threeDSecure && result.type == "CreditCard") {
@@ -47,7 +48,7 @@ onPaymentMethodReceived: function (result) {
       if (!error) {
         submitWithAttributes();
       } else {
-        $(errorMessagesContainer).prepend("<div class='alert alert-error'><%= I18n.t(:gateway_error, scope: 'braintree.error') %>></div>")
+        $(errorMessagesContainer).prepend("<div class='alert alert-error'><%= I18n.t(:gateway_error, scope: 'braintree.error') %></div>")
       }
     });
   } else {
