@@ -9,7 +9,7 @@ Spree::Admin::PaymentsController.class_eval do
       elsif @payment.payment_source.kind_of?(Spree::Gateway::BraintreeVzeroBase)
         @payment.braintree_token = params[:payment_method_token]
         @payment.braintree_nonce = params[:payment_method_nonce]
-        @payment.source = Spree::BraintreeCheckout.create!
+        @payment.source = Spree::BraintreeCheckout.create!(admin_payment: true)
       end
     end
 

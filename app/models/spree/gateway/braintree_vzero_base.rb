@@ -40,21 +40,26 @@ module Spree
       @utils = Utils.new(self, order)
       identifier_hash = find_identifier_hash(payment, @utils)
 
+      data = set_purchase_data(identifier_hash, order, money_in_cents, source)
+
+      return invalid_payment_error(data) if identifier_hash.values.all?(&:blank?)
+      sale(data, order, payment.source)
+    end
+
+    def set_purchase_data(identifier_hash, order, money_in_cents, source)
       data = set_basic_purchase_data(identifier_hash, order, @utils, money_in_cents)
-      data.merge!(device_data: source.advanced_fraud_data) if preferred_advanced_fraud_tools
       data.merge!(
         descriptor: { name: preferred_descriptor_name.to_s.gsub('/', '*') },
         options: {
           submit_for_settlement: auto_capture?,
           add_billing_address_to_payment_method: preferred_pass_billing_and_shipping_address ? true : false,
           three_d_secure: {
-            required: try(:preferred_3dsecure)
+            required: (try(:preferred_3dsecure) unless source.admin_payment?)
           }
         }.merge!(@utils.payment_in_vault(data))
       )
-
-      return invalid_payment_error(data) if identifier_hash.values.all?(&:blank?)
-      sale(data, order, payment.source)
+      return data if source.admin_payment? || !preferred_advanced_fraud_tools
+      data.merge!(device_data: source.advanced_fraud_data)
     end
 
     def authorize(money_in_cents, source, gateway_options)
