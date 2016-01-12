@@ -1,7 +1,7 @@
 container: container,
 paypal: {
   singleUse: <%= payment_method.preferred_store_payments_in_vault.eql?('do_not_store') %>,
-  amount: <%= current_order.total %>,
+  amount: <%= @order.total %>,
   currency: "<%= current_currency %>",
   enableShippingAddress: true,
   shippingAddressOverride: {
@@ -28,7 +28,10 @@ onPaymentMethodReceived: function (result) {
         $(checkoutFormId).append("<input type='hidden' name='paypal_email' value=" + (result.details.email)+ ">");
         break;
     }
-    $(checkoutFormId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + result.nonce + ">");
+    if(SpreeBraintreeVzero.admin)
+      $(checkoutFormId).append("<input type='hidden' name='payment_method_nonce' value=" + result.nonce + ">");
+    else
+      $(checkoutFormId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + result.nonce + ">");
     $(checkoutFormId).submit();
   }
 
@@ -38,7 +41,7 @@ onPaymentMethodReceived: function (result) {
     });
 
     client.verify3DS({
-      amount: <%= current_order.total %>,
+      amount: <%= @order.total %>,
       creditCard: result.nonce
     }, function (error, response) {
       if (!error) {
