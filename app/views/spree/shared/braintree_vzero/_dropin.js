@@ -18,7 +18,8 @@ paypal: {
 },
 
 onPaymentMethodReceived: function (result) {
-  var formId = "#" + checkoutFormId;
+  var formId = (SpreeBraintreeVzero.admin ? "#" + checkoutFormId : checkoutFormId);
+
   function submitWithAttributes() {
     switch (result.type) {
       case "CreditCard":
