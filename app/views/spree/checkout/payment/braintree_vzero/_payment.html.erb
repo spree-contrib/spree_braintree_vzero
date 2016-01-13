@@ -38,16 +38,14 @@
       <%= label_tag 'expiration_date_label', payment_method.preferred_expiration_date_placeholder %>
       <span class="required">*</span><br />
       <p id="hosted-fields-expiration-date" class="form-control"></p>
-    </div>
-  <% elsif dropin %>
-    <div class="<%= display_payment_methods_list ? 'new-braintree-payment-method' : '' %>" style="<%= display_payment_methods_list ? 'display: none;' : '' %>">
+    <% elsif dropin %>
       <div id="payment-form"/>
-    </div>
-  <% else %>
-    <span id="paypal-submit", class="btn btn-lg btn-success primary new-braintree-payment-method braintree-submit", style="display: none;" %>
-      <%= Spree.t(:save_and_continue) %>
-    </span>
-  <% end %>
+    <% else %>
+      <span id="paypal-submit", class="btn btn-lg btn-success primary new-braintree-payment-method braintree-submit", style="display: none;" %>
+        <%= Spree.t(:save_and_continue) %>
+      </span>
+    <% end %>
+  </div>
 
   <% unless paypal %>
     <%= submit_tag Spree.t(:save_and_continue), class: 'btn btn-lg btn-success primary new-braintree-payment-method braintree-submit', style: 'display: none;' %>
@@ -64,10 +62,9 @@
     SpreeBraintreeVzero.advancedFraudTools = <%= payment_method.preferred_advanced_fraud_tools %>;
     SpreeBraintreeVzero.paymentMethodID = "<%= payment_method.id %>";
     SpreeBraintreeVzero.checkoutFormId = <%= payment_method.preferred_checkout_form_id %>;
-    SpreeBraintreeVzero.paymentMethodID = "<%= payment_method.id %>";
     SpreeBraintreeVzero.threeDSecure = <%= payment_method.try(:preferred_3dsecure) || false %>;
 
-    var clientToken = "<%= payment_method.client_token(current_order) %>";
+    var clientToken = "<%= payment_method.client_token(@order) %>";
     var checkoutFormId = SpreeBraintreeVzero.checkoutFormId
     var errorMessagesContainer = <%= payment_method.preferred_error_messages_container_id %>;
 
@@ -78,9 +75,9 @@
     var checkout;
 
     braintree.setup(clientToken, '<%= payment_method_type %>', {
-      <%= render(partial: 'spree/checkout/payment/braintree_vzero/dropin', locals: { shipping_address: shipping_address, payment_method: payment_method }, formats: [:js]) if dropin %>
-      <%= render(partial: 'spree/checkout/payment/braintree_vzero/paypal', locals: { shipping_address: shipping_address, payment_method: payment_method }, formats: [:js]) if paypal %>
-      <%= render(partial: 'spree/checkout/payment/braintree_vzero/hosted', locals: { payment_method: payment_method }, formats: [:js]) if hosted %>
+      <%= render(partial: 'spree/shared/braintree_vzero/dropin', locals: { shipping_address: shipping_address, payment_method: payment_method }, formats: [:js]) if dropin %>
+      <%= render(partial: 'spree/shared/braintree_vzero/paypal', locals: { shipping_address: shipping_address, payment_method: payment_method }, formats: [:js]) if paypal %>
+      <%= render(partial: 'spree/shared/braintree_vzero/hosted', locals: { payment_method: payment_method }, formats: [:js]) if hosted %>
     });
 
     if (SpreeBraintreeVzero.advancedFraudTools) {
