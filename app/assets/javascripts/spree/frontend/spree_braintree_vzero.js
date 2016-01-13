@@ -16,12 +16,18 @@ SpreeBraintreeVzero = {
     return $('div[data-hook="checkout_payment_step"] input[type="radio"][name="order[payments_attributes][][payment_method_id]"]:checked');
   },
   hideSaveAndContinue: function() {
-    $("[data-hook=buttons]").hide();
+    this.enableSubmitButton();
+    if(!$('div[data-hook="checkout_payment_step"]').length) return
+    $('.btn').hide();
+    $("[method_id='" + SpreeBraintreeVzero.paymentMethodID + "']").show();
     $(".new-braintree-payment-method").show();
     $(".show-new-payment").hide();
   },
   showSaveAndContinue: function() {
-    $("[data-hook=buttons]").show();
+    this.enableSubmitButton();
+    if(!$('div[data-hook="checkout_payment_step"]').length) return
+    $("[method_id='" + SpreeBraintreeVzero.paymentMethodID + "']").hide();
+    $('[name="commit"]:not(.braintree-submit)').show();
     $(".new-braintree-payment-method").hide();
     $(".show-new-payment").show();
   },
@@ -32,7 +38,7 @@ SpreeBraintreeVzero = {
       SpreeBraintreeVzero.updateSaveAndContinueVisibility();
   },
   enableSubmitButton: function() {
-    $('.braintree-submit:disabled').attr('disabled', false).removeClass('disabled').addClass('primary');
+    $('.btn:disabled').attr('disabled', false).removeClass('disabled').addClass('primary');
   }
 }
 

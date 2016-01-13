@@ -40,16 +40,8 @@
       <p id="hosted-fields-expiration-date" class="form-control"></p>
     <% elsif dropin %>
       <div id="payment-form"/>
-    <% else %>
-      <span id="paypal-submit", class="btn btn-lg btn-success primary new-braintree-payment-method braintree-submit", style="display: none;" %>
-        <%= Spree.t(:save_and_continue) %>
-      </span>
     <% end %>
   </div>
-
-  <% unless paypal %>
-    <%= submit_tag Spree.t(:save_and_continue), class: 'btn btn-lg btn-success primary new-braintree-payment-method braintree-submit', style: 'display: none;' %>
-  <% end %>
 </div>
 <hr/>
 <br/>
