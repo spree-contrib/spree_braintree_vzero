@@ -6,7 +6,7 @@
 
 <div class="well clearfix %>">
   <% if display_payment_methods_list %>
-         <%= label_tag 'saved_payment_methods', I18n.t("braintree.checkout.saved_payment_method.#{payment_method_type}") %>
+    <%= label_tag 'saved_payment_methods', I18n.t("braintree.checkout.saved_payment_method.#{payment_method_type}") %>
     <%= select_tag "saved_payment_methods_for_#{payment_method.id}", options_from_braintree_payments(@methods, true), class: 'form-control saved-payment-methods' %>
 
     <% unless paypal %>

@@ -6,11 +6,11 @@
 
 <div class="clearfix %>">
   <% if display_payment_methods_list %>
-    <%= label_tag 'saved_payment_methods', I18n.t('braintree.checkout.saved_payment_method') %>
-    <%= select_tag "saved_payment_methods_for_#{payment_method.id}", options_from_braintree_payments(@methods, paypal), class: 'form-control saved-payment-methods' %>
+    <%= label_tag 'saved_payment_methods', I18n.t("braintree.checkout.saved_payment_method.#{payment_method_type}") %>
+    <%= select_tag "saved_payment_methods_for_#{payment_method.id}", options_from_braintree_payments(@methods, true), class: 'form-control saved-payment-methods' %>
 
     <% unless paypal %>
-      <div class="radio">
+      <div class="radio show-new-payment">
         <label data-hook="braintree_payment_method_field">
           <%= link_to Spree.t(dropin ? :add_new_payment_method : :add_new_credit_card), '', id: 'show-new-payment' %>
         </label>
@@ -25,6 +25,7 @@
   <% end %>
 
     <% if hosted %>
+      <br/>
       <%= label_tag 'card_number_label', payment_method.preferred_number_placeholder %>
       <span class="required">*</span><br />
       <p id="hosted-fields-number" class="form-control"></p>
@@ -36,8 +37,11 @@
       <%= label_tag 'expiration_date_label', payment_method.preferred_expiration_date_placeholder %>
       <span class="required">*</span><br />
       <p id="hosted-fields-expiration-date" class="form-control"></p>
+      <br/>
     <% elsif dropin %>
+      <br/>
       <div id="payment-form"/>
+      <br/>
     <% end %>
   </div>
 

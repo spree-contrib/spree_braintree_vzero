@@ -22,10 +22,12 @@ SpreeBraintreeVzero = {
   hideSaveAndContinue: function() {
     $("[data-hook=buttons]").hide();
     $(".new-braintree-payment-method").show();
+    $(".show-new-payment").hide();
   },
   showSaveAndContinue: function() {
     $("[data-hook=buttons]").show();
     $(".new-braintree-payment-method").hide();
+    $(".show-new-payment").show();
   },
   setSaveAndContinueVisibility: function() {
     if($('#saved_payment_methods_for_' + SpreeBraintreeVzero.paymentMethodID).val())
@@ -46,7 +48,7 @@ $(document).ready(function() {
     if($(this).val())
       SpreeBraintreeVzero.showSaveAndContinue();
     else {
-      if(!this.paypal)
+      if(!SpreeBraintreeVzero.paypal)
         SpreeBraintreeVzero.hideSaveAndContinue();
     }
   });
