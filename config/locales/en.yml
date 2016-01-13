@@ -37,6 +37,7 @@ en:
         cant_create_note: Can't create payment. No payment methods stored for this user.
     advanced_fraud_tools: Advanced Fraud Tools
     advanced_settings: Advanced settings
+    back_end: Back End
     checkout_form_id: Checkout Form
     cc_type: Type
     cvv_placeholder: CVV Placeholder
