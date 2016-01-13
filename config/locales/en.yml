@@ -18,7 +18,11 @@ en:
       store_only_on_success: Store only on success
       store_all: Store all
     checkout:
-      saved_payment_method: Saved payment method
+      saved_payment_method:
+        custom: Use a Saved Credit Card
+        dropin: Use a Saved Payment Method
+        paypal: Use a Saved Paypal Account
+      blank_saved_payment_method: Click to Choose
 
   spree:
     3dsecure: 3D Secure

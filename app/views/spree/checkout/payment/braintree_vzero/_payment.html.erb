@@ -6,11 +6,11 @@
 
 <div class="well clearfix %>">
   <% if display_payment_methods_list %>
-    <%= label_tag 'saved_payment_methods', I18n.t('braintree.checkout.saved_payment_method') %>
-    <%= select_tag "saved_payment_methods_for_#{payment_method.id}", options_from_braintree_payments(@methods, paypal), class: 'form-control saved-payment-methods' %>
+         <%= label_tag 'saved_payment_methods', I18n.t("braintree.checkout.saved_payment_method.#{payment_method_type}") %>
+    <%= select_tag "saved_payment_methods_for_#{payment_method.id}", options_from_braintree_payments(@methods, true), class: 'form-control saved-payment-methods' %>
 
     <% unless paypal %>
-      <div class="radio">
+      <div class="radio show-new-payment">
         <label data-hook="braintree_payment_method_field">
           <%= link_to Spree.t(dropin ? :add_new_payment_method : :add_new_credit_card), '', id: 'show-new-payment' %>
         </label>
@@ -23,7 +23,7 @@
   <% if paypal %>
     <div id="paypal-container">
   <% else %>
-    <div class="<%= display_payment_methods_list ? 'new-braintree-payment-method' : '' %>" style="<%= display_payment_methods_list ? 'display: none;' : '' %>">
+    <div class="<%= display_payment_methods_list ? 'new-braintree-payment-method' : '' %>">
   <% end %>
 
     <% if hosted %>
