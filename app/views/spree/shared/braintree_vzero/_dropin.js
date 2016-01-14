@@ -24,7 +24,7 @@ onPaymentMethodReceived: function (result) {
     switch (result.type) {
       case "CreditCard":
         $(formId).append("<input type='hidden' name='braintree_last_two' value=" + result.details.lastTwo + ">");
-        $(formId).append("<input type='hidden' name='braintree_card_type' value=" + result.details.cardType + ">");
+        $(formId).append("<input type='hidden' name='braintree_card_type' value=" + result.details.cardType.replace(/\s/g, "") + ">");
         break;
       case "PayPalAccount":
         $(formId).append("<input type='hidden' name='paypal_email' value=" + (result.details.email)+ ">");

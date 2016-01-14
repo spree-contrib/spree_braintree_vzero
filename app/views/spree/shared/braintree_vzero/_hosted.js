@@ -30,7 +30,7 @@ onPaymentMethodReceived: function (result) {
 
   function submitWithAttributes() {
     $(formId).append("<input type='hidden' name='braintree_last_two' value=" + result.details.lastTwo + ">");
-    $(formId).append("<input type='hidden' name='braintree_card_type' value=" + result.details.cardType + ">");
+    $(formId).append("<input type='hidden' name='braintree_card_type' value=" + result.details.cardType.replace(/\s/g, "") + ">");
 
     if(SpreeBraintreeVzero.admin)
       $(formId).append("<input type='hidden' name='payment_method_nonce' value=" + result.nonce + ">");
