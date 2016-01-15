@@ -58,6 +58,8 @@ onPaymentMethodReceived: function (result) {
 },
 
 onReady: function (integration) {
+  if(!SpreeBraintreeVzero.admin)
+    SpreeBraintreeVzero.deviceData = integration.deviceData;
   <%= render partial: 'spree/checkout/payment/braintree_vzero/dropin_on_ready_callback', formats: [:js] %>
 },
 

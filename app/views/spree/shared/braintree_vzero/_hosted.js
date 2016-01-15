@@ -25,6 +25,11 @@ onError: function (error) {
   SpreeBraintreeVzero.enableSubmitButton();
 },
 
+onReady: function (integration) {
+  if(!SpreeBraintreeVzero.admin)
+    SpreeBraintreeVzero.deviceData = integration.deviceData;
+},
+
 onPaymentMethodReceived: function (result) {
   var formId = (SpreeBraintreeVzero.admin ? "#" + checkoutFormId : checkoutFormId);
 

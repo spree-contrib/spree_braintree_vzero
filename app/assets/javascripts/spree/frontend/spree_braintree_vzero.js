@@ -39,6 +39,10 @@ SpreeBraintreeVzero = {
   },
   enableSubmitButton: function() {
     $('.btn:disabled').attr('disabled', false).removeClass('disabled').addClass('primary');
+  },
+  addDeviceData: function() {
+    if(SpreeBraintreeVzero.deviceData)
+      $(SpreeBraintreeVzero.checkoutFormId).append("<input type='hidden' name='device_data' value=" + SpreeBraintreeVzero.deviceData + ">");
   }
 }
 
@@ -65,6 +69,9 @@ $(document).ready(function() {
         $(SpreeBraintreeVzero.checkoutFormId).append("<input type='hidden' name='order[payments_attributes][][braintree_token]' value=" + token + ">");
       $('#checkout_form_payment').submit();
     }
+  });
+  $('.braintree-submit, [name="commit"]').click(function(e) {
+    SpreeBraintreeVzero.addDeviceData();
   });
   SpreeBraintreeVzero.setSaveAndContinueVisibility();
 })

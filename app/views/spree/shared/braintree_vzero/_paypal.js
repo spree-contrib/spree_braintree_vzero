@@ -17,7 +17,11 @@ shippingAddressOverride: {
   editable: false
 },
 
-onReady: function (integration)  { checkout = integration; },
+onReady: function (integration) {
+  if(!SpreeBraintreeVzero.admin)
+    SpreeBraintreeVzero.deviceData = integration.deviceData;
+  checkout = integration;
+},
 headless: true,
 
 onPaymentMethodReceived: function (result) {
