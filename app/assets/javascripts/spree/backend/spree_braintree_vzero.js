@@ -21,11 +21,13 @@ SpreeBraintreeVzero = {
   },
   hideSaveAndContinue: function() {
     $("[data-hook=buttons]").hide();
+    $("[method_id='" + SpreeBraintreeVzero.paymentMethodID + "']").show();
     $(".new-braintree-payment-method").show();
     $(".show-new-payment").hide();
   },
   showSaveAndContinue: function() {
     $("[data-hook=buttons]").show();
+    $("[method_id='" + SpreeBraintreeVzero.paymentMethodID + "']").hide();
     $(".new-braintree-payment-method").hide();
     $(".show-new-payment").show();
   },

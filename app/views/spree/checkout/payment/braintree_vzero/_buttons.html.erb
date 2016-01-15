@@ -2,7 +2,7 @@
   <% next unless method.kind_of?(Spree::Gateway::BraintreeVzeroBase) %>
 
   <% if method.is_a?(Spree::Gateway::BraintreeVzeroPaypalExpress) %>
-         <button id="paypal-submit", class="continue button primary braintree-submit", style="display: none;" method_id="<%= method.id %>">
+    <button id="paypal-submit", class="continue button primary braintree-submit", style="display: none;" method_id="<%= method.id %>">
       <%= Spree.t(:save_and_continue) %>
     </button>
   <% else %>

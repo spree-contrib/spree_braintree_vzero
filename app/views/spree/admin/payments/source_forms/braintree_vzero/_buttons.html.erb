@@ -1,0 +1,7 @@
+<% @order.available_payment_methods.each do |method| %>
+  <% next unless method.kind_of?(Spree::Gateway::BraintreeVzeroBase) %>
+
+  <% unless method.is_a?(Spree::Gateway::BraintreeVzeroPaypalExpress) %>
+    <%= submit_tag Spree.t(:update), class: 'fa fa-refresh button', style: 'display: none;', method_id: method.id %>
+  <% end %>
+<% end %>
