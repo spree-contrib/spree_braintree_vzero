@@ -102,6 +102,27 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
         end
       end
 
+      context 'data from admin panel' do
+        let(:identifier_hash) { { payment_method_nonce: '123' } }
+        let(:utils) { Spree::Gateway::BraintreeVzeroBase::Utils.new(gateway, order) }
+        let(:set_data) { gateway.send(:set_purchase_data, identifier_hash, order, 113, payment_source) }
+
+        before do
+          gateway.preferred_3dsecure = true
+          payment.update(braintree_nonce: 'fake-valid-debit-nonce')
+          gateway.preferences[:advanced_fraud_data] = true
+          payment_source.update(admin_payment: true)
+          gateway.instance_variable_set(:@utils, utils)
+        end
+
+        it 'should include only essential data' do
+          data = set_data
+          expect(data[:payment_method_nonce]).to eq identifier_hash[:payment_method_nonce]
+          expect(data[:device_data]).to be_blank
+          expect(data[:options][:three_d_secure][:required]).to be_blank
+        end
+      end
+
       context 'using Vault' do
         before { gateway.preferred_store_payments_in_vault = :store_all }
 

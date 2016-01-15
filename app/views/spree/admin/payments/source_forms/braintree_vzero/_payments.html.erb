@@ -1,6 +1,81 @@
-<% if (@methods = payment_method.customer_payment_methods(@order, type)).count.zero? %>
-  <div class="alert alert-warning"><%= Spree.t('admin.vaulted_payments.cant_create_note') %></div>
-<% else %>
-  <%= label_tag 'saved_payment_methods', I18n.t('braintree.checkout.saved_payment_method') %>
-  <%= select_tag 'payment_method_token', options_from_braintree_payments(@methods, true), class: 'form-control saved-payment-methods', required: true %>
-<% end %>
+<% display_payment_methods_list = !payment_method.try(:preferred_3dsecure) && (@methods = payment_method.customer_payment_methods(@order, payment_method_type)).any? %>
+<% shipping_address = @order.shipping_address %>
+<% paypal = payment_method_type.eql?('paypal') %>
+<% dropin = payment_method_type.eql?('dropin') %>
+<% hosted = payment_method_type.eql?('custom') %>
+
+<div class="clearfix %>">
+  <% if display_payment_methods_list %>
+    <%= label_tag 'saved_payment_methods', I18n.t("braintree.checkout.saved_payment_method.#{payment_method_type}") %>
+    <%= select_tag "saved_payment_methods_for_#{payment_method.id}", options_from_braintree_payments(@methods, true), class: 'form-control saved-payment-methods' %>
+
+    <% unless paypal %>
+      <div class="radio show-new-payment">
+        <label data-hook="braintree_payment_method_field">
+          <%= link_to Spree.t(dropin ? :add_new_payment_method : :add_new_credit_card), '', id: 'show-new-payment' %>
+        </label>
+      </div>
+    <% end %>
+  <% end %>
+
+  <% if paypal %>
+    <div>
+  <% else %>
+    <div class="<%= display_payment_methods_list ? 'new-braintree-payment-method' : '' %>" style="<%= display_payment_methods_list ? 'display: none;' : '' %>">
+  <% end %>
+
+    <% if hosted %>
+      <br/>
+      <%= label_tag 'card_number_label', payment_method.preferred_number_placeholder %>
+      <span class="required">*</span><br />
+      <p id="hosted-fields-number" class="form-control"></p>
+
+      <%= label_tag 'cvv_label', payment_method.preferred_cvv_placeholder %>
+      <span class="required">*</span><br />
+      <p id="hosted-fields-cvv" class="form-control"></p>
+
+      <%= label_tag 'expiration_date_label', payment_method.preferred_expiration_date_placeholder %>
+      <span class="required">*</span><br />
+      <p id="hosted-fields-expiration-date" class="form-control"></p>
+      <br/>
+    <% elsif dropin %>
+      <br/>
+      <div id="payment-form"/>
+      <br/>
+    <% end %>
+  </div>
+
+  <% unless paypal %>
+    <%= button Spree.t('actions.update'), 'save', 'submit', class: 'new-braintree-payment-method braintree-submit' %>
+  <% end %>
+</div>
+
+<script src="https://js.braintreegateway.com/v2/braintree.js"></script>
+<script src="https://js.braintreegateway.com/v1/braintree-data.js" async=true></script>
+
+<script type="text/javascript">
+  $('#payment_payment_method_id_<%= payment_method.id %>').click(function (e) {
+    SpreeBraintreeVzero.advancedFraudTools = false;
+    SpreeBraintreeVzero.paymentMethodID = "<%= payment_method.id %>";
+    SpreeBraintreeVzero.checkoutFormId = "new_payment";
+    SpreeBraintreeVzero.threeDSecure = false;
+    SpreeBraintreeVzero.paypal = <%= paypal %>;
+    SpreeBraintreeVzero.admin = true;
+
+    var clientToken = "<%= payment_method.client_token(@order) %>";
+    var checkoutFormId = SpreeBraintreeVzero.checkoutFormId
+    var errorMessagesContainer = "col-md-12";
+
+    <% if dropin %>
+      var container = "payment-form";
+      $('#' + container).empty();
+    <% end %>
+    var checkout;
+
+    braintree.setup(clientToken, '<%= payment_method_type %>', {
+      <%= render(partial: 'spree/shared/braintree_vzero/dropin', locals: { shipping_address: shipping_address, payment_method: payment_method }, formats: [:js]) if dropin %>
+      <%= render(partial: 'spree/shared/braintree_vzero/hosted', locals: { payment_method: payment_method }, formats: [:js]) if hosted %>
+    });
+  });
+</script>
+
