@@ -58,7 +58,7 @@
 
     var clientToken = "<%= payment_method.client_token(@order) %>";
     var checkoutFormId = SpreeBraintreeVzero.checkoutFormId
-    var errorMessagesContainer = <%= payment_method.preferred_error_messages_container_id %>;
+    var errorMessagesContainer = "<%= payment_method.preferred_error_messages_container_id %>";
 
     <% if dropin %>
       var container = "<%= payment_method.preferred_dropin_container %>";
