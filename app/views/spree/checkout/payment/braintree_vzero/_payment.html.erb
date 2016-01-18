@@ -51,13 +51,14 @@
 
 <script type="text/javascript">
   $('#order_payments_attributes__payment_method_id_<%= payment_method.id %>').click(function (e) {
+    var checkoutFormId = "<%= payment_method.preferred_checkout_form_id %>"
+
     SpreeBraintreeVzero.advancedFraudTools = <%= payment_method.preferred_advanced_fraud_tools %>;
     SpreeBraintreeVzero.paymentMethodID = "<%= payment_method.id %>";
-    SpreeBraintreeVzero.checkoutFormId = <%= payment_method.preferred_checkout_form_id %>;
+    SpreeBraintreeVzero.checkoutFormId = "#" + checkoutFormId;
     SpreeBraintreeVzero.threeDSecure = <%= payment_method.try(:preferred_3dsecure) || false %>;
 
     var clientToken = "<%= payment_method.client_token(@order) %>";
-    var checkoutFormId = SpreeBraintreeVzero.checkoutFormId
     var errorMessagesContainer = "<%= payment_method.preferred_error_messages_container_id %>";
 
     <% if dropin %>

@@ -31,7 +31,7 @@ onReady: function (integration) {
 },
 
 onPaymentMethodReceived: function (result) {
-  var formId = (SpreeBraintreeVzero.admin ? "#" + checkoutFormId : checkoutFormId);
+  var formId = "#" + checkoutFormId;
 
   function submitWithAttributes() {
     $(formId).append("<input type='hidden' name='braintree_last_two' value=" + result.details.lastTwo + ">");
