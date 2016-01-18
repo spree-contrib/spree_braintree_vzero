@@ -17,16 +17,22 @@ shippingAddressOverride: {
   editable: false
 },
 
-onReady: function (integration)  { checkout = integration; },
+onReady: function (integration) {
+  if(!SpreeBraintreeVzero.admin)
+    SpreeBraintreeVzero.deviceData = integration.deviceData;
+  checkout = integration;
+},
 headless: true,
 
 onPaymentMethodReceived: function (result) {
+  var formId = "#" + checkoutFormId;
+
   if (result.nonce.length) {
-    $(checkoutFormId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + result.nonce + ">");
-    $(checkoutFormId).append("<input type='hidden' name='paypal_email' value=" + result.details.email + ">");
+    $(formId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + result.nonce + ">");
+    $(formId).append("<input type='hidden' name='paypal_email' value=" + result.details.email + ">");
     paymentMethodSelect = $("#order_payments_attributes__braintree_token")
     if(paymentMethodSelect.length) paymentMethodSelect.val("");
-    $(checkoutFormId).submit();
+    $(formId).submit();
   } else {
     $(errorMessagesContainer).prepend("<div class='alert alert-error'><%= I18n.t(:gateway_error, scope: 'braintree.error') %>></div>")
   }

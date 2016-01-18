@@ -18,7 +18,7 @@ paypal: {
 },
 
 onPaymentMethodReceived: function (result) {
-  var formId = (SpreeBraintreeVzero.admin ? "#" + checkoutFormId : checkoutFormId);
+  var formId = "#" + checkoutFormId;
 
   function submitWithAttributes() {
     switch (result.type) {
@@ -58,6 +58,8 @@ onPaymentMethodReceived: function (result) {
 },
 
 onReady: function (integration) {
+  if(!SpreeBraintreeVzero.admin)
+    SpreeBraintreeVzero.deviceData = integration.deviceData;
   <%= render partial: 'spree/checkout/payment/braintree_vzero/dropin_on_ready_callback', formats: [:js] %>
 },
 

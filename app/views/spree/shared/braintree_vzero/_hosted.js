@@ -25,8 +25,13 @@ onError: function (error) {
   SpreeBraintreeVzero.enableSubmitButton();
 },
 
+onReady: function (integration) {
+  if(!SpreeBraintreeVzero.admin)
+    SpreeBraintreeVzero.deviceData = integration.deviceData;
+},
+
 onPaymentMethodReceived: function (result) {
-  var formId = (SpreeBraintreeVzero.admin ? "#" + checkoutFormId : checkoutFormId);
+  var formId = "#" + checkoutFormId;
 
   function submitWithAttributes() {
     $(formId).append("<input type='hidden' name='braintree_last_two' value=" + result.details.lastTwo + ">");
