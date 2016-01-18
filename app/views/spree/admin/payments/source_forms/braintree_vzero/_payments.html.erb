@@ -54,15 +54,16 @@
 
 <script type="text/javascript">
   $('#payment_payment_method_id_<%= payment_method.id %>').click(function (e) {
+    var checkoutFormId = "new_payment";
+
     SpreeBraintreeVzero.advancedFraudTools = false;
     SpreeBraintreeVzero.paymentMethodID = "<%= payment_method.id %>";
-    SpreeBraintreeVzero.checkoutFormId = "new_payment";
+    SpreeBraintreeVzero.checkoutFormId = "#" + checkoutFormId;
     SpreeBraintreeVzero.threeDSecure = false;
     SpreeBraintreeVzero.paypal = <%= paypal %>;
     SpreeBraintreeVzero.admin = true;
 
     var clientToken = "<%= payment_method.client_token(@order) %>";
-    var checkoutFormId = SpreeBraintreeVzero.checkoutFormId
     var errorMessagesContainer = "col-md-12";
 
     <% if dropin %>

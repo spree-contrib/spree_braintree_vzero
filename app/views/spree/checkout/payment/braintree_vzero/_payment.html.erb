@@ -47,18 +47,19 @@
 <br/>
 
 <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
-<script src="https://js.braintreegateway.com/v1/braintree-data.js" async=true></script>
+<script src="https://js.braintreegateway.com/js/braintree-2.17.6.min.js"></script>
 
 <script type="text/javascript">
   $('#order_payments_attributes__payment_method_id_<%= payment_method.id %>').click(function (e) {
+    var checkoutFormId = "<%= payment_method.preferred_checkout_form_id %>"
+
     SpreeBraintreeVzero.advancedFraudTools = <%= payment_method.preferred_advanced_fraud_tools %>;
     SpreeBraintreeVzero.paymentMethodID = "<%= payment_method.id %>";
-    SpreeBraintreeVzero.checkoutFormId = <%= payment_method.preferred_checkout_form_id %>;
+    SpreeBraintreeVzero.checkoutFormId = "#" + checkoutFormId;
     SpreeBraintreeVzero.threeDSecure = <%= payment_method.try(:preferred_3dsecure) || false %>;
 
     var clientToken = "<%= payment_method.client_token(@order) %>";
-    var checkoutFormId = SpreeBraintreeVzero.checkoutFormId
-    var errorMessagesContainer = <%= payment_method.preferred_error_messages_container_id %>;
+    var errorMessagesContainer = "<%= payment_method.preferred_error_messages_container_id %>";
 
     <% if dropin %>
       var container = "<%= payment_method.preferred_dropin_container %>";
@@ -67,23 +68,21 @@
     var checkout;
 
     braintree.setup(clientToken, '<%= payment_method_type %>', {
+      <% if payment_method.preferred_advanced_fraud_tools %>
+        dataCollector: {
+          kount: {
+            environment: "<%= payment_method.preferred_server %>"
+            <% if (kount_id = payment_method.preferred_kount_merchant_id).present? %>
+              ,
+              merchantId: "<%= kount_id %>"
+            <% end %>
+          }
+        },
+      <% end %>
       <%= render(partial: 'spree/shared/braintree_vzero/dropin', locals: { shipping_address: shipping_address, payment_method: payment_method }, formats: [:js]) if dropin %>
       <%= render(partial: 'spree/shared/braintree_vzero/paypal', locals: { shipping_address: shipping_address, payment_method: payment_method }, formats: [:js]) if paypal %>
       <%= render(partial: 'spree/shared/braintree_vzero/hosted', locals: { payment_method: payment_method }, formats: [:js]) if hosted %>
     });
-
-    if (SpreeBraintreeVzero.advancedFraudTools) {
-      var BraintreeEnv = "<%= payment_method.preferred_server %>";
-      var BraintreeMerchantId = "<%= payment_method.preferred_merchant_id %>";
-
-      window.onBraintreeDataLoad = function () {
-        if("<%= payment_method.preferred_kount_merchant_id %>".length)
-          var env = BraintreeData.environments[BraintreeEnv]
-        else
-          var env = BraintreeData.environments[BraintreeEnv].withId("<%= payment_method.preferred_kount_merchant_id %>")
-        BraintreeData.setup(BraintreeMerchantId, checkoutFormId.id, env);
-      };
-    }
 
     document.querySelector("#paypal-submit").addEventListener(
       "click",
@@ -94,8 +93,4 @@
     );
   });
 </script>
-
-<% if payment_method.preferred_advanced_fraud_tools %>
-  <script src="https://js.braintreegateway.com/v1/braintree-data.js" async="true"></script>
-<% end %>
 
