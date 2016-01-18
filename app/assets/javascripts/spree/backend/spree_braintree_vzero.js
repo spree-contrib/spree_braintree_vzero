@@ -20,13 +20,13 @@ SpreeBraintreeVzero = {
     return $('form#new_payment input[type="radio"][name="payment[payment_method_id]"]:checked');
   },
   hideSaveAndContinue: function() {
-    $("[data-hook=buttons]").hide();
+    $(".base-btn").hide();
     $("[method_id='" + SpreeBraintreeVzero.paymentMethodID + "']").show();
     $(".new-braintree-payment-method").show();
     $(".show-new-payment").hide();
   },
   showSaveAndContinue: function() {
-    $("[data-hook=buttons]").show();
+    $(".base-btn").show();
     $("[method_id='" + SpreeBraintreeVzero.paymentMethodID + "']").hide();
     $(".new-braintree-payment-method").hide();
     $(".show-new-payment").show();
