@@ -2,6 +2,6 @@
   <% next unless method.kind_of?(Spree::Gateway::BraintreeVzeroBase) %>
 
   <% unless method.is_a?(Spree::Gateway::BraintreeVzeroPaypalExpress) %>
-    <%= submit_tag Spree.t(:update), class: 'fa fa-refresh button', style: 'display: none;', method_id: method.id %>
+    <%= submit_tag Spree.t(:update), class: 'fa fa-refresh button brainree-submit', style: 'display: none;', method_id: method.id %>
   <% end %>
 <% end %>
