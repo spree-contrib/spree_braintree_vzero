@@ -29,17 +29,23 @@
 
     <% if hosted %>
       <br/>
-      <%= label_tag 'card_number_label', payment_method.preferred_number_placeholder %>
-      <span class="required">*</span><br />
-      <p id="hosted-fields-number" class="form-control"></p>
+      <div class="field">
+        <%= label_tag 'card_number_label', payment_method.preferred_number_placeholder %>
+        <span class="required">*</span><br />
+        <p id="hosted-fields-number" class="hosted-fields-input"></p>
+      </div>
 
-      <%= label_tag 'cvv_label', payment_method.preferred_cvv_placeholder %>
-      <span class="required">*</span><br />
-      <p id="hosted-fields-cvv" class="form-control"></p>
+      <div class="field">
+        <%= label_tag 'cvv_label', payment_method.preferred_cvv_placeholder %>
+        <span class="required">*</span><br />
+        <p id="hosted-fields-cvv" class="hosted-fields-input"></p>
+      </div>
 
-      <%= label_tag 'expiration_date_label', payment_method.preferred_expiration_date_placeholder %>
-      <span class="required">*</span><br />
-      <p id="hosted-fields-expiration-date" class="form-control"></p>
+      <div class="field">
+        <%= label_tag 'expiration_date_label', payment_method.preferred_expiration_date_placeholder %>
+        <span class="required">*</span><br />
+        <p id="hosted-fields-expiration-date" class="hosted-fields-input"></p>
+      </div>
       <br/>
     <% elsif dropin %>
       <br/>
