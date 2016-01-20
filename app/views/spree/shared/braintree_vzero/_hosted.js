@@ -1,0 +1,66 @@
+id: checkoutFormId,
+hostedFields: {
+  styles: {
+    <%= render partial: 'spree/checkout/payment/braintree_vzero/hosted_fields_styles', formats: [:js] %>
+  },
+  number: {
+    selector: "<%= payment_method.preferred_number_selector %>",
+    placeholder: "<%= payment_method.preferred_number_placeholder %>"
+  },
+  cvv: {
+    selector: "<%= payment_method.preferred_cvv_selector %>",
+    placeholder: "<%= payment_method.preferred_cvv_placeholder %>"
+  },
+  expirationDate: {
+    selector: "<%= payment_method.preferred_expiration_date_selector %>",
+    placeholder: "<%= payment_method.preferred_expiration_date_placeholder %>"
+  },
+
+  onFieldEvent: function (event) {
+    <%= render partial: 'spree/checkout/payment/braintree_vzero/hosted_fields_on_field_event_callback', formats: [:js] %>
+  }
+},
+
+onError: function (error) {
+  SpreeBraintreeVzero.enableSubmitButton();
+},
+
+onReady: function (integration) {
+  if(!SpreeBraintreeVzero.admin)
+    SpreeBraintreeVzero.deviceData = integration.deviceData;
+},
+
+onPaymentMethodReceived: function (result) {
+  var formId = "#" + checkoutFormId;
+
+  function submitWithAttributes() {
+    $(formId).append("<input type='hidden' name='braintree_last_two' value=" + result.details.lastTwo + ">");
+    $(formId).append("<input type='hidden' name='braintree_card_type' value=" + result.details.cardType.replace(/\s/g, "") + ">");
+
+    if(SpreeBraintreeVzero.admin)
+      $(formId).append("<input type='hidden' name='payment_method_nonce' value=" + result.nonce + ">");
+    else
+      $(formId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + result.nonce + ">");
+    $(formId).submit();
+  }
+
+  if (SpreeBraintreeVzero.threeDSecure && result.type == "CreditCard") {
+    var client = new braintree.api.Client({
+      clientToken: clientToken
+    });
+
+    client.verify3DS({
+      amount: <%= @order.total %>,
+      creditCard: result.nonce
+    }, function (error, response) {
+      if (!error) {
+        submitWithAttributes();
+      } else {
+        $(errorMessagesContainer).prepend("<div class='alert alert-error'><%= I18n.t(:gateway_error, scope: 'braintree.error') %></div>")
+      }
+    });
+  } else {
+    submitWithAttributes();
+  }
+}
+

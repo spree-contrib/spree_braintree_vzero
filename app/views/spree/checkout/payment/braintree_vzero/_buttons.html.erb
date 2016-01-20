@@ -1,0 +1,11 @@
+<% @order.available_payment_methods.each do |method| %>
+  <% next unless method.kind_of?(Spree::Gateway::BraintreeVzeroBase) %>
+
+  <% if method.is_a?(Spree::Gateway::BraintreeVzeroPaypalExpress) %>
+    <button id="paypal-submit", class="continue button primary braintree-submit", style="display: none;" method_id="<%= method.id %>">
+      <%= Spree.t(:save_and_continue) %>
+    </button>
+  <% else %>
+    <%= submit_tag Spree.t(:save_and_continue), class: 'continue button primary braintree-submit', style: 'display: none;', method_id: method.id %>
+  <% end %>
+<% end %>

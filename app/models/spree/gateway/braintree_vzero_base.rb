@@ -5,7 +5,7 @@ module Spree
     preference :merchant_id, :string
     preference :public_key, :string
     preference :private_key, :string
-    preference :server, :string, default: :sandbox
+    preference :server, :select, default: -> { { values: [:sandbox, :production] } }
     preference :pass_billing_and_shipping_address, :boolean_select, default: false
     preference :kount_merchant_id, :string
     preference :advanced_fraud_tools, :boolean_select, default: false
@@ -22,15 +22,11 @@ module Spree
     end
 
     def provider
-      Braintree::Configuration.environment = preferred_server.present? ? preferred_server.to_sym : :sandbox
+      Braintree::Configuration.environment = preferred_server.to_sym
       Braintree::Configuration.merchant_id = preferred_merchant_id
       Braintree::Configuration.public_key = preferred_public_key
       Braintree::Configuration.private_key = preferred_private_key
       Braintree
-    end
-
-    def method_type
-      'braintree_vzero'
     end
 
     def client_token(order = nil, user = nil)
@@ -39,26 +35,14 @@ module Spree
     end
 
     def purchase(money_in_cents, source, gateway_options)
-      order_number, payment_identifier = gateway_options[:order_id].split('-')
-      order = Spree::Order.find_by(number: order_number)
-      payment = order.payments.find_by(identifier: payment_identifier)
+      order, payment = order_data_from_options(gateway_options)
 
       @utils = Utils.new(self, order)
       identifier_hash = find_identifier_hash(payment, @utils)
 
-      data = set_basic_purchase_data(identifier_hash, order, @utils, money_in_cents)
-      data.merge!(device_data: source.advanced_fraud_data) if preferred_advanced_fraud_tools
-      data.merge!(
-        descriptor: { name: preferred_descriptor_name.to_s.gsub('/', '*') },
-        options: {
-          submit_for_settlement: auto_capture?,
-          add_billing_address_to_payment_method: preferred_pass_billing_and_shipping_address ? true : false,
-          three_d_secure: {
-            required: try(:preferred_3dsecure)
-          }
-        }.merge!(@utils.payment_in_vault(data))
-      )
+      data = set_purchase_data(identifier_hash, order, money_in_cents, source)
 
+      return invalid_payment_error(data) if identifier_hash.values.all?(&:blank?)
       sale(data, order, payment.source)
     end
 
@@ -66,7 +50,7 @@ module Spree
       purchase money_in_cents, source, gateway_options
     end
 
-    def settle(amount, checkout, gateway_options)
+    def settle(amount, checkout, _gateway_options)
       result = Transaction.new(provider, checkout.transaction_id).submit_for_settlement(amount / 100.0)
       checkout.update_attribute(:state, result.transaction.status)
       result
@@ -86,13 +70,13 @@ module Spree
       Transaction.new(provider, transaction_id).refund(credit_cents.to_f / 100)
     end
 
-    def customer_payment_methods(order)
+    def customer_payment_methods(order, payment_method_type)
       @utils = Utils.new(self, order)
-      @utils.customer_payment_methods
+      @utils.customer_payment_methods(payment_method_type)
     end
 
     def vaulted_payment_method(token)
-      self.provider::PaymentMethod.find(token)
+      provider::PaymentMethod.find(token)
     end
 
     private
@@ -144,6 +128,22 @@ module Spree
       order.errors.add(:base, I18n.t(response.transaction.gateway_rejection_reason, scope: 'braintree.error'))
     end
 
+    def set_purchase_data(identifier_hash, order, money_in_cents, source)
+      data = set_basic_purchase_data(identifier_hash, order, @utils, money_in_cents)
+      data.merge!(
+        descriptor: { name: preferred_descriptor_name.to_s.gsub('/', '*') },
+        options: {
+          submit_for_settlement: auto_capture?,
+          add_billing_address_to_payment_method: preferred_pass_billing_and_shipping_address ? true : false,
+          three_d_secure: {
+            required: (try(:preferred_3dsecure) unless source.admin_payment?)
+          }
+        }.merge!(@utils.payment_in_vault(data))
+      )
+      return data if source.admin_payment? || !preferred_advanced_fraud_tools
+      data.merge!(device_data: source.advanced_fraud_data)
+    end
+
     def set_basic_purchase_data(identifier_hash, order, utils, money_in_cents)
       data = {}
       data.merge!(utils.get_customer)
@@ -160,6 +160,20 @@ module Spree
       else
         { payment_method_nonce: payment[:braintree_nonce] }
       end
+    end
+
+    def invalid_payment_error(data)
+      # We want only direct choice of payment method (token or nonce), not by customer_id
+      message = 'Payment method identification was not specified'
+      errors = { errors: [{ code: '0', attribute: '', message: message }] }
+      Braintree::ErrorResult.new(:transaction, params: data, errors: { transaction: errors }, message: message)
+    end
+
+    def order_data_from_options(options)
+      order_number, payment_number = options[:order_id].split('-')
+      order = Spree::Order.find_by(number: order_number)
+      payment = order.payments.find_by(identifier: payment_number)
+      [order, payment]
     end
   end
 end

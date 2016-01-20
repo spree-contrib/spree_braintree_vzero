@@ -58,6 +58,11 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
         expect(purchase.success?).to be true
       end
 
+      it 'returns false when neither nonce nor token is present' do
+        payment.update(braintree_nonce: nil, braintree_token: nil)
+        expect(purchase.success?).to be false
+      end
+
       it 'returns false with invalid token' do
         token = 'sometoken'
         payment.update(braintree_token: token)
@@ -94,6 +99,27 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
           response = purchase
           expect(response.errors.size.zero?).to be true
           expect(response.transaction.try(:gateway_rejection_reason)).to eq 'three_d_secure'
+        end
+      end
+
+      context 'data from admin panel' do
+        let(:identifier_hash) { { payment_method_nonce: '123' } }
+        let(:utils) { Spree::Gateway::BraintreeVzeroBase::Utils.new(gateway, order) }
+        let(:set_data) { gateway.send(:set_purchase_data, identifier_hash, order, 113, payment_source) }
+
+        before do
+          gateway.preferred_3dsecure = true
+          payment.update(braintree_nonce: 'fake-valid-debit-nonce')
+          gateway.preferences[:advanced_fraud_data] = true
+          payment_source.update(admin_payment: true)
+          gateway.instance_variable_set(:@utils, utils)
+        end
+
+        it 'should include only essential data' do
+          data = set_data
+          expect(data[:payment_method_nonce]).to eq identifier_hash[:payment_method_nonce]
+          expect(data[:device_data]).to be_blank
+          expect(data[:options][:three_d_secure][:required]).to be_blank
         end
       end
 

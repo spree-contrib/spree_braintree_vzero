@@ -11,17 +11,19 @@ module Spree
     has_one :order, through: :payment
 
     def self.create_from_params(params)
+      type = braintree_card_type_to_spree(params[:braintree_card_type])
       create!(paypal_email: params[:paypal_email],
-                   braintree_last_digits: params[:braintree_last_two],
-                   braintree_card_type: params[:braintree_card_type])
+              braintree_last_digits: params[:braintree_last_two],
+              braintree_card_type: type)
     end
 
     def self.create_from_token(token, payment_method_id)
       gateway = Spree::PaymentMethod.find(payment_method_id)
       vaulted_payment_method = gateway.vaulted_payment_method(token)
+      type = braintree_card_type_to_spree(vaulted_payment_method.try(:card_type))
       create!(paypal_email: vaulted_payment_method.try(:email),
-                   braintree_last_digits: vaulted_payment_method.try(:last_4),
-                   braintree_card_type: vaulted_payment_method.try(:card_type))
+              braintree_last_digits: vaulted_payment_method.try(:last_4),
+              braintree_card_type: type)
     end
 
     def self.update_states
@@ -67,6 +69,20 @@ module Spree
       if state_changed? && payment
         payment.update_attribute(:state, Gateway::BraintreeVzeroBase::Utils.new(Gateway::BraintreeVzeroDropInUI.first, order).map_payment_status(state))
         order.update!
+      end
+    end
+
+    def self.braintree_card_type_to_spree(type)
+      return '' unless type
+      case type
+      when 'AmericanExpress'
+        'american_express'
+      when 'Diners Club'
+        'diners_club'
+      when 'MasterCard'
+        'master'
+      else
+        type.downcase
       end
     end
 

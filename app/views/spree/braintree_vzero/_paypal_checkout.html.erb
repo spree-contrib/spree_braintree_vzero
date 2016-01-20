@@ -5,10 +5,12 @@
   </button>
 
   <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
-  <script src="https://js.braintreegateway.com/v1/braintree-data.js" async=true></script>
+  <script src="https://js.braintreegateway.com/js/braintree-2.17.6.min.js"></script>
+
   <script type="text/javascript">
     var checkoutFormId = '#update-cart';
     var checkout;
+    SpreeBraintreeVzero.checkoutFormId = '#update-cart';
 
     braintree.setup("<%= payment_method.client_token(current_order) %>", "paypal", {
       container: "paypal-container",
@@ -19,17 +21,35 @@
       enableShippingAddress: true,
       enableBillingAddress: true,
       displayName: "<%= payment_method.preferred_paypal_display_name %>",
+      <% if payment_method.preferred_advanced_fraud_tools %>
+        dataCollector: {
+          kount: {
+            environment: "<%= payment_method.preferred_server %>"
+            <% if (kount_id = payment_method.preferred_kount_merchant_id).present? %>
+              ,
+              merchantId: "<%= kount_id %>"
+            <% end %>
+          }
+        },
+      <% end %>
 
-      onReady: function (integration)  { checkout = integration; },
+      onReady: function (integration) {
+        SpreeBraintreeVzero.deviceData = integration.deviceData;
+        checkout = integration;
+      },
       headless: true,
 
       onPaymentMethodReceived: function (result) {
         $('#paypal-container').hide()
+        $('#checkout-link').prop("disabled", true);
         phone = result.details.phone
+        SpreeBraintreeVzero.addDeviceData();
 
         if(shippingAddress = result.details.shippingAddress) {
           $(checkoutFormId).append("<input type='hidden' name='order[ship_address][zipcode]' value='" + shippingAddress.postalCode + "'>");
           $(checkoutFormId).append("<input type='hidden' name='order[ship_address][full_name]' value='" + shippingAddress.recipientName + "'>");
+          $(checkoutFormId).append("<input type='hidden' name='order[ship_address][firstname]' value='" + result.details.firstName + "'>");
+          $(checkoutFormId).append("<input type='hidden' name='order[ship_address][lastname]' value='" + result.details.lastName + "'>");
           $(checkoutFormId).append("<input type='hidden' name='order[ship_address][address1]' value='" + shippingAddress.streetAddress + "'>");
           $(checkoutFormId).append("<input type='hidden' name='order[ship_address][address2]' value='" + shippingAddress.extendedAddress + "'>");
           $(checkoutFormId).append("<input type='hidden' name='order[ship_address][city]' value='" + shippingAddress.locality + "'>");
@@ -60,20 +80,14 @@
       }
     });
 
-    if (<%= payment_method.preferred_advanced_fraud_tools %>) {
-      var BraintreeEnv = "<%= payment_method.preferred_server %>";
-      var BraintreeMerchantId = "<%= payment_method.preferred_merchant_id %>";
-
-      window.onBraintreeDataLoad = function () {
-        if("<%= payment_method.preferred_kount_merchant_id %>".length)
-          var env = BraintreeData.environments[BraintreeEnv]
-        else
-          var env = BraintreeData.environments[BraintreeEnv].withId("<%= payment_method.preferred_kount_merchant_id %>")
-        BraintreeData.setup(BraintreeMerchantId, 'update-cart', BraintreeData.environments[BraintreeEnv]);
-      }
-    }
-
-    document.querySelector('#btnOpenFlow').addEventListener('click', function () { checkout.paypal.initAuthFlow(); }, false);
+    document.querySelector('#btnOpenFlow').addEventListener(
+      'click',
+      function (e) {
+        e.preventDefault();
+        checkout.paypal.initAuthFlow();
+      },
+      false
+    );
   </script>
 <% else %>
   &nbsp;
