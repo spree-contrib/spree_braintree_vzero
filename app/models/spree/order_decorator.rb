@@ -95,6 +95,19 @@ Spree::Order.class_eval do
     end
   end
 
+  def no_phone_number?
+    [ship_address, bill_address].each do |address|
+      return true if address.try(:phone).eql?(I18n.t('braintree.phone_number_placeholder'))
+    end
+    false
+  end
+
+  def remove_phone_number_placeholder
+    [ship_address, bill_address].each do |address|
+      address.update_column(:phone, nil) if address.try(:phone).eql?(I18n.t('braintree.phone_number_placeholder'))
+    end
+  end
+
   private
 
   def braintree_confirmation_required?
@@ -110,6 +123,7 @@ Spree::Order.class_eval do
     state = Spree::State.where('spree_states.abbr = :abbr OR lower(spree_states.name) = :name',
                                abbr: state_param, name: state_param.downcase).find_by(country_id: country_id)
     hash[:state_id] = state.try(:id)
+    hash[:phone] ||= I18n.t('braintree.phone_number_placeholder')
 
     return hash if hash[:full_name].blank?
 
