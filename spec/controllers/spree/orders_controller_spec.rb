@@ -21,5 +21,56 @@ describe Spree::OrdersController, type: :controller do
         expect(order.reload.payments.valid.count).to eq 0
       end
     end
+
+    context 'paypal express checkout' do
+      let(:payment_method) { create(:vzero_paypal_gateway) }
+      let(:params) do
+        {
+          order: {
+            line_items_attributes: {
+              '0' => {
+                quantity: '1',
+                id: '127'
+              }
+            },
+            ship_address: {
+              zipcode: '95131',
+              full_name: 'undefined',
+              firstname: 'Spree',
+              lastname: 'Buyer',
+              address1: '1 Main St',
+              address2: 'undefined',
+              city: 'San Jose',
+              country: 'US',
+              state: 'AL'
+            },
+            email: 'spree_buyer@spreetest.com'
+          },
+          paypal: {
+            payment_method_id: payment_method.id.to_s,
+            payment_method_nonce: '2f7126df-ceee-40a6-a7b4-ab1b799810f3'
+          },
+          device_data: '{\"device_session_id\":\"4523fd012467562ec455926850f7ce11\",\"fraud_merchant_id\":\"600000\"}',
+          checkout: 'true'
+        }
+      end
+
+      it 'it should save address both as billing and shipping (even when phone number is not passed)' do
+        spree_put :update, params, order_id: order.id
+        data = params.slice(:order)[:order].slice(:ship_address)[:ship_address]
+
+        [order.ship_address, order.bill_address].each do |address|
+          expect(address.zipcode).to eq data[:zipcode]
+          expect(address.firstname).to eq data[:firstname]
+          expect(address.lastname).to eq data[:lastname]
+          expect(address.address1).to eq data[:address1]
+          expect(address.address2).to be_blank
+          expect(address.city).to eq data[:city]
+          expect(address.country.iso).to eq data[:country]
+          expect(address.state.abbr).to eq data[:state]
+          expect(address.phone).to be_blank
+        end
+      end
+    end
   end
 end

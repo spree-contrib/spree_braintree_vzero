@@ -23,6 +23,7 @@ en:
         dropin: Use a Saved Payment Method
         paypal: Use a Saved Paypal Account
       blank_saved_payment_method: Click to Choose
+    phone_number_placeholder: XXXXXXXXX
 
   spree:
     3dsecure: 3D Secure

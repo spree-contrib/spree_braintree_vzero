@@ -33,14 +33,14 @@ onReady: function (integration) {
 onPaymentMethodReceived: function (result) {
   var formId = "#" + checkoutFormId;
 
-  function submitWithAttributes() {
+  function submitWithAttributes(data) {
     $(formId).append("<input type='hidden' name='braintree_last_two' value=" + result.details.lastTwo + ">");
     $(formId).append("<input type='hidden' name='braintree_card_type' value=" + result.details.cardType.replace(/\s/g, "") + ">");
 
     if(SpreeBraintreeVzero.admin)
-      $(formId).append("<input type='hidden' name='payment_method_nonce' value=" + result.nonce + ">");
+      $(formId).append("<input type='hidden' name='payment_method_nonce' value=" + data.nonce + ">");
     else
-      $(formId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + result.nonce + ">");
+      $(formId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + data.nonce + ">");
     $(formId).submit();
   }
 
@@ -54,13 +54,13 @@ onPaymentMethodReceived: function (result) {
       creditCard: result.nonce
     }, function (error, response) {
       if (!error) {
-        submitWithAttributes();
+        submitWithAttributes(response);
       } else {
         $(errorMessagesContainer).prepend("<div class='alert alert-error'><%= I18n.t(:gateway_error, scope: 'braintree.error') %></div>")
       }
     });
   } else {
-    submitWithAttributes();
+    submitWithAttributes(result);
   }
 }
 
