@@ -120,8 +120,8 @@ Spree::Order.class_eval do
 
     hash[:country_id] = country_id
     state_param = hash.delete(:state)
-    state = Spree::State.where('spree_states.abbr = :abbr OR lower(spree_states.name) = :name',
-                               abbr: state_param, name: state_param.downcase).find_by(country_id: country_id)
+    state = Spree::State.where('spree_states.abbr = :abbr OR upper(spree_states.name) = :name',
+                               abbr: state_param, name: state_param.upcase).find_by(country_id: country_id)
     hash[:state_id] = state.try(:id)
     hash[:phone] ||= I18n.t('braintree.phone_number_placeholder')
 
