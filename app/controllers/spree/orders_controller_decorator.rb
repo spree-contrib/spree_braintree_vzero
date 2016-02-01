@@ -15,12 +15,9 @@ Spree::OrdersController.class_eval do
     current_order.state = 'cart'
     current_order.save_paypal_payment(payment_params)
 
-    if manage_paypal_addresses
-      payment_method.push_order_to_state(current_order, 'delivery', email)
-    else
-      payment_method.push_order_to_state(current_order, 'address', email)
-      current_order.remove_phone_number_placeholder
-    end
+    manage_paypal_addresses
+    payment_method.push_order_to_state(current_order, 'address', email)
+    current_order.remove_phone_number_placeholder
 
     redirect_to checkout_state_path(current_order.state, paypal_email: email)
   end
