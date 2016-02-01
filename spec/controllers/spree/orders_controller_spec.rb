@@ -71,6 +71,25 @@ describe Spree::OrdersController, type: :controller do
           expect(address.phone).to be_blank
         end
       end
+
+      it 'it should redirect to address page when address is invalid' do
+        spree_put :update, params, order_id: order.id
+
+        [order.ship_address, order.bill_address].each do |address|
+          expect(address).to be_invalid
+        end
+        expect(response).to redirect_to checkout_state_path(:address, paypal_email: params[:order][:email])
+      end
+
+      it 'it should redirect to address page when address is valid' do
+        params[:order][:ship_address][:phone] = '123456789'
+        spree_put :update, params, order_id: order.id
+
+        [order.ship_address, order.bill_address].each do |address|
+          expect(address).to be_valid
+        end
+        expect(response).to redirect_to checkout_state_path(:address, paypal_email: params[:order][:email])
+      end
     end
   end
 end
