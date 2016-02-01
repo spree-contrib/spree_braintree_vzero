@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Spree::OrdersController, type: :controller do
+  include Spree::Core::Engine.routes.url_helpers
+
   let(:user) { create(:user) }
 
   context '#update' do
