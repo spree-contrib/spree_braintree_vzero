@@ -27,7 +27,7 @@ module Spree
     end
 
     def self.update_states
-      braintree = Gateway::BraintreeVzeroDropInUI.first.provider
+      braintree = Gateway::BraintreeVzeroBase.first.provider
       result = {changed: 0, unchanged: 0}
       self.not_in_state(FINAL_STATES).find_each do |checkout|
         checkout.state = braintree::Transaction.find(checkout.transaction_id).status
@@ -42,7 +42,7 @@ module Spree
     end
 
     def update_state
-      status = Transaction.new(Gateway::BraintreeVzeroDropInUI.first.provider, transaction_id).status
+      status = Transaction.new(Gateway::BraintreeVzeroBase.first.provider, transaction_id).status
       self.update_attribute(:state, status)
       status
     end
