@@ -1,13 +1,17 @@
 <fieldset data-hook="braintree_vzero">
-  <legend><%= Spree.t(:braintree_vzero) %></legend>
+  <legend><%= I18n.t("braintree.title.#{payment_type}") %></legend>
   <table class="table table-condensed table-bordered">
     <tr>
       <th width="20%"><%= Spree.t(:transaction_id) %>:</th>
       <td><%= payment.source.transaction_id %></td>
     </tr>
     <tr>
-      <th><%= Spree.t(:state) %>:</th>
+      <th><%= I18n.t('braintree.state') %>:</th>
       <td><%= payment.source.state %></td>
+    </tr>
+    <tr>
+      <th><%= Spree.t(:state) %>:</th>
+      <td><%= payment.state %></td>
     </tr>
   </table>
 </fieldset>
