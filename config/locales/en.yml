@@ -3,6 +3,12 @@
 
 en:
   braintree:
+    checkout:
+      saved_payment_method:
+        custom: Use a Saved Credit Card
+        dropin: Use a Saved Payment Method
+        paypal: Use a Saved Paypal Account
+      blank_saved_payment_method: Click to Choose
     error:
       three_d_secure: There was a problem with processing your credit card!
       fraud: There was a problem with processing your credit card!
@@ -11,19 +17,18 @@ en:
       avs_and_cvv: Wrong AVS and CVV!
       avs: Wrong AVS!
       gateway_error: An error occured, please try again
+    phone_number_placeholder: XXXXXXXXX
     preferences:
       do_not_store: Do not store
       production: production
       sandbox: sandbox
       store_only_on_success: Store only on success
       store_all: Store all
-    checkout:
-      saved_payment_method:
-        custom: Use a Saved Credit Card
-        dropin: Use a Saved Payment Method
-        paypal: Use a Saved Paypal Account
-      blank_saved_payment_method: Click to Choose
-    phone_number_placeholder: XXXXXXXXX
+    state: Braintree State
+    title:
+      custom: Hosted Fields
+      dropin: Drop-in UI
+      paypal: Paypal Express
 
   spree:
     3dsecure: 3D Secure
