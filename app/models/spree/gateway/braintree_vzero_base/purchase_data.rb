@@ -4,6 +4,8 @@ module Spree
       module PurchaseData
         extend ActiveSupport::Concern
 
+        private
+
         def set_purchase_data(identifier_hash, order, money_in_cents, source)
           data = set_basic_purchase_data(identifier_hash, order, @utils, money_in_cents)
           data.merge!(
@@ -21,7 +23,7 @@ module Spree
         end
 
         def set_basic_purchase_data(identifier_hash, order, utils, money_in_cents)
-          data = { channel: 'SpreeCommerceInc_Cart_Braintree' }
+          data = { channel: I18n.t('braintree.channel_parameter') }
           data.merge!(utils.get_customer)
           data.merge!(utils.order_data(identifier_hash, money_in_cents.to_f / 100))
           return data unless preferred_pass_billing_and_shipping_address
@@ -29,8 +31,6 @@ module Spree
           data.merge!(utils.get_address('billing')) unless order.shipping_address.same_as?(order.billing_address)
           data.merge!(utils.get_address('shipping'))
         end
-
-        private
 
         def order_data_from_options(options)
           order_number, payment_number = options[:order_id].split('-')
