@@ -3,6 +3,7 @@
 
 en:
   braintree:
+    channel_parameter: SpreeCommerceInc_Cart_Braintree
     checkout:
       saved_payment_method:
         custom: Use a Saved Credit Card
