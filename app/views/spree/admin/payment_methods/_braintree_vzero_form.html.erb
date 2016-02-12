@@ -22,7 +22,7 @@
 
         <%= f.field_container :payment_method_display_on, class: ['form-group'] do %>
           <%= label_tag :payment_method_display_on, Spree.t(:display) %>
-          <%= select(:payment_method, :display_on, Spree::PaymentMethod::DISPLAY.collect { |display| [Spree.t(display), display == :both ? nil : display.to_s] }, {}, {:class => 'select2'}) %>
+          <%= select(:payment_method, :display_on, Spree::PaymentMethod::DISPLAY.collect { |display| [Spree.t(display), display.to_s] }, {}, {:class => 'select2'}) %>
         <% end %>
 
         <%= f.field_container :payment_method_auto_capture, class: ['form-group'] do %>
