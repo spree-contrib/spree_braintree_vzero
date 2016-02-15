@@ -1,7 +1,7 @@
 Deface::Override.new(
   virtual_path: 'spree/shared/_order_details',
   name: 'Displays payment data for PayPal Express payment methods',
-  replace: %Q{erb[silent]:contains('@order.has_step?("payment")')},
+  replace: %Q{erb[silent]:contains('order.has_step?("payment")')},
   text: '<% if @order.has_step?("payment") || @order.paid_with_paypal_express? %>'
 )
 
