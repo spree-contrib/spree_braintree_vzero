@@ -28,8 +28,8 @@ module Spree
 
     def self.update_states
       braintree = Gateway::BraintreeVzeroBase.first.provider
-      result = {changed: 0, unchanged: 0}
-      self.not_in_state(FINAL_STATES).find_each do |checkout|
+      result = { changed: 0, unchanged: 0 }
+      not_in_state(FINAL_STATES).find_each do |checkout|
         checkout.state = braintree::Transaction.find(checkout.transaction_id).status
         if checkout.state_changed?
           result[:changed] += 1
@@ -43,7 +43,7 @@ module Spree
 
     def update_state
       status = Transaction.new(Gateway::BraintreeVzeroBase.first.provider, transaction_id).status
-      self.update_attribute(:state, status)
+      payment.send(payment_action(status))
       status
     end
 
@@ -67,7 +67,9 @@ module Spree
 
     def update_payment_and_order
       if state_changed? && payment
-        payment.update_attribute(:state, Gateway::BraintreeVzeroBase::Utils.new(Gateway::BraintreeVzeroDropInUI.first, order).map_payment_status(state))
+        utils = Gateway::BraintreeVzeroBase::Utils.new(Gateway::BraintreeVzeroBase.first, order)
+        payment_state = utils.map_payment_status(state)
+        payment.send(payment_action(payment_state))
         order.update!
       end
     end
@@ -86,5 +88,17 @@ module Spree
       end
     end
 
+    def payment_action(state)
+      case state
+      when 'pending'
+        'pend'
+      when 'void'
+        'void'
+      when 'completed'
+        'complete'
+      else
+        'fail'
+      end
+    end
   end
 end
