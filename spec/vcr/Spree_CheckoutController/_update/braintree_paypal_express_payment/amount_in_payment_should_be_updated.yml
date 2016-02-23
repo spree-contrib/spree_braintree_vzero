@@ -219,4 +219,57 @@ http_interactions:
         QVOKLv4BAAD//wMA0blAXY4SAAA=
     http_version: 
   recorded_at: Fri, 04 Dec 2015 09:09:25 GMT
-recorded_with: VCR 3.0.0
+- request:
+    method: get
+    uri: https://api.sandbox.braintreegateway.com/merchants//customers/1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip
+      Accept:
+      - application/xml
+      User-Agent:
+      - Braintree Ruby Gem 2.57.0
+      X-Apiversion:
+      - '4'
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Date:
+      - Tue, 23 Feb 2016 15:43:57 GMT
+      Content-Type:
+      - application/xml; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - close
+      X-Frame-Options:
+      - SAMEORIGIN
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Vary:
+      - Accept-Encoding
+      Content-Encoding:
+      - gzip
+      Cache-Control:
+      - no-cache
+      X-Request-Id:
+      - 58964ab2-d7b6-4ece-9d48-61799b7831b8
+      X-Runtime:
+      - '0.011817'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAD1+zFYAAwAAAP//AwAAAAAAAAAAAA==
+    http_version: 
+  recorded_at: Tue, 23 Feb 2016 15:43:57 GMT
+recorded_with: VCR 3.0.1
