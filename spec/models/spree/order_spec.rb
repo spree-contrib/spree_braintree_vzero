@@ -14,8 +14,8 @@ describe Spree::Order, :vcr do
     end
 
     context 'with auto_capture' do
-      it 'should pend payment' do
-        expect(payment.reload.state).to eq 'pending'
+      it 'should complete payment' do
+        expect(payment.reload.state).to eq 'completed'
       end
 
       it "should update payment's response_code" do
