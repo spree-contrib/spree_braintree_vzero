@@ -42,7 +42,7 @@ describe Spree::OrdersController, type: :controller do
               address2: 'undefined',
               city: 'San Jose',
               country: 'US',
-              state: 'AL'
+              state: Spree::State.first.abbr
             },
             email: 'spree_buyer@spreetest.com'
           },
@@ -58,7 +58,6 @@ describe Spree::OrdersController, type: :controller do
       it 'it should save address both as billing and shipping (even when phone number is not passed)' do
         spree_put :update, params, order_id: order.id
         data = params.slice(:order)[:order].slice(:ship_address)[:ship_address]
-
         [order.ship_address, order.bill_address].each do |address|
           expect(address.zipcode).to eq data[:zipcode]
           expect(address.firstname).to eq data[:firstname]
