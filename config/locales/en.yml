@@ -3,6 +3,8 @@
 
 en:
   braintree:
+    admin:
+      no_paypal_payments: No vaulted paypal payments for this user
     channel_parameter: SpreeCommerceInc_Cart_Braintree
     checkout:
       saved_payment_method:
