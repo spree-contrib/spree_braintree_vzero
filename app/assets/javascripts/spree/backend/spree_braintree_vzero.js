@@ -39,12 +39,22 @@ SpreeBraintreeVzero = {
   },
   enableSubmitButton: function() {
     $('.braintree-submit:disabled').attr('disabled', false).removeClass('disabled').addClass('primary');
+  },
+  setPaypalButtonDispay: function() {
+    submitButton = $('button[type="submit"]:not(.braintree-submit)');
+    paymentMethod = this.checkedPaymentMethod();
+    submitButton.attr('disabled', false);
+    if(!SpreeBraintreeVzero.paymentMethodID || (paymentMethod.val() != SpreeBraintreeVzero.paymentMethodID))
+      return;
+    if(SpreeBraintreeVzero.paypal && SpreeBraintreeVzero.paypal_empty)
+      submitButton.attr('disabled', true);
   }
 }
 
 $(document).ready(function() {
   paymentMethods = $('form#new_payment input[type="radio"]').click(function (e) {
     SpreeBraintreeVzero.setSaveAndContinueVisibility();
+    SpreeBraintreeVzero.setPaypalButtonDispay();
   });
   $('.saved-payment-methods').change(function (e) {
     if($(this).val())
