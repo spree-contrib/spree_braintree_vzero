@@ -1,4 +1,4 @@
-<% display_payment_methods_list = !payment_method.try(:preferred_3dsecure) && (@methods = payment_method.customer_payment_methods(@order, payment_method_type)).any? %>
+<% display_payment_methods_list = (@methods = payment_method.customer_payment_methods(@order, payment_method_type)).any? %>
 <% shipping_address = @order.shipping_address %>
 <% paypal = payment_method_type.eql?('paypal') %>
 <% dropin = payment_method_type.eql?('dropin') %>
@@ -20,6 +20,11 @@
 
   <% if paypal %>
     <div>
+      <% unless display_payment_methods_list %>
+        <div class="alert alert-warning">
+          <%= I18n.t('braintree.admin.no_paypal_payments') %>
+        </div>
+      <% end %>
   <% else %>
     <div class="<%= display_payment_methods_list ? 'new-braintree-payment-method' : '' %>" style="<%= display_payment_methods_list ? 'display: none;' : '' %>">
   <% end %>
@@ -63,6 +68,7 @@
     SpreeBraintreeVzero.threeDSecure = false;
     SpreeBraintreeVzero.paypal = <%= paypal %>;
     SpreeBraintreeVzero.admin = true;
+    SpreeBraintreeVzero.paypal_empty = <%= !display_payment_methods_list %>
 
     var clientToken = "<%= payment_method.client_token(@order) %>";
     var errorMessagesContainer = "col-md-12";
