@@ -9,7 +9,7 @@ Deface::Override.new(
               cc_type = payment.source.braintree_card_type
               img = "credit_cards/icons/" + cc_type.downcase + ".png"
             %>
-            <% if Rails.application.assets.find_asset(img) %>
+            <% if asset_available?(img) %>
               <%= image_tag img %>
             <% else %>
               <p><%= Spree.t(:cc_type) + ": " + cc_type %></p>
