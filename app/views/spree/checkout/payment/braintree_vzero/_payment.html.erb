@@ -84,8 +84,8 @@
       <%= render(partial: 'spree/shared/braintree_vzero/hosted', locals: { payment_method: payment_method }, formats: [:js]) if hosted %>
     });
 
-    var paypalSubmitId = "#paypal-submit"
-      if($(paypalSubmitId).length) {
+    var paypalSubmitId = "#paypal-submit";
+    if($(paypalSubmitId).length) {
       document.querySelector(paypalSubmitId).addEventListener(
         "click",
         function () {
