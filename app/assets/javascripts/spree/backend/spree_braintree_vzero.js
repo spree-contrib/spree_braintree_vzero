@@ -53,6 +53,7 @@ SpreeBraintreeVzero = {
 }
 
 $(document).ready(function() {
+  SpreeBraintreeVzero.checkedPaymentMethod().trigger('click');
   paymentMethods = $('form#new_payment input[type="radio"]').click(function (e) {
     SpreeBraintreeVzero.setSaveAndContinueVisibility();
     SpreeBraintreeVzero.setPaypalButtonDispay();
