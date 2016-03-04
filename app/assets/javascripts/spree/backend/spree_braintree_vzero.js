@@ -29,6 +29,7 @@ SpreeBraintreeVzero = {
     $(".base-btn").show();
     $("[method_id='" + SpreeBraintreeVzero.paymentMethodID + "']").hide();
     $(".new-braintree-payment-method").hide();
+    $(".brainree-submit").hide();
     $(".show-new-payment").show();
   },
   setSaveAndContinueVisibility: function() {

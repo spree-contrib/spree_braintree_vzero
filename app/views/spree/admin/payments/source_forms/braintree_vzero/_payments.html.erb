@@ -23,7 +23,7 @@
   <% if paypal %>
     <div>
       <% unless display_payment_methods_list %>
-        <div class="alert alert-warning">
+        <div class="promotion-block">
           <%= I18n.t('braintree.admin.no_paypal_payments') %>
         </div>
       <% end %>
