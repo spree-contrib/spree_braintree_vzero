@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.requirements << 'none'
 
   s.add_dependency 'spree_core', '~> 3.1.0.beta'
-  s.add_dependency 'braintree'
+  s.add_dependency 'braintree', '>= 2.40.0'
   s.add_dependency 'whenever'
 
   s.add_development_dependency 'capybara', '~> 2.4'
