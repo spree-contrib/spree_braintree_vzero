@@ -8,7 +8,7 @@ module Spree
     preference :cvv_placeholder, :string, default: 'Cvv code'
     preference :expiration_date_selector, :string, default: '#hosted-fields-expiration-date'
     preference :expiration_date_placeholder, :string, default: 'Card Expiration Date'
-    preference :store_payments_in_vault, :select, default: -> { { values: [:do_not_store, :store_only_on_success, :store_all] } }
+    preference :store_payments_in_vault, :select, default: { values: [:do_not_store, :store_only_on_success, :store_all] }
     preference :'3dsecure', :boolean_select, default: false
 
     after_save :disable_dropin_gateways, if: proc { active? && (active_changed? || id_changed?) }

@@ -22,8 +22,8 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.requirements << 'none'
 
-  s.add_dependency 'spree_core', '~> 2.3.0'
-  s.add_dependency 'braintree'
+  s.add_dependency 'spree_core', '~> 2.2.0'
+  s.add_dependency 'braintree', '>= 2.40.0'
   s.add_dependency 'whenever'
 
   s.add_development_dependency 'capybara', '~> 2.3'

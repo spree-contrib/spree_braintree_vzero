@@ -88,4 +88,8 @@ Spree::Admin::BaseHelper.module_eval do
     [:merchant_id, :public_key, :private_key, :server, :test_mode]
   end
 
+  def rails_environments
+    Rails.configuration.database_configuration.keys.sort
+  end
+
 end
