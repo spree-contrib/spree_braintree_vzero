@@ -74,7 +74,7 @@ Spree::Admin::BaseHelper.module_eval do
   end
 
   def get_preference_fields(object, keys, form)
-    keys.map { |key|
+    keys.reject { |k| k == :currencies_merchant_id }.map { |key|
       if object.has_preference?(key)
         form.label("preferred_#{key}", Spree.t(key) + ": ") +
           preference_field_for(form, "preferred_#{key}", type: object.preference_type(key),

@@ -12,7 +12,7 @@ module Spree
     preference :kount_merchant_id, :string
     preference :advanced_fraud_tools, :boolean_select, default: false
     preference :descriptor_name, :string
-
+    preference :currencies_merchant_id, :hash
     attr_reader :utils
 
     def self.current
@@ -23,9 +23,9 @@ module Spree
       Braintree
     end
 
-    def provider
+    def provider(merchant_id = nil)
       Braintree::Configuration.environment = preferred_server.to_sym
-      Braintree::Configuration.merchant_id = preferred_merchant_id
+      Braintree::Configuration.merchant_id = merchant_id || preferred_merchant_id
       Braintree::Configuration.public_key = preferred_public_key
       Braintree::Configuration.private_key = preferred_private_key
       Braintree
@@ -85,7 +85,8 @@ module Spree
 
     def sale(data, order, source = nil)
       Rails.logger.info "Sale data: #{data.inspect}"
-      result = Transaction.new(provider).sale(data)
+      merchant_id = merchant_id_from_currency(order.currency)
+      result = Transaction.new(provider(merchant_id)).sale(data)
       Rails.logger.info "Risk Data: #{result.transaction.risk_data.inspect}" if result.success?
 
       if result.success?
@@ -96,6 +97,11 @@ module Spree
       end
 
       result
+    end
+
+    def merchant_id_from_currency(currency)
+      return unless (currencies_merchant_id = preferences[:currencies_merchant_id])
+      currencies_merchant_id[currency]
     end
 
     def update_addresses(response, order)

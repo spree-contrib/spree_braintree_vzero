@@ -72,7 +72,7 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
       context 'with advanced fraud tool enabled' do
         before do
           gateway.preferences[:advanced_fraud_data] = true
-          payment_source = create(:braintree_checkout_with_fraud_data)
+          create(:braintree_checkout_with_fraud_data)
         end
 
         it 'returns success' do
@@ -179,6 +179,14 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
           expect(data['shipping_address_id']).to eq old_ship_address.reload.braintree_id
           expect(data['billing']).to eq nil
           expect(data['shipping']).to eq nil
+        end
+      end
+
+      context 'multi currency' do
+        it 'returns success when order has diffrent currency than preferred' do
+          Spree::Price.first.update currency: 'GBP'
+          order.update currency: 'GBP'
+          expect(purchase).to be_success
         end
       end
     end
