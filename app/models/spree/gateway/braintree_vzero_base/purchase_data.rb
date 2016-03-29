@@ -8,7 +8,7 @@ module Spree
 
         def set_purchase_data(identifier_hash, order, money_in_cents, source)
           data = set_basic_purchase_data(identifier_hash, order, @utils, money_in_cents)
-          data = set_merchant_account_id(data, order)
+          data = set_merchant_account_id(data, order) if preferences[:currency_merchant_accounts]
           data.merge!(
             descriptor: { name: preferred_descriptor_name.to_s.gsub('/', '*') },
             options: {
