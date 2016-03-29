@@ -13,6 +13,7 @@ FactoryGirl.define do
         gateway.send "preferred_#{preference}=", s.send(preference) || Rails.application.secrets.send(preference)
       end
       gateway.send 'preferred_server=', :sandbox
+      gateway.preferences[:currency_merchant_accounts] = { 'EUR' => 'sparksolutions_EUR' }
     end
 
     factory :vzero_paypal_gateway, class: Spree::Gateway::BraintreeVzeroPaypalExpress do
