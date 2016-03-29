@@ -12,6 +12,7 @@ module Spree
     preference :kount_merchant_id, :string
     preference :advanced_fraud_tools, :boolean_select, default: false
     preference :descriptor_name, :string
+    preference :currency_merchant_accounts, :hash
 
     attr_reader :utils
 
