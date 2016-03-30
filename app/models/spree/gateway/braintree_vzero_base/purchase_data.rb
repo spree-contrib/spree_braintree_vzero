@@ -8,6 +8,8 @@ module Spree
 
         def set_purchase_data(identifier_hash, order, money_in_cents, source)
           data = set_basic_purchase_data(identifier_hash, order, @utils, money_in_cents)
+          merchant_account_id = get_merchant_account(order.currency)
+          data.merge!(merchant_account_id: merchant_account_id) if merchant_account_id
           data.merge!(
             descriptor: { name: preferred_descriptor_name.to_s.gsub('/', '*') },
             options: {
@@ -30,6 +32,10 @@ module Spree
 
           data.merge!(utils.get_address('billing')) unless order.shipping_address.same_as?(order.billing_address)
           data.merge!(utils.get_address('shipping'))
+        end
+
+        def get_merchant_account(currency)
+          preferred_currency_merchant_accounts[currency]
         end
 
         def order_data_from_options(options)
