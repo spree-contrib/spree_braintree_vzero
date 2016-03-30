@@ -12,7 +12,7 @@ module Spree
     preference :kount_merchant_id, :string
     preference :advanced_fraud_tools, :boolean_select, default: false
     preference :descriptor_name, :string
-    preference :currency_merchant_accounts, :hash
+    preference :currency_merchant_accounts, :hash, default: {}
 
     attr_reader :utils
 
@@ -33,8 +33,8 @@ module Spree
     end
 
     def client_token(order = nil, user = nil)
-      braintree_user = Gateway::BraintreeVzeroBase::User.new(provider, user, order).user
-      braintree_user ? provider::ClientToken.generate(customer_id: user.id) : provider::ClientToken.generate
+      braintree_provider = provider
+      braintree_provider::ClientToken.generate token_params(braintree_provider, user, order)
     end
 
     def purchase(money_in_cents, source, gateway_options)
@@ -144,6 +144,19 @@ module Spree
       message = 'Payment method identification was not specified'
       errors = { errors: [{ code: '0', attribute: '', message: message }] }
       Braintree::ErrorResult.new(:transaction, params: data, errors: { transaction: errors }, message: message)
+    end
+
+    def braintree_user(provider, user, order)
+      Gateway::BraintreeVzeroBase::User.new(provider, user, order).user
+    end
+
+    def token_params(provider, user, order)
+      token_params = {}
+      token_params[:customer_id] = user.id if braintree_user(provider, user, order)
+      currency = order.try(:currency)
+      merchant_account_id = currency ? get_merchant_account(currency) : nil
+      token_params[:merchant_account_id] = merchant_account_id if merchant_account_id
+      token_params
     end
   end
 end
