@@ -1,6 +1,6 @@
 # Braintree v.zero extension for Spree Commerce
 
-[![Code Climate](https://codeclimate.com/repos/560308aa6956801375000a4e/badges/9874199a656054d613cd/gpa.svg)](https://codeclimate.com/repos/560308aa6956801375000a4e/feed) [![Test Coverage](https://codeclimate.com/repos/560308aa6956801375000a4e/badges/9874199a656054d613cd/coverage.svg)](https://codeclimate.com/repos/560308aa6956801375000a4e/coverage) [![Circle CI](https://circleci.com/gh/spree-contrib/spree_braintree_vzero/tree/master.svg?style=svg&circle-token=3171e5c1f53e64db0b323332e573533a3bdde115)](https://circleci.com/gh/spree-contrib/spree_braintree_vzero/tree/master)
+[![Code Climate](https://codeclimate.com/repos/560308aa6956801375000a4e/badges/9874199a656054d613cd/gpa.svg)](https://codeclimate.com/repos/560308aa6956801375000a4e/feed) [![Test Coverage](https://codeclimate.com/repos/560308aa6956801375000a4e/badges/9874199a656054d613cd/coverage.svg)](https://codeclimate.com/repos/560308aa6956801375000a4e/coverage) [![Circle CI](https://circleci.com/gh/spree-contrib/spree_braintree_vzero.svg?style=svg)](https://circleci.com/gh/spree-contrib/spree_braintree_vzero)
 
 This is the official Braintree v.zero extension for Spree. It supports:
 * [Braintree Hosted Fields](https://github.com/spree-contrib/spree_braintree_vzero/wiki/1.-Hosted-Fields)
