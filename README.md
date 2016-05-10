@@ -14,7 +14,7 @@ Behind-the-scenes, this extension uses [Braintree Ruby SDK](https://github.com/b
 
 1. Add this extension to your Gemfile with this line:
   ```ruby
-  gem 'spree_braintree_vzero', github: 'spark-solutions/spree_braintree_vzero', branch: 'X-X-stable'
+  gem 'spree_braintree_vzero', github: 'spree-contrib/spree_braintree_vzero', branch: 'X-X-stable'
   ```
 
   The `branch` option is important: it must match the version of Spree you're using.
