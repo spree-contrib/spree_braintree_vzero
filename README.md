@@ -1,11 +1,11 @@
 # Braintree v.zero extension for Spree Commerce
 
-[![Code Climate](https://codeclimate.com/repos/560308aa6956801375000a4e/badges/9874199a656054d613cd/gpa.svg)](https://codeclimate.com/repos/560308aa6956801375000a4e/feed) [![Test Coverage](https://codeclimate.com/repos/560308aa6956801375000a4e/badges/9874199a656054d613cd/coverage.svg)](https://codeclimate.com/repos/560308aa6956801375000a4e/coverage) [![Circle CI](https://circleci.com/gh/spark-solutions/spree_braintree_vzero.svg?style=svg&circle-token=3171e5c1f53e64db0b323332e573533a3bdde115)](https://circleci.com/gh/spark-solutions/spree_braintree_vzero)
+[![Code Climate](https://codeclimate.com/repos/560308aa6956801375000a4e/badges/9874199a656054d613cd/gpa.svg)](https://codeclimate.com/repos/560308aa6956801375000a4e/feed) [![Test Coverage](https://codeclimate.com/repos/560308aa6956801375000a4e/badges/9874199a656054d613cd/coverage.svg)](https://codeclimate.com/repos/560308aa6956801375000a4e/coverage) [![Circle CI](https://circleci.com/gh/spree-contrib/spree_braintree_vzero/tree/master.svg?style=svg&circle-token=3171e5c1f53e64db0b323332e573533a3bdde115)](https://circleci.com/gh/spree-contrib/spree_braintree_vzero/tree/master)
 
 This is the official Braintree v.zero extension for Spree. It supports:
-* [Braintree Drop-in UI](https://github.com/spark-solutions/spree_braintree_vzero/wiki/Drop-in-UI)
-* [Braintree Hosted Fields](https://github.com/spark-solutions/spree_braintree_vzero/wiki/Hosted-Fields)
-* [PayPal Express Checkout](https://github.com/spark-solutions/spree_braintree_vzero/wiki/PayPal-Express)
+* [Braintree Hosted Fields](https://github.com/spree-contrib/spree_braintree_vzero/wiki/1.-Hosted-Fields)
+* [PayPal Express Checkout](https://github.com/spree-contrib/spree_braintree_vzero/wiki/2.-PayPal-Express)
+* [Braintree Drop-in UI](http://github.com/spree-contrib/spree_braintree_vzero/wiki/3.-Drop-in-UI)
 
 Behind-the-scenes, this extension uses [Braintree Ruby SDK](https://github.com/braintree/braintree_ruby).
 
