@@ -55,7 +55,7 @@ module Spree
 
     def settle(amount, checkout, _gateway_options)
       result = Transaction.new(provider, checkout.transaction_id).submit_for_settlement(amount / 100.0)
-      checkout.update_attribute(:state, result.transaction.status)
+      checkout.update(state: result.transaction.status)
       result
     end
 
