@@ -3,7 +3,7 @@ module Spree
     scope :in_state, ->(state) { where(state: state) }
     scope :not_in_state, ->(state) { where.not(state: state) }
 
-    after_save :update_payment_and_order
+    after_commit :update_payment_and_order
 
     FINAL_STATES = %w(authorization_expired processor_declined gateway_rejected failed voided settled settlement_declined refunded released)
 
@@ -66,12 +66,13 @@ module Spree
     private
 
     def update_payment_and_order
-      if state_changed? && payment
-        utils = Gateway::BraintreeVzeroBase::Utils.new(Gateway::BraintreeVzeroBase.first, order)
-        payment_state = utils.map_payment_status(state)
-        payment.send(payment_action(payment_state))
-        order.update!
-      end
+      return unless (changes = previous_changes[:state])
+      return unless changes[0] != changes[1]
+      return unless payment
+
+      utils = Gateway::BraintreeVzeroBase::Utils.new(Gateway::BraintreeVzeroBase.first, order)
+      payment_state = utils.map_payment_status(state)
+      payment.send(payment_action(payment_state))
     end
 
     def self.braintree_card_type_to_spree(type)
