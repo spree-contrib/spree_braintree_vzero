@@ -6,4 +6,6 @@ gem 'spree_auth_devise', github: 'spree/spree_auth_devise', branch: '3-0-stable'
 
 gem 'webmock', '~> 1.24.6'
 
+gem 'test_after_commit', group: :test
+
 gemspec
