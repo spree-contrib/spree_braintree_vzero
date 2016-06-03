@@ -9,11 +9,6 @@ module SpreeBraintreeVzero
         append_file 'vendor/assets/javascripts/spree/backend/all.js', "//= require spree/backend/spree_braintree_vzero\n"
       end
 
-      def add_stylesheets
-        inject_into_file 'vendor/assets/stylesheets/spree/frontend/all.css', " *= require spree/frontend/spree_braintree_vzero\n", :before => /\*\//, :verbose => true
-        inject_into_file 'vendor/assets/stylesheets/spree/backend/all.css', " *= require spree/backend/spree_braintree_vzero\n", :before => /\*\//, :verbose => true
-      end
-
       def add_schedule
         create_file 'config/schedule.rb' unless File.exist?('config/schedule.rb')
         append_file 'config/schedule.rb' do
