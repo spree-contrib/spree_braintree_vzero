@@ -7,4 +7,6 @@ gem 'spree_auth_devise', '~> 3.1.0.rc1'
 
 gem 'webmock', '~> 1.24.6'
 
+gem 'test_after_commit', group: :test
+
 gemspec
