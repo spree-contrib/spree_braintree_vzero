@@ -18,7 +18,7 @@ SpreeBraintreeVzero = {
   hideSaveAndContinue: function() {
     this.enableSubmitButton();
     if(!$('div[data-hook="checkout_payment_step"]').length) return
-    $(SpreeBraintreeVzero.checkoutFormId + ' .btn').hide();
+    $(SpreeBraintreeVzero.checkoutFormId + ' .form-buttons .btn').hide();
     $("[method_id='" + SpreeBraintreeVzero.paymentMethodID + "']").show();
     $(".new-braintree-payment-method").show();
     $(".show-new-payment").hide();
