@@ -23,7 +23,7 @@ Spree::Order.class_eval do
   end
 
   # override needed to add braintree source attribute
-  def update_from_params(params, permitted_params, request_env = {})
+  def update_from_params(params, permitted_params)
     success = false
     @updating_params = params
     run_callbacks :updating_from_params do
@@ -48,8 +48,6 @@ Spree::Order.class_eval do
       end
 
       if payment_attributes.present?
-        payment_attributes[:request_env] = request_env
-
         if (token = payment_attributes[:braintree_token]).present?
           payment_attributes[:source] = Spree::BraintreeCheckout.create_from_token(token, payment_attributes[:payment_method_id])
         elsif (payment_attributes[:braintree_nonce].present?)

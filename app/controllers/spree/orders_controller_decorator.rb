@@ -2,6 +2,7 @@ Spree::OrdersController.class_eval do
   before_filter :process_paypal_express, only: :update
 
   def process_paypal_express
+    return unless params[:paypal_email].present?
     if params[:paypal].blank? || params[:paypal][:payment_method_nonce].blank?
       # when user goes back from checkout, paypal express payments should be invalidated  to ensure standard checkout flow
       current_order.invalidate_paypal_express_payments

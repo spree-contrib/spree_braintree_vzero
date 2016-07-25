@@ -15,3 +15,5 @@ spec/dummy
 .pt
 .ruby-gemset
 .ruby-version
+# Ignore application configuration
+/config/application.yml

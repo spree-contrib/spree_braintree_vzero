@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: https://jp6z459pbpbhk923:9660751f1afe06d008d71c74efd226a7@api.sandbox.braintreegateway.com/merchants/yccdpmn3cvtjbgnr/transactions
+    uri: https://api.sandbox.braintreegateway.com/merchants/zt9ssvxzppgzdjmn/transactions
     body:
       encoding: UTF-8
       string: |
@@ -12,13 +12,41 @@ http_interactions:
           </customer>
           <payment-method-nonce>fake-valid-nonce</payment-method-nonce>
           <amount>12.73</amount>
-          <order-id>R058730867</order-id>
+          <order-id>R685288768</order-id>
+          <billing>
+            <company>Company</company>
+            <country-code-alpha2>US</country-code-alpha2>
+            <country-code-alpha3>USA</country-code-alpha3>
+            <country-code-numeric type="integer">840</country-code-numeric>
+            <country-name>United States of America</country-name>
+            <first-name>John</first-name>
+            <last-name>Doe</last-name>
+            <locality>Herndon</locality>
+            <postal-code>35005</postal-code>
+            <region>AL</region>
+            <street-address>10 Lovely Street</street-address>
+            <extended-address>Northwest</extended-address>
+          </billing>
+          <shipping>
+            <company>Company</company>
+            <country-code-alpha2>US</country-code-alpha2>
+            <country-code-alpha3>USA</country-code-alpha3>
+            <country-code-numeric type="integer">840</country-code-numeric>
+            <country-name>United States of America</country-name>
+            <first-name>John</first-name>
+            <last-name>Doe</last-name>
+            <locality>Herndon</locality>
+            <postal-code>35005</postal-code>
+            <region>AL</region>
+            <street-address>10 Lovely Street</street-address>
+            <extended-address>Northwest</extended-address>
+          </shipping>
           <descriptor>
             <name></name>
           </descriptor>
           <options>
             <submit-for-settlement type="boolean">false</submit-for-settlement>
-            <add-billing-address-to-payment-method type="boolean">false</add-billing-address-to-payment-method>
+            <add-billing-address-to-payment-method type="boolean">true</add-billing-address-to-payment-method>
             <three-d-secure>
               <required type="boolean">false</required>
             </three-d-secure>
@@ -32,9 +60,11 @@ http_interactions:
       Accept:
       - application/xml
       User-Agent:
-      - Braintree Ruby Gem 2.55.0
+      - Braintree Ruby Gem 2.64.0
       X-Apiversion:
       - '4'
+      Authorization:
+      - Basic NWZmc3ZqOXF4dDM4eHB0Zjo1MGVhMDY5ZDMxMmQzNWZiZjc3OWE2NmI2Yzg2Yjg5Nw==
       Content-Type:
       - application/xml
   response:
@@ -43,74 +73,77 @@ http_interactions:
       message: Created
     headers:
       Date:
-      - Thu, 26 Nov 2015 12:58:55 GMT
+      - Mon, 25 Jul 2016 09:46:23 GMT
       Content-Type:
       - application/xml; charset=utf-8
       Transfer-Encoding:
       - chunked
-      Connection:
-      - close
+      X-Frame-Options:
+      - SAMEORIGIN
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
       X-Authentication:
       - basic_auth
       X-User:
-      - 8x9btyr9rkybbwgr
+      - vzw4dwqpkk82wnfg
       Vary:
       - Accept-Encoding
       Content-Encoding:
       - gzip
-      X-Ua-Compatible:
-      - IE=Edge,chrome=1
       Etag:
-      - '"e593f1f699f373a0a1edf23e03798fbf"'
+      - W/"07573d75f71f5564a8389be435cb0aba"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 5c53aad373ef8b595a5a0de56644c17c
+      - 44da8c1d-4e4b-4a1a-aad4-f3490c9af9aa
       X-Runtime:
-      - '0.707860'
-      X-Frame-Options:
-      - SAMEORIGIN
+      - '0.580767'
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        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
-        //8DACkjXnpEEgAA
+        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
+        vIlBU0pf/QcAAP//AwAkRhuYgBMAAA==
     http_version: 
-  recorded_at: Thu, 26 Nov 2015 12:58:55 GMT
+  recorded_at: Mon, 25 Jul 2016 09:46:23 GMT
 - request:
     method: put
-    uri: https://jp6z459pbpbhk923:9660751f1afe06d008d71c74efd226a7@api.sandbox.braintreegateway.com/merchants/yccdpmn3cvtjbgnr/transactions/dj2xpt/submit_for_settlement
+    uri: https://api.sandbox.braintreegateway.com/merchants/zt9ssvxzppgzdjmn/transactions/gjz4pjs8/submit_for_settlement
     body:
       encoding: UTF-8
       string: |
@@ -124,9 +157,11 @@ http_interactions:
       Accept:
       - application/xml
       User-Agent:
-      - Braintree Ruby Gem 2.55.0
+      - Braintree Ruby Gem 2.64.0
       X-Apiversion:
       - '4'
+      Authorization:
+      - Basic NWZmc3ZqOXF4dDM4eHB0Zjo1MGVhMDY5ZDMxMmQzNWZiZjc3OWE2NmI2Yzg2Yjg5Nw==
       Content-Type:
       - application/xml
   response:
@@ -135,13 +170,11 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Thu, 26 Nov 2015 12:58:59 GMT
+      - Mon, 25 Jul 2016 09:46:24 GMT
       Content-Type:
       - application/xml; charset=utf-8
       Transfer-Encoding:
       - chunked
-      Connection:
-      - close
       X-Frame-Options:
       - SAMEORIGIN
       - SAMEORIGIN
@@ -152,55 +185,58 @@ http_interactions:
       X-Authentication:
       - basic_auth
       X-User:
-      - 8x9btyr9rkybbwgr
+      - vzw4dwqpkk82wnfg
       Vary:
       - Accept-Encoding
       Content-Encoding:
       - gzip
       Etag:
-      - '"b1206f57c7fa4b07f69c7c22a393a442"'
+      - W/"545af48588b170303091f5b2ad16fdb4"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 3744a3ba-960b-4034-8326-d049f586ab2d
+      - a0bee548-b1f2-4931-979e-fedee11a5bad
       X-Runtime:
-      - '0.312060'
+      - '0.196953'
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        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
+        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
+        AACwKEmTFAAA
     http_version: 
-  recorded_at: Thu, 26 Nov 2015 12:59:00 GMT
-recorded_with: VCR 3.0.0
+  recorded_at: Mon, 25 Jul 2016 09:46:24 GMT
+recorded_with: VCR 3.0.3

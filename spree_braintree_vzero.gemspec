@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.version     = SpreeBraintreeVzero.version
   s.summary     = 'Spree Braintree v.zero'
   s.description = 'Braintree v.zero extension for Spree Commerce'
-  s.required_ruby_version = '>= 2.0.0'
+  s.required_ruby_version     = '>= 1.9.3'
 
   s.author    = 'Spark Solutions'
   s.email     = 'we@sparksolutions.co'
@@ -31,8 +31,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'database_cleaner'
   s.add_development_dependency 'factory_girl', '~> 4.5'
   s.add_development_dependency 'ffaker'
-  s.add_development_dependency 'rspec-rails',  '~> 3.1'
-  s.add_development_dependency 'sass-rails', '~> 5.0.0.beta1'
+  s.add_development_dependency 'rspec-rails', '~> 3.1'
+  s.add_development_dependency 'sass-rails', '~> 4.0.2'
   s.add_development_dependency 'selenium-webdriver'
   s.add_development_dependency 'simplecov'
   s.add_development_dependency 'sqlite3'

@@ -95,13 +95,15 @@
       };
     }
 
-    document.querySelector("#paypal-submit").addEventListener(
-      "click",
-      function () {
-        checkout.paypal.initAuthFlow();
-      },
-      false
-    );
+    <% if paypal %>
+      document.querySelector("#paypal-submit").addEventListener(
+        "click",
+        function () {
+          checkout.paypal.initAuthFlow();
+        },
+        false
+      );
+    <% end %>
   });
 </script>
 

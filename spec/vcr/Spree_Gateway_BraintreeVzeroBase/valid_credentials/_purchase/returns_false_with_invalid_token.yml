@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: https://yd57hn7c4r5bhp8g:1cc8b0097ef43165847630438f864834@api.sandbox.braintreegateway.com/merchants/yccdpmn3cvtjbgnr/transactions
+    uri: https://api.sandbox.braintreegateway.com/merchants/zt9ssvxzppgzdjmn/transactions
     body:
       encoding: UTF-8
       string: |
@@ -12,13 +12,41 @@ http_interactions:
           </customer>
           <payment-method-token>sometoken</payment-method-token>
           <amount>20.0</amount>
-          <order-id>R136099692</order-id>
+          <order-id>R973453951</order-id>
+          <billing>
+            <company>Company</company>
+            <country-code-alpha2>US</country-code-alpha2>
+            <country-code-alpha3>USA</country-code-alpha3>
+            <country-code-numeric type="integer">840</country-code-numeric>
+            <country-name>United States of America</country-name>
+            <first-name>John</first-name>
+            <last-name>Doe</last-name>
+            <locality>Herndon</locality>
+            <postal-code>35005</postal-code>
+            <region>AL</region>
+            <street-address>10 Lovely Street</street-address>
+            <extended-address>Northwest</extended-address>
+          </billing>
+          <shipping>
+            <company>Company</company>
+            <country-code-alpha2>US</country-code-alpha2>
+            <country-code-alpha3>USA</country-code-alpha3>
+            <country-code-numeric type="integer">840</country-code-numeric>
+            <country-name>United States of America</country-name>
+            <first-name>John</first-name>
+            <last-name>Doe</last-name>
+            <locality>Herndon</locality>
+            <postal-code>35005</postal-code>
+            <region>AL</region>
+            <street-address>10 Lovely Street</street-address>
+            <extended-address>Northwest</extended-address>
+          </shipping>
           <descriptor>
             <name></name>
           </descriptor>
           <options>
-            <submit-for-settlement type="boolean">true</submit-for-settlement>
-            <add-billing-address-to-payment-method type="boolean">false</add-billing-address-to-payment-method>
+            <submit-for-settlement type="boolean">false</submit-for-settlement>
+            <add-billing-address-to-payment-method type="boolean">true</add-billing-address-to-payment-method>
             <three-d-secure>
               <required type="boolean">false</required>
             </three-d-secure>
@@ -32,9 +60,11 @@ http_interactions:
       Accept:
       - application/xml
       User-Agent:
-      - Braintree Ruby Gem 2.55.0
+      - Braintree Ruby Gem 2.64.0
       X-Apiversion:
       - '4'
+      Authorization:
+      - Basic NWZmc3ZqOXF4dDM4eHB0Zjo1MGVhMDY5ZDMxMmQzNWZiZjc3OWE2NmI2Yzg2Yjg5Nw==
       Content-Type:
       - application/xml
   response:
@@ -43,46 +73,52 @@ http_interactions:
       message: Unprocessable Entity
     headers:
       Date:
-      - Mon, 23 Nov 2015 11:46:38 GMT
+      - Mon, 25 Jul 2016 09:45:41 GMT
       Content-Type:
       - application/xml; charset=utf-8
       Transfer-Encoding:
       - chunked
-      Connection:
-      - close
+      X-Frame-Options:
+      - SAMEORIGIN
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
       X-Authentication:
       - basic_auth
       X-User:
-      - 97syg9czj6hrdzyn
+      - vzw4dwqpkk82wnfg
       Vary:
       - Accept-Encoding
       Content-Encoding:
       - gzip
-      X-Ua-Compatible:
-      - IE=Edge,chrome=1
       Cache-Control:
       - no-cache
       X-Request-Id:
-      - 741708cbe54db08b5f6ad8b530799aee
+      - a1511cd6-8bd1-4b20-a30a-e61d17fad858
       X-Runtime:
-      - '0.086411'
-      X-Frame-Options:
-      - SAMEORIGIN
+      - '0.162007'
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        H4sIAJ78UlYAA5xUTW/bMAy991cIvitKOqxoAEW97TwM27lQbLYVpg+PpIPl
-        30+2I9vJ3KHYjeTjo8jnB+un38GLEyC5FA/VbrOtBMQ6NS6+Hqof37/Ix+rJ
-        3GnbOgmICSUCtSkSmDsh9FCiPpwSwecWDpVFtOdKXSBGG8nWnB8ZK+vtBSvo
-        nOdKXgrMfvd596jVEC9By4zu2DFc5tE5HJOvTGvPASI/B+C31Dxz+glRq6n7
-        akYAIvsK5uvIESNHDBzhSLh4st41G61K57yuutr3khZh1M35S1i3Fm2gf+hU
-        d8QpAIro/KFi7KDIOrCHXeW4qxx2NZTbL5eu4oVsQ+oim/vtZps1GZOCJWwA
-        pWvMt92nh+1+/7C/12oqlq4GqEbX8vJT6WgDrC6r/m7Xqe2PpQWdumNwLF+y
-        1wiYPfQHmH6UVuvYzLVNI4/O++xemePsVco3y2sVzIv1lId9rHkezm8IIJv8
-        ct3htXUQfnUOYRo95QuHvEfX+fMiSBflyXaey4ib6qThjWC697sh6zNlCN+z
-        3Oyz/zF6VmvlD/AHAAD//wMAPdxU/D4EAAA=
+        H4sIAMXflVcAA+xWTW/bMAy991cIvqt2mgZrAUVFsWEYhmIY1vVcKBbTCJMl
+        T5Kz+t+P/rYTp2h77iki+Z5EPTGk2c1zpskenFfWrKPFeRIRMKmVyjyto4ff
+        X+lVdMPPmMgVBeesow58bo0HfkYIq12+WvYGCWUO60g4J8oobkPBCeNFGvCQ
+        xjMP72JddLDRg0kBv16sFlcsrtfjoAjBqU0RoN3Pl9nG6ojnoszAhMcMws7K
+        x2D/gGFxj57skYH34gn4z4ZDGg6pOUR5osxeaCXPWdwhh3TjSb6t6Xt7o7RG
+        RQ/vNytWRT/AM79Tef6WDaYEFh88wDhBlgsnMv/CS6WFDzYDR4zS6yi4AkZH
+        tQrTRi1aq8U9wlutZ+MdWWS2MIFfJOcJvkpjdDHrJDiqJP91/Wl5uVperxYs
+        7p2nlU1tlgtT8s/Nb1UsjWMMwYNcSasyokLnO3HBH+4r5LH/JdYSWbdztOUp
+        milQR5Xyq8vkgNdFjolGZMAfjAogyX0QATyxW3Jbw8WwSw0b2FvlfGic3+0O
+        H2LkGFBadL4vFlg8mCOITbHsQ8m/gTPS4k69ZwDl1geh65vw5SpJVvjwI9cA
+        dPBUldbtHYvb5RDzwQEEKqTEJuP5IiF3dg+6xFtXAazqKWD0Z3gOYCTIPvTD
+        urD7Bx5JR7G3/Ms+iumjmF5XTIfFwyT41Kk8jMcYq+SYbaPxMZzZvGrD49R8
+        sclUoFucwx5C0FC1Vr4V2qPe88GBjCnTtuS79LEd02mD5lVe2ItfhR32DjsU
+        k0o8OC3cdKw6+FsoB7JLs7dH0/MUHV/ROqDK0L0o9HDTqbfX8EAwVg1H7oVG
+        Sr08NQyHCfiejwBUa+br6D8AAAD//wMAJyw9pVoJAAA=
     http_version: 
-  recorded_at: Mon, 23 Nov 2015 11:46:38 GMT
-recorded_with: VCR 3.0.0
+  recorded_at: Mon, 25 Jul 2016 09:45:41 GMT
+recorded_with: VCR 3.0.3

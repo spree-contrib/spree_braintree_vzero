@@ -20,7 +20,7 @@ describe Spree::CheckoutController, :vcr, type: :controller do
             id: 1,
             payments_attributes: [{
               'payment_method_id' => braintree_payment_method.id,
-              'braintree_token' => 'k5jkr6',
+              'braintree_token' => '8n9bdr',
               'braintree_nonce' => '4cdec532-b616-41cc-babf-c1d5cfbbe6c2',
               'amount' => 23
             }],
