@@ -11,11 +11,11 @@ Spree::OrdersHelper.class_eval do
              elsif method.is_a?(Braintree::PayPalAccount)
                Spree.t('admin.vaulted_payments.paypal', email: method.email)
              end
-             "<option value='#{method.token}'>#{text}</option>"
+      "<option value='#{method.token}'>#{text}</option>"
     end).join.html_safe
   end
 
-  def asset_available? logical_path
+  def asset_available?(logical_path)
     if Rails.configuration.assets.compile
       Rails.application.precompiled_assets.include? logical_path
     else

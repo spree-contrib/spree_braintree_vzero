@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Spree::Gateway::BraintreeVzeroBase, :vcr do
-
   context 'valid credentials' do
     let(:gateway) { create(:vzero_gateway, auto_capture: true) }
     let(:payment) { create(:braintree_vzero_payment, payment_method: gateway) }
@@ -29,7 +28,7 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
 
     describe '#purchase' do
       let(:gateway_options) { { order_id: "#{order.number}-#{payment.number}" } }
-      let(:purchase) { gateway.purchase(10000, payment_source, gateway_options) }
+      let(:purchase) { gateway.purchase(10_000, payment_source, gateway_options) }
       let(:other_order) { OrderWalkthrough.up_to(:payment) }
 
       before do
@@ -184,12 +183,11 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
     end
 
     describe '#update_states' do
-
       before do
         gateway.preferred_3dsecure = false
         payment.update(amount: order.reload.total)
         complete_order!
-        order.payments.first.source.update_attribute(:transaction_id, 'dw49zp') #use already settled transaction
+        order.payments.first.source.update_attribute(:transaction_id, 'dw49zp') # use already settled transaction
       end
 
       let!(:result) { Spree::BraintreeCheckout.update_states }
@@ -210,7 +208,6 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
       it 'updates Payment state when Checkout is updated' do
         expect(order.reload.payments.first.state).to eq 'completed'
       end
-
     end
 
     describe '#void' do
@@ -250,14 +247,12 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
     end
 
     describe '#settle' do
-
       before do
         gateway.update(auto_capture: false)
         complete_order!
       end
 
       context 'settles authorized amount' do
-
         it 'does not update Order payment_state' do
           expect(order.payment_state).to eq 'balance_due'
           payment.reload.settle!
@@ -280,7 +275,6 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
           payment.reload.settle!
           expect(Spree::BraintreeCheckout.not_in_state(Spree::BraintreeCheckout::FINAL_STATES).count).to eq 1
         end
-
       end
     end
 

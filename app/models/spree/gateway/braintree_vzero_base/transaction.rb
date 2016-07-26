@@ -2,10 +2,9 @@ module Spree
   class Gateway
     class BraintreeVzeroBase
       class Transaction
-
         attr_reader :transaction_id, :request
 
-        def initialize(provider, transaction_id=nil)
+        def initialize(provider, transaction_id = nil)
           @transaction_id = transaction_id
           @request = provider::Transaction
         end
@@ -16,7 +15,7 @@ module Spree
 
         def clone
           t = @request.find(transaction_id)
-          sale(payment_method_token: t.credit_card_details.token, amount: t.amount, options: {submit_for_settlement: true})
+          sale(payment_method_token: t.credit_card_details.token, amount: t.amount, options: { submit_for_settlement: true })
         end
 
         def sale(data)
@@ -34,7 +33,6 @@ module Spree
         def refund(cents)
           @request.refund(transaction_id, cents)
         end
-
       end
     end
   end

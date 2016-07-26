@@ -6,10 +6,10 @@ Braintree::SuccessfulResult.class_eval do
   end
 
   def avs_result
-    {code: transaction.avs_street_address_response_code}
+    { code: transaction.avs_street_address_response_code }
   end
 
   def cvv_result
-    {code: transaction.cvv_response_code, message: nil}
+    { code: transaction.cvv_response_code, message: nil }
   end
 end

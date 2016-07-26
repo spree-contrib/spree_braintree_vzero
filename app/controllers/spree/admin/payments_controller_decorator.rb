@@ -4,9 +4,9 @@ Spree::Admin::PaymentsController.class_eval do
     @payment ||= @order.payments.build(object_params)
     # not only credit card may require source
     if @payment.payment_method.source_required?
-      if params[:card].present? and params[:card] != 'new'
+      if params[:card].present? && params[:card] != 'new'
         @payment.source = @payment.payment_method.payment_source_class.find_by_id(params[:card])
-      elsif @payment.payment_source.kind_of?(Spree::Gateway::BraintreeVzeroBase)
+      elsif @payment.payment_source.is_a?(Spree::Gateway::BraintreeVzeroBase)
         @payment.braintree_token = params[:payment_method_token]
         @payment.braintree_nonce = params[:payment_method_nonce]
         @payment.source = Spree::BraintreeCheckout.create!(admin_payment: true)
@@ -30,7 +30,7 @@ Spree::Admin::PaymentsController.class_eval do
       end
     rescue Spree::Core::GatewayError => e
       invoke_callbacks(:create, :fails)
-      flash[:error] = "#{e.message}"
+      flash[:error] = e.message.to_s
       redirect_to new_admin_order_payment_path(@order)
     end
   end

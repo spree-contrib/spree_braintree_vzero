@@ -17,8 +17,8 @@ Gem::Specification.new do |s|
   s.homepage  = 'http://sparksolutions.co'
   s.license   = 'BSD-3'
 
-  #s.files       = `git ls-files`.split("\n")
-  #s.test_files  = `git ls-files -- {test,spec,features}/*`.split("\n")
+  # s.files       = `git ls-files`.split("\n")
+  # s.test_files  = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.require_path = 'lib'
   s.requirements << 'none'
 
@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'database_cleaner'
   s.add_development_dependency 'factory_girl', '~> 4.5'
   s.add_development_dependency 'ffaker'
-  s.add_development_dependency 'rspec-rails',  '~> 3.1'
+  s.add_development_dependency 'rspec-rails', '~> 3.1'
   s.add_development_dependency 'sass-rails', '~> 5.0.0.beta1'
   s.add_development_dependency 'selenium-webdriver'
   s.add_development_dependency 'simplecov'
@@ -41,5 +41,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'webmock'
   s.add_development_dependency 'therubyracer'
   s.add_development_dependency 'codeclimate-test-reporter'
-
 end

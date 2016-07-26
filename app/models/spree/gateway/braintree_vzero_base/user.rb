@@ -2,7 +2,6 @@ module Spree
   class Gateway
     class BraintreeVzeroBase
       class User
-
         attr_reader :user, :spree_user, :request, :utils
 
         delegate :shipping_address, :billing_address, to: :spree_user
@@ -20,7 +19,6 @@ module Spree
         def register_user
           @request.create(@utils.customer_data(spree_user))
         end
-
       end
     end
   end

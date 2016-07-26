@@ -2,7 +2,6 @@ module Spree
   class Gateway
     class BraintreeVzeroBase
       class Address
-
         attr_reader :user, :utils, :request
 
         def initialize(provider, order)
@@ -18,7 +17,7 @@ module Spree
         def find(braintree_address)
           address_id = braintree_address.try(:id) || braintree_address
           @request.find(user.id.to_s, address_id.to_s)
-          rescue Braintree::NotFoundError
+        rescue Braintree::NotFoundError
         end
 
         def update(braintree_address, params)
@@ -28,7 +27,6 @@ module Spree
         def delete(braintree_address)
           @request.delete(user.id.to_s, braintree_address.id.to_s)
         end
-
       end
     end
   end
