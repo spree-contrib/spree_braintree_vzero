@@ -22,7 +22,11 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.requirements << 'none'
 
-  s.add_dependency 'spree_core', '~> 3.2.0.alpha'
+  spree_version = '>= 3.1.0', '< 4.0'
+  s.add_dependency 'spree_core', spree_version
+  s.add_dependency 'spree_backend', spree_version
+  s.add_dependency 'spree_frontend', spree_version
+
   s.add_dependency 'braintree', '>= 2.40.0'
   s.add_dependency 'whenever'
 
