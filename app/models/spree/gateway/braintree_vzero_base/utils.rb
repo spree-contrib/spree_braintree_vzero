@@ -102,7 +102,6 @@ module Spree
             'failed'
           end
         end
-
       end
     end
   end

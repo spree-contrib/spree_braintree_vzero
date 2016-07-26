@@ -17,7 +17,7 @@ CodeClimate::TestReporter.start
 # Configure Rails Environment
 ENV['RAILS_ENV'] = 'test'
 
-require File.expand_path('../dummy/config/environment.rb',  __FILE__)
+require File.expand_path('../dummy/config/environment.rb', __FILE__)
 
 require 'rspec/rails'
 require 'database_cleaner'
@@ -96,5 +96,5 @@ RSpec.configure do |config|
   end
 
   config.fail_fast = ENV['FAIL_FAST'] || false
-  config.order = "random"
+  config.order = 'random'
 end

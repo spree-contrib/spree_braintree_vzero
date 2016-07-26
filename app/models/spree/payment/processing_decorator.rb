@@ -1,5 +1,4 @@
 Spree::Payment::Processing.class_eval do
-
   delegate :settle, to: :provider
 
   def settle!
@@ -35,7 +34,7 @@ Spree::Payment::Processing.class_eval do
     end
     logger.error(Spree.t(:gateway_error))
     logger.error("  #{error.to_yaml}")
-    raise Spree::Core::GatewayError.new(text)
+    raise Spree::Core::GatewayError, text
   end
 
   def set_proper_state(current_state, response, action)

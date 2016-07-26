@@ -7,5 +7,4 @@ FactoryGirl.define do
   Dir[Dir.pwd + '/spec/factories/**/*'].each do |factory|
     require File.expand_path(factory)
   end
-
 end

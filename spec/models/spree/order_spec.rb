@@ -151,7 +151,7 @@ describe Spree::Order, :vcr do
 
       context 'with state as name' do
         before do
-          address_hash.merge!(state: 'MAZOWIECKIE')
+          address_hash[:state] = 'MAZOWIECKIE'
           save_paypal_address!
         end
 
@@ -163,7 +163,7 @@ describe Spree::Order, :vcr do
       end
 
       it 'should not include fields with text "undefined"' do
-        address_hash.merge!(address2: 'undefined')
+        address_hash[:address2] = 'undefined'
         save_paypal_address!
         expect(order.reload.ship_address.address2).to eq nil
       end

@@ -1,7 +1,7 @@
 Spree::CheckoutController.class_eval do
   after_action :allow_braintree_iframe
 
-  after_action :update_source_data,  only: :update, if: proc { params[:state].eql?('payment') }
+  after_action :update_source_data, only: :update, if: proc { params[:state].eql?('payment') }
 
   private
 

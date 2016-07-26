@@ -37,7 +37,7 @@ Spree::Order.class_eval do
       if existing_card_id.present?
         credit_card = Spree::CreditCard.find existing_card_id
         if credit_card.user_id != user_id || credit_card.user_id.blank?
-          raise Core::GatewayError.new Spree.t(:invalid_credit_card)
+          raise Core::GatewayError, Spree.t(:invalid_credit_card)
         end
 
         credit_card.verification_value = params[:cvc_confirm] if params[:cvc_confirm].present?
@@ -52,7 +52,7 @@ Spree::Order.class_eval do
 
         if (token = payment_attributes[:braintree_token]).present?
           payment_attributes[:source] = Spree::BraintreeCheckout.create_from_token(token, payment_attributes[:payment_method_id])
-        elsif (payment_attributes[:braintree_nonce].present?)
+        elsif payment_attributes[:braintree_nonce].present?
           payment_attributes[:source] = Spree::BraintreeCheckout.create_from_params(params)
         end
       end
@@ -80,7 +80,7 @@ Spree::Order.class_eval do
   end
 
   def paid_with_braintree?
-    payments.valid.map(&:payment_method).compact.any? { |p| p.kind_of?(Spree::Gateway::BraintreeVzeroBase) }
+    payments.valid.map(&:payment_method).compact.any? { |p| p.is_a?(Spree::Gateway::BraintreeVzeroBase) }
   end
 
   def paid_with_paypal_express?

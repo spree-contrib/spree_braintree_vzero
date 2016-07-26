@@ -2,7 +2,7 @@ Deface::Override.new(
   virtual_path: 'spree/payments/_payment',
   name: 'Displays payment data for PayPal Express payment methods',
   replace: 'erb[silent]:contains("else")',
-  text: %Q{
+  text: %{
         <% elsif payment.payment_method.kind_of?(Spree::Gateway::BraintreeVzeroBase) %>
           <% if (last_digits = payment.source.braintree_last_digits) %>
             <%
