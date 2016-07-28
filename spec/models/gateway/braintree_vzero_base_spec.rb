@@ -17,13 +17,13 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
     end
 
     it 'generates token for new User' do
-      expect(gateway.client_token(create(:user))).to_not be_nil
+      expect(gateway.client_token(order, create(:user))).to_not be_nil
     end
 
     it 'generates token for User registered in Braintree' do
       user = create(:user, billing_address: create(:address))
       Spree::Gateway::BraintreeVzeroBase::User.new(gateway.provider, user, order).register_user
-      expect(gateway.client_token(user)).to_not be_nil
+      expect(gateway.client_token(order, user)).to_not be_nil
     end
 
     describe '#purchase' do
