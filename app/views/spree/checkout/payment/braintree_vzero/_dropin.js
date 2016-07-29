@@ -18,17 +18,17 @@ paypal: {
 },
 
 onPaymentMethodReceived: function (result) {
-  function submitWithAttributes() {
-    switch (result.type) {
+  function submitWithAttributes(response = result) {
+    switch (response.type) {
       case "CreditCard":
-        $(checkoutFormId).append("<input type='hidden' name='braintree_last_two' value=" + result.details.lastTwo + ">");
-        $(checkoutFormId).append("<input type='hidden' name='braintree_card_type' value=" + result.details.cardType + ">");
+        $(checkoutFormId).append("<input type='hidden' name='braintree_last_two' value=" + response.details.lastTwo + ">");
+        $(checkoutFormId).append("<input type='hidden' name='braintree_card_type' value=" + response.details.cardType + ">");
         break;
       case "PayPalAccount":
-        $(checkoutFormId).append("<input type='hidden' name='paypal_email' value=" + (result.details.email)+ ">");
+        $(checkoutFormId).append("<input type='hidden' name='paypal_email' value=" + (response.details.email)+ ">");
         break;
     }
-    $(checkoutFormId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + result.nonce + ">");
+    $(checkoutFormId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + response.nonce + ">");
     $(checkoutFormId).submit();
   }
 
@@ -42,7 +42,7 @@ onPaymentMethodReceived: function (result) {
       creditCard: result.nonce
     }, function (error, response) {
       if (!error) {
-        submitWithAttributes();
+        submitWithAttributes(response);
       } else {
         $(errorMessagesContainer).prepend("<div class='alert alert-error'><%= I18n.t(:gateway_error, scope: 'braintree.error') %>></div>")
       }
