@@ -30,6 +30,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'braintree', '>= 2.40.0'
   s.add_dependency 'whenever'
 
+  s.add_development_dependency 'appraisal'
   s.add_development_dependency 'capybara', '~> 2.4'
   s.add_development_dependency 'coffee-rails'
   s.add_development_dependency 'database_cleaner'
