@@ -12,7 +12,7 @@ http_interactions:
           </customer>
           <payment-method-nonce>fake-valid-nonce</payment-method-nonce>
           <amount>20.0</amount>
-          <order-id>R621008026</order-id>
+          <order-id>R329773957</order-id>
           <billing>
             <company>Company</company>
             <country-code-alpha2>US</country-code-alpha2>
@@ -73,7 +73,7 @@ http_interactions:
       message: Created
     headers:
       Date:
-      - Mon, 25 Jul 2016 09:45:34 GMT
+      - Wed, 03 Aug 2016 12:46:18 GMT
       Content-Type:
       - application/xml; charset=utf-8
       Transfer-Encoding:
@@ -94,53 +94,53 @@ http_interactions:
       Content-Encoding:
       - gzip
       Etag:
-      - W/"2d0c22ff27edad05fee30f4987f31016"
+      - W/"580ae85d84e4a6f2981c31732f8429b0"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - fc65e6fa-ddac-433b-b5dd-19fec8a3fe05
+      - ef359009-93c1-447e-869b-8a539c23b50c
       X-Runtime:
-      - '0.560448'
+      - '0.556026'
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        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
-        mlL66j8AAAD//wMAr3UukoATAAA=
+        H4sIAJrnoVcAA+xY33PTOBB+56/I5F21k7QQGNdMB+aG4TgGKNxw99JRrE2s
+        qy35JDlN+OtvJcuOHcul985T491PK+1qf3xq8vpQFrM9KM2luJ4vLuL5DEQm
+        GRe76/m3r7+R9fx1+iwxigpNM4Oo9NlslnCW7n5U8fH5+pBE+GFl2lBT65TW
+        JpeK/wCWRF5kteZYQappAUnkflpZViuFux0J15LgppB+u32bRGOxBdNS1sKk
+        y/gijpPIf1lFCSrLqTCEZpkVEjxPrVlrJYlCAHfgekMCupngxfXcqBrmUbMB
+        1QbUk6BSMUSi/S+r5csXL1Yvr14kUSd0PiugBhihZmbjcD1n+Gl4CXN0bfGc
+        xGsSr74ulq8un79arP/GaHQL3Pq6Yv9v/WmBj7k2El2xH+4iz31A4ZYrbYig
+        JQSUBZ3WZbKsqDgGNFBSXgTkD7DR3IRsVbkUIfmWHkZhj/peJRteFJi/T/Mw
+        fS9zkUQ9wZmb6VuJOXv6HHiavmn+4gm8oFFrowAwUxhToHW6iGcf5B6K4+zW
+        KWxlDAA+SAcDgtm78uKPUpn8ATQuGOn8MWVGC26O6TtQgkn0pJM0AAU7W7Q3
+        H5LI//ThlVicRVNeq6s4vkqivqj1EvNcHRvHvwm8KIYeYDrpmdzObjDgPKPW
+        9x5suNIaI7SocrrE4j5B+/KpFStccRNasgotEbU7Trq+jM/WtBqXKb3kwNhs
+        a8FCddxptK8yqhQ9DpR4Fb2uGDJSUWU4BlSDMQWUgC1juCJk/NQ+f2a+Z3ZD
+        TZYHMTmvql+18KsWgrXQzw4/GMiWQ8G0z8W9JqCUVASjXEmhwRkZZZnF9QI2
+        RKd/4LR+FNCaGOZB2MqjGOfGfj9eORZa6A4v74EeUfMPNFWGo1ZLMS5kJTPc
+        DePQVid18Mb876vPV98xYx4DDa0Mj7KILaGZ0k6sNFgD6U2Fmr0lWlMIF1rG
+        uD0JBn8MG/m6lzyzF7TFi8cVmC8bUOOI1JYL4S4Nt5lAGXogDVELquAAZdXS
+        mI2UBVAxT7e00JYkdoCWNqEXJKOK+YQ38h5GV+Wmv0gv48VyvbbNXvRb2GW6
+        WK8XvoFdtoWDJomjpH9ybQu4+24bUcVVc5WlFCZPF0vbgc6EI+wRqEJGtowH
+        YCf1+3rKQmyTcsTa9YSR9HTKXBYu2GHuxUu6A1KrIs2NqfSrKKIaR4S+2CjK
+        hS0bn+8X2J6jih7t5LgrAXOV3RVyJ6M9+n9Rid1rEHuupLCAa00F20jL8jv7
+        vmkqqCiS2o/Spl/zu9HkQAuT44ltn7wX8gE7cU/WgBhsuDnpm0+vqhVeHObg
+        ri4sde2hzjXdALLkHGftCdqT+fPSo5JFD9EKfPi0rrEV4igV9yfMQDpstHJL
+        rJaKDNJTk+1L2zhJVmfu0XHa+iRrQLXg/9bg6wjFGHmOnXhUUrZAQZSSaHY/
+        UTid3jPjYeH4VxrJOeaZOg4ISDevHQLQkL8RW234wkBFWT3x1dHhOwuPPg8d
+        YuqF10RII7sv6ZbfVWqPrxrdPmHs4XpESUtsTZDSiuMhxvLGxejcx07i49I0
+        uYKGiVe90Zni1SQx6+m7puRYJ6lw+EpGkL0QG8Fg+xog8VjKBLF45LN9bKcn
+        2NQDrJJx7TI0qIPGimw700SDmXqQYUsYn21oFJmXfY6jXxNJ2+mbZo/PbAFj
+        q3jnezudtgBTc8VuKx9Ic5sjLYZhUyvdkGYGBt+kLXkcqsJ302Pc4e2HmNH/
+        MZ4Ih4MNADZbFT6GfX1gpiJPCxmsMzviAzcy4bv1vKotjR2nhp8ShAvkXXXz
+        grGTsWkqd7apJNEUaMhceo4OCU6fvEyCfm7L0Z2f2eo4keL63t4y7R5G6afv
+        7/+K3735cnv74VP7Py1XHRnX7tXQkC2b2l7iwjqwlJgc5yzBsrX5DBiSrRze
+        xKAppc/+AwAA//8DAIzZxtWAEwAA
     http_version: 
-  recorded_at: Mon, 25 Jul 2016 09:45:35 GMT
+  recorded_at: Wed, 03 Aug 2016 12:46:18 GMT
 - request:
     method: get
     uri: https://api.sandbox.braintreegateway.com/merchants/zt9ssvxzppgzdjmn/transactions/e969g6rv
@@ -164,7 +164,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Mon, 25 Jul 2016 09:45:35 GMT
+      - Wed, 03 Aug 2016 12:46:19 GMT
       Content-Type:
       - application/xml; charset=utf-8
       Transfer-Encoding:
@@ -185,19 +185,19 @@ http_interactions:
       Content-Encoding:
       - gzip
       Etag:
-      - W/"ef0949cac1bd29f57f0ddd4cfcea4a41"
+      - W/"cdaab0993f1152ea93e07fa2bff25c52"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 34d61461-1d66-45d5-84fc-920b395eae37
+      - 0dea16f5-4770-4cfc-835e-67d5bc4e9454
       X-Runtime:
-      - '0.108160'
+      - '0.097153'
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        H4sIAL/flVcAA9xYTXPjNgy976/w+M7In4mTUbRND+30sDPb7qaHXjyUBFvc
+        H4sIAJvnoVcAA9xYTXPjNgy976/w+M7In4mTUbRND+30sDPb7qaHXjyUBFvc
         SKRKUo7dX78gKcmSRTnZ6fTSnEzgESJAAHxI+PFY5JMDSMUEf5zOb2bTCfBE
         pIzvH6fPX38hm+nH6EOoJeWKJhpR0YfJJGRpBPe39/tbeQgDXBiZ0lRXKlKg
         dQ5pGNRro9KnEiJFcwgD+9PIkkpK/NSJMCUIfhGiX3/+HAZDsQHTQlRcR4v5
@@ -233,5 +233,5 @@ http_interactions:
         SOxN5MvKjF3D1Kw5DWEc54TKDd2Gx7l3bGvesTAYA/WZdicEfULeJdujoLdt
         WXr+lq2Ww+sM2RvB8jZ5D3j0negna695RR++AwAA//8DAIQ861dqFQAA
     http_version: 
-  recorded_at: Mon, 25 Jul 2016 09:45:36 GMT
+  recorded_at: Wed, 03 Aug 2016 12:46:19 GMT
 recorded_with: VCR 3.0.3

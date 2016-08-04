@@ -235,16 +235,18 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
 
       context 'with unvoidable state' do
         before do
+          gateway.update(auto_capture: true)
+          # Fake nonce issue: tested on 15f5b135-3aba-4ab4-9eb5-89102f88b5e4 (transaction b72pahnn)
           payment.update(braintree_nonce: 'fake-paypal-one-time-nonce')
           complete_order!
           void
         end
 
-        xit 'should not change payment_source state' do
+        it 'should not change payment_source state' do
           expect(payment_source.reload.state).to eq 'settling'
         end
 
-        xit 'should not change payment_source state' do
+        it 'should not change payment_source state' do
           expect(payment.reload.state).to eq 'pending'
         end
       end
@@ -296,12 +298,14 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
           complete_order!
         end
 
-        xit 'should be a success' do
+        it 'should be a success' do
+          # Fake nonce issue: tested on d4a1774e-f52f-4198-b7fe-fdb88c41a492 (transaction ny39yn8m)
           expect(refund.success?).to be true
           expect(refund.transaction.amount).to eq 12.73
         end
 
-        xit 'should be possible to refund partially' do
+        it 'should be possible to refund partially' do
+          # Fake nonce issue: sted on 703c98cc-4a8d-42da-9bc9-032f0562a85a (transaction fqwg9pyy)
           expect(refund_partially.success?).to be true
           expect(refund_partially.transaction.amount).to eq 0.73
         end

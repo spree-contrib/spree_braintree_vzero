@@ -23,7 +23,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Mon, 25 Jul 2016 09:46:47 GMT
+      - Wed, 03 Aug 2016 12:44:42 GMT
       Content-Type:
       - application/xml; charset=utf-8
       Transfer-Encoding:
@@ -44,19 +44,19 @@ http_interactions:
       Content-Encoding:
       - gzip
       Etag:
-      - W/"ada9cb069873131bf2e58a1ca845c0ca"
+      - W/"69293b520ecec01e78e105f931b93bd7"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 137f3a75-6332-42fc-8c1d-180909d8909a
+      - 9574fdd6-f58a-4cd2-b103-8d5eb654413a
       X-Runtime:
-      - '0.065481'
+      - '0.078306'
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        H4sIAAfglVcAA6xVTW/bOBC9+1cIuiv6sJUogcwgaFEURdFLmx56CShxbBGh
+        H4sIADrnoVcAA6xVTW/bOBC9+1cIuiv6sJUogcwgaFEURdFLmx56CShxbBGh
         SJWknKi/vkNKthQnAXaxe7L45g1n5vGRLm+fWxEcQBuu5DZML5IwAFkrxuV+
         G97/+BQV4S1ZlbUGxm1UU83IKgjKiguBlIgypsEYhyHKGflzXcacTeu6N1a1
         oCNEsjRJkvwqL+MlOvJ2XBsbSdoC+aIaWcYLYGQIelx/VFDG83IqpNqOyoF8
@@ -75,5 +75,5 @@ http_interactions:
         smqdF5AXye7ykl6t87SucpbRHUsBT+3d1NX/8BocQLYqMuzxHQOc4hNbY+nx
         Crya3t+4+V/zLwAAAP//AwBTLztpawcAAA==
     http_version: 
-  recorded_at: Mon, 25 Jul 2016 09:46:47 GMT
+  recorded_at: Wed, 03 Aug 2016 12:44:42 GMT
 recorded_with: VCR 3.0.3

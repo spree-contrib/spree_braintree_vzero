@@ -40,7 +40,7 @@ http_interactions:
       message: Created
     headers:
       Date:
-      - Mon, 25 Jul 2016 09:44:55 GMT
+      - Wed, 03 Aug 2016 12:44:47 GMT
       Content-Type:
       - application/xml; charset=utf-8
       Transfer-Encoding:
@@ -61,31 +61,31 @@ http_interactions:
       Content-Encoding:
       - gzip
       Etag:
-      - W/"e1711451323ed6ad60d7c8e629298b1d"
+      - W/"926419a7a0f7b6191f844ec5d79896b4"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 80b5f57e-70c3-4267-974b-e276f1252d20
+      - 27c68bdd-0783-4402-bcec-a86fbd8311f4
       X-Runtime:
-      - '0.070168'
+      - '0.057350'
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        H4sIAJfflVcAA5RSzW/CIBS/768gvTOoWucMYsyWZVnMLuplN1KeStJCA9TZ
-        /35QP9qol53g9/XyeA82P5YFOoB1yuhZkj7TBIHOjVR6N0s26w88Seb8iQkp
-        LTjHnxBiSvJxw0g4Ispr500JFgecMtKHUd4q6zzWogT+ZfaakR4R9UJc0LsB
-        RjrY1jZlJXTD305nqH4moui8BfD40llK0dIcoGjQqhUYuTHEDBw9aAnySn4b
-        6/e/4IL9TmvbM7kolG/4J1gtTej/ykTZwi7MjS+WjJyvka2M86LAYYrAhxml
-        GSN96vSyWnvbtAQWRbUXA75ZxQfe84/9w+BfPAoM7wO6DhtROZ+M6E3iovQj
-        7fg3WnmQYZbCg0NmixatUXT5bksWginMzSPfVDBLZIBelZDwAU3HmL7gQbam
-        r9PRaJplP6HCNdDm60r+L98Fws8k13X9AQAA//8DAJoiMQfMAgAA
+        H4sIAD/noVcAA5RST2/CIBS/71OQ3hnU1s0YxJgty7KYXdTLbqQ8laSFBqiz
+        335QtTXqZSf4/Xt5vAebH6sSHcA6ZfQsSZ9pgkAXRiq9myWb9QeeJHP+xISU
+        FpzjTwgxJbmuGQlHREXjvKnA4oBTRq5hlLfKOo+1qIB/mb1m5IqIeiku6N0A
+        IwPsapuqFrrlb6czVD8TUXTeAnh86SylaGkOULZo1QmM3BhiBo4etATZk9/G
+        +v0vuGC/07r2TCFK5Vv+CVZLE/rvmShb2IW58cWSkfM1srVxXpQ4TBF4NqZ0
+        zMg1dXpZo71tOwKLst6LEd+s4gPv+cf+LPgXjwLZfUA3YSOq4JOc3iQuynWk
+        G/9GKw8yzFJ4cMhs0aIziiE/bMlCMIW5eeTbGmaJDNCrChI+oukLphNMs3U6
+        mub5NH/9CRX6QJdvavm//BAIP5P06/oDAAD//wMAS+V3zMwCAAA=
     http_version: 
-  recorded_at: Mon, 25 Jul 2016 09:44:55 GMT
+  recorded_at: Wed, 03 Aug 2016 12:44:47 GMT
 - request:
     method: get
-    uri: https://api.sandbox.braintreegateway.com/merchants/zt9ssvxzppgzdjmn/customers/1/addresses/6y
+    uri: https://api.sandbox.braintreegateway.com/merchants/zt9ssvxzppgzdjmn/customers/1/addresses/np
     body:
       encoding: US-ASCII
       string: ''
@@ -106,7 +106,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Mon, 25 Jul 2016 09:44:56 GMT
+      - Wed, 03 Aug 2016 12:44:48 GMT
       Content-Type:
       - application/xml; charset=utf-8
       Transfer-Encoding:
@@ -127,26 +127,26 @@ http_interactions:
       Content-Encoding:
       - gzip
       Etag:
-      - W/"c4760f49c4164b4edb9ae989c134585c"
+      - W/"06275c8d5fee10341a3429e8bdfc656a"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 8e694d4b-35d8-4a69-aac5-1e46af04e5c0
+      - f4e6e3b0-7f31-4e9b-af4a-a916d9c37447
       X-Runtime:
-      - '0.027350'
+      - '0.028681'
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        H4sIAJjflVcAA5RSzW/CIBS/768gvTOoWucMYsyWZVnMLuplN1KeStJCA9TZ
-        /35QP9qol53g9/XyeA82P5YFOoB1yuhZkj7TBIHOjVR6N0s26w88Seb8iQkp
-        LTjHnxBiSvJxw0g4Ispr500JFgecMtKHUd4q6zzWogT+ZfaakR4R9UJc0LsB
-        RjrY1jZlJXTD305nqH4moui8BfD40llK0dIcoGjQqhUYuTHEDBw9aAnySn4b
-        6/e/4IL9TmvbM7kolG/4J1gtTej/ykTZwi7MjS+WjJyvka2M86LAYYrAhxml
-        GSN96vSyWnvbtAQWRbUXA75ZxQfe84/9w+BfPAoM7wO6DhtROZ+M6E3iovQj
-        7fg3WnmQYZbCg0NmixatUXT5bksWginMzSPfVDBLZIBelZDwAU3HmL7gQbam
-        r9PRaJplP6HCNdDm60r+L98Fws8k13X9AQAA//8DAJoiMQfMAgAA
+        H4sIAEDnoVcAA5RST2/CIBS/71OQ3hnU1s0YxJgty7KYXdTLbqQ8laSFBqiz
+        335QtTXqZSf4/Xt5vAebH6sSHcA6ZfQsSZ9pgkAXRiq9myWb9QeeJHP+xISU
+        FpzjTwgxJbmuGQlHREXjvKnA4oBTRq5hlLfKOo+1qIB/mb1m5IqIeiku6N0A
+        IwPsapuqFrrlb6czVD8TUXTeAnh86SylaGkOULZo1QmM3BhiBo4etATZk9/G
+        +v0vuGC/07r2TCFK5Vv+CVZLE/rvmShb2IW58cWSkfM1srVxXpQ4TBF4NqZ0
+        zMg1dXpZo71tOwKLst6LEd+s4gPv+cf+LPgXjwLZfUA3YSOq4JOc3iQuynWk
+        G/9GKw8yzFJ4cMhs0aIziiE/bMlCMIW5eeTbGmaJDNCrChI+oukLphNMs3U6
+        mub5NH/9CRX6QJdvavm//BAIP5P06/oDAAD//wMAS+V3zMwCAAA=
     http_version: 
-  recorded_at: Mon, 25 Jul 2016 09:44:56 GMT
+  recorded_at: Wed, 03 Aug 2016 12:44:48 GMT
 recorded_with: VCR 3.0.3

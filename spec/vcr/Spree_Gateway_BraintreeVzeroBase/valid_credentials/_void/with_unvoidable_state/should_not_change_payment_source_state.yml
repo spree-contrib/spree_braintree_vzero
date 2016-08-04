@@ -1,0 +1,212 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://5ffsvj9qxt38xptf:50ea069d312d35fbf779a66b6c86b897@api.sandbox.braintreegateway.com/merchants/zt9ssvxzppgzdjmn/transactions
+    body:
+      encoding: UTF-8
+      string: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <transaction>
+          <customer>
+          </customer>
+          <payment-method-nonce>15f5b135-3aba-4ab4-9eb5-89102f88b5e4</payment-method-nonce>
+          <amount>12.73</amount>
+          <order-id>R061839024</order-id>
+          <billing>
+            <company>Company</company>
+            <country-code-alpha2>US</country-code-alpha2>
+            <country-code-alpha3>USA</country-code-alpha3>
+            <country-code-numeric type="integer">840</country-code-numeric>
+            <country-name>United States of America</country-name>
+            <first-name>John</first-name>
+            <last-name>Doe</last-name>
+            <locality>Adamsville</locality>
+            <postal-code>35005</postal-code>
+            <region>AL</region>
+            <street-address>10 Lovely Street</street-address>
+            <extended-address>Northwest</extended-address>
+          </billing>
+          <shipping>
+            <company>Company</company>
+            <country-code-alpha2>US</country-code-alpha2>
+            <country-code-alpha3>USA</country-code-alpha3>
+            <country-code-numeric type="integer">840</country-code-numeric>
+            <country-name>United States of America</country-name>
+            <first-name>John</first-name>
+            <last-name>Doe</last-name>
+            <locality>Adamsville</locality>
+            <postal-code>35005</postal-code>
+            <region>AL</region>
+            <street-address>10 Lovely Street</street-address>
+            <extended-address>Northwest</extended-address>
+          </shipping>
+          <descriptor>
+            <name></name>
+          </descriptor>
+          <options>
+            <submit-for-settlement type="boolean">true</submit-for-settlement>
+            <add-billing-address-to-payment-method type="boolean">true</add-billing-address-to-payment-method>
+            <three-d-secure>
+              <required type="boolean">false</required>
+            </three-d-secure>
+            <store-in-vault type="boolean">false</store-in-vault>
+          </options>
+          <type>sale</type>
+        </transaction>
+    headers:
+      Accept-Encoding:
+      - gzip
+      Accept:
+      - application/xml
+      User-Agent:
+      - Braintree Ruby Gem 2.64.0
+      X-Apiversion:
+      - '4'
+      Content-Type:
+      - application/xml
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Date:
+      - Thu, 04 Aug 2016 10:52:32 GMT
+      Content-Type:
+      - application/xml; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      X-Frame-Options:
+      - SAMEORIGIN
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      X-Authentication:
+      - basic_auth
+      X-User:
+      - vzw4dwqpkk82wnfg
+      Vary:
+      - Accept-Encoding
+      Content-Encoding:
+      - gzip
+      Etag:
+      - W/"4af15a54d95f8e3076c8fb6c05f14a61"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 0fa6d684-d734-4031-a967-d4adfbb1e6b8
+      X-Runtime:
+      - '17.071740'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        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
+        FwAA
+    http_version: 
+  recorded_at: Thu, 04 Aug 2016 10:52:32 GMT
+- request:
+    method: put
+    uri: https://5ffsvj9qxt38xptf:50ea069d312d35fbf779a66b6c86b897@api.sandbox.braintreegateway.com/merchants/zt9ssvxzppgzdjmn/transactions/b72pahnn/void
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip
+      Accept:
+      - application/xml
+      User-Agent:
+      - Braintree Ruby Gem 2.64.0
+      X-Apiversion:
+      - '4'
+      Content-Type:
+      - application/xml
+  response:
+    status:
+      code: 422
+      message: Unprocessable Entity
+    headers:
+      Date:
+      - Thu, 04 Aug 2016 10:52:33 GMT
+      Content-Type:
+      - application/xml; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      X-Frame-Options:
+      - SAMEORIGIN
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      X-Authentication:
+      - basic_auth
+      X-User:
+      - vzw4dwqpkk82wnfg
+      Vary:
+      - Accept-Encoding
+      Content-Encoding:
+      - gzip
+      Cache-Control:
+      - no-cache
+      X-Request-Id:
+      - e646b194-d35e-4862-bb29-d173234cab63
+      X-Runtime:
+      - '0.035772'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAHEeo1cAA7ySwY6CQAyG7z7FhDuim93smox42ydwz6ZA1THMDGmLEZ5+
+        BwHBjee9tf/XKf3/oHc3W6orEhvvttF6uYoUutwXxp220c/+O/6KdulCQ2Vi
+        JPIUE3LlHWO6UErfJe7KR6OkqXAbARE0UTIgIXAMuYSP9Mrr8ZGNdOqDEo7C
+        dLP+WL3r5F7PIYiQyWrBYR83NvNllGbAqJMHfXpjkRlOmO6n41QOTnlXNipD
+        dfWmwEKZo2IBqVkZVlDL2ZNpg+5JcZ1ZI4LF4ejpwChSokUnS52MyydHyZOl
+        oR2zS/4kNMe6AgI7TubeCfmyREpnb7jL5AH6yWFbZyNEMAs/OKf8DE5iU6St
+        bJivt7aqTm1xsa47faL9fCiyz7cKzi7gXtXJdNU/JRlMvPgLfwEAAP//AwBM
+        EDt9wgIAAA==
+    http_version: 
+  recorded_at: Thu, 04 Aug 2016 10:52:33 GMT
+recorded_with: VCR 3.0.3

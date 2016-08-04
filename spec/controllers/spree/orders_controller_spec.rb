@@ -15,7 +15,7 @@ describe Spree::OrdersController, type: :controller do
     context 'standard checkout for order with braintree paypal express payment' do
       before { order.payments << create(:braintree_vzero_paypal_payment) }
 
-      xit 'it should invalidate paypal express payment' do
+      it 'it should invalidate paypal express payment' do
         expect(order.reload.payments.valid.count).to eq 1
         spree_put :update, {}, order_id: order.id
         expect(order.reload.payments.valid.count).to eq 0

@@ -12,41 +12,13 @@ http_interactions:
           </customer>
           <payment-method-token>sometoken</payment-method-token>
           <amount>20.0</amount>
-          <order-id>R973453951</order-id>
-          <billing>
-            <company>Company</company>
-            <country-code-alpha2>US</country-code-alpha2>
-            <country-code-alpha3>USA</country-code-alpha3>
-            <country-code-numeric type="integer">840</country-code-numeric>
-            <country-name>United States of America</country-name>
-            <first-name>John</first-name>
-            <last-name>Doe</last-name>
-            <locality>Herndon</locality>
-            <postal-code>35005</postal-code>
-            <region>AL</region>
-            <street-address>10 Lovely Street</street-address>
-            <extended-address>Northwest</extended-address>
-          </billing>
-          <shipping>
-            <company>Company</company>
-            <country-code-alpha2>US</country-code-alpha2>
-            <country-code-alpha3>USA</country-code-alpha3>
-            <country-code-numeric type="integer">840</country-code-numeric>
-            <country-name>United States of America</country-name>
-            <first-name>John</first-name>
-            <last-name>Doe</last-name>
-            <locality>Herndon</locality>
-            <postal-code>35005</postal-code>
-            <region>AL</region>
-            <street-address>10 Lovely Street</street-address>
-            <extended-address>Northwest</extended-address>
-          </shipping>
+          <order-id>R690314870</order-id>
           <descriptor>
             <name></name>
           </descriptor>
           <options>
             <submit-for-settlement type="boolean">false</submit-for-settlement>
-            <add-billing-address-to-payment-method type="boolean">true</add-billing-address-to-payment-method>
+            <add-billing-address-to-payment-method type="boolean">false</add-billing-address-to-payment-method>
             <three-d-secure>
               <required type="boolean">false</required>
             </three-d-secure>
@@ -73,7 +45,7 @@ http_interactions:
       message: Unprocessable Entity
     headers:
       Date:
-      - Mon, 25 Jul 2016 09:45:41 GMT
+      - Wed, 03 Aug 2016 12:45:52 GMT
       Content-Type:
       - application/xml; charset=utf-8
       Transfer-Encoding:
@@ -96,29 +68,24 @@ http_interactions:
       Cache-Control:
       - no-cache
       X-Request-Id:
-      - a1511cd6-8bd1-4b20-a30a-e61d17fad858
+      - e51b9063-2d0d-464d-b8c4-495fc33f37d5
       X-Runtime:
-      - '0.162007'
+      - '0.165197'
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        H4sIAMXflVcAA+xWTW/bMAy991cIvqt2mgZrAUVFsWEYhmIY1vVcKBbTCJMl
-        T5Kz+t+P/rYTp2h77iki+Z5EPTGk2c1zpskenFfWrKPFeRIRMKmVyjyto4ff
-        X+lVdMPPmMgVBeesow58bo0HfkYIq12+WvYGCWUO60g4J8oobkPBCeNFGvCQ
-        xjMP72JddLDRg0kBv16sFlcsrtfjoAjBqU0RoN3Pl9nG6ojnoszAhMcMws7K
-        x2D/gGFxj57skYH34gn4z4ZDGg6pOUR5osxeaCXPWdwhh3TjSb6t6Xt7o7RG
-        RQ/vNytWRT/AM79Tef6WDaYEFh88wDhBlgsnMv/CS6WFDzYDR4zS6yi4AkZH
-        tQrTRi1aq8U9wlutZ+MdWWS2MIFfJOcJvkpjdDHrJDiqJP91/Wl5uVperxYs
-        7p2nlU1tlgtT8s/Nb1UsjWMMwYNcSasyokLnO3HBH+4r5LH/JdYSWbdztOUp
-        milQR5Xyq8vkgNdFjolGZMAfjAogyX0QATyxW3Jbw8WwSw0b2FvlfGic3+0O
-        H2LkGFBadL4vFlg8mCOITbHsQ8m/gTPS4k69ZwDl1geh65vw5SpJVvjwI9cA
-        dPBUldbtHYvb5RDzwQEEKqTEJuP5IiF3dg+6xFtXAazqKWD0Z3gOYCTIPvTD
-        urD7Bx5JR7G3/Ms+iumjmF5XTIfFwyT41Kk8jMcYq+SYbaPxMZzZvGrD49R8
-        sclUoFucwx5C0FC1Vr4V2qPe88GBjCnTtuS79LEd02mD5lVe2ItfhR32DjsU
-        k0o8OC3cdKw6+FsoB7JLs7dH0/MUHV/ROqDK0L0o9HDTqbfX8EAwVg1H7oVG
-        Sr08NQyHCfiejwBUa+br6D8AAAD//wMAJyw9pVoJAAA=
+        H4sIAIDnoVcAA5xUTW/bMAy991cIvitO9pkCinrreRi2c8FYbCtMHy4pB8u/
+        n2JH/ujcYtiN5HuPIukHq7vf3okTEtsYDtVus60EhiYaG54O1c8f93Jf3ekb
+        Ba2VSBRJEnIbA6O+EUL1Jb6EYyLSucVDBURwruorlAgCQ5PyI0NlnV6wgk55
+        ruShUN/uPu/2qu7jOQgpkT12Ca/9+OyP0VW6hbPHkB48pudoHlL8hUHVI3vR
+        wyMzPKH+NmjEoBG9RlgWNpzAWbNRdWFO49aLea9pOUz9av05rFog8PzOnZqO
+        U/RIIlh3qBJ1WM7aq/tZ5TCr7GfVnOnXTVfxIgYfu5D0h+1mm28yJAWLZJCk
+        Nfr7l9vtx92n/dfMGYuFZZAbsm2afyoVwOPqsPXfdBXby7I8k3N39DbJx+w1
+        xpQcXhbQj+AYVb0OTmIwRh6tc9m+MsfZrJyXlsszlGb/Rp6ap2dClCa/3HS0
+        9A7hS2cJx9ZjPrPIW3KVvy+htEGeoHPTqsvqeMRXF1MXw2sGlyV9+JbnJqP9
+        j9PztVZ+AX8AAAD//wMABjlwlj8EAAA=
     http_version: 
-  recorded_at: Mon, 25 Jul 2016 09:45:41 GMT
+  recorded_at: Wed, 03 Aug 2016 12:45:52 GMT
 recorded_with: VCR 3.0.3

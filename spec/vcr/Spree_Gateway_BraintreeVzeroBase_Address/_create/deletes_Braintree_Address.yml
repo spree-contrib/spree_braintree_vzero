@@ -40,7 +40,7 @@ http_interactions:
       message: Created
     headers:
       Date:
-      - Mon, 25 Jul 2016 09:44:53 GMT
+      - Wed, 03 Aug 2016 12:44:49 GMT
       Content-Type:
       - application/xml; charset=utf-8
       Transfer-Encoding:
@@ -61,31 +61,31 @@ http_interactions:
       Content-Encoding:
       - gzip
       Etag:
-      - W/"23b382521e23be51602a0760678b0b05"
+      - W/"48be5544d3832203ed2a3091902b407c"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 13a5bddd-f518-45c4-b0c7-71c0a849d3dd
+      - 4b36aa4b-ea54-40cd-996a-ed4d0eb61fc4
       X-Runtime:
-      - '0.079639'
+      - '0.039700'
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        H4sIAJXflVcAA5RSzW/CIBS/+1eQ3juwtfswiDFblmUxu6iX3Uh5KksLDVBn
-        //tB1bZRLzvB7+vl8R50fiwLdABjpVazaPxAIgQq10Kq3SzarN/j52jORpQL
-        YcBaNkKISsF+Eor9EVBeW6dLMLHHY4qHMMhbaayLFS+Bfeq9onhABL3gF/Sm
-        geIetrV1WXHVsNfT6aufiSBaZwBcfOlsTNBSH6Bo0KoVKL4yhAwcHSgBoiO/
-        tHH7X7DefqO17emcF9I17AOMEtr33zFBNrDzc2OLJcXna2ArbR0vYj9FYGlG
-        SEbxkDq9rFbONC0R86La84RtVuGBt/x9f+r9i3uB9Dagar8RmbPnCblKXJRh
-        pB3/RkkHws+SO7BIb9GiNfI+32/JgDf5uTnkmgpmkfDQyRIilpDxY0ye4iRb
-        k5fpZDLN0m9foQu0+boS/8v3Af8zcbeuPwAAAP//AwCHYQ2PzAIAAA==
+        H4sIAEHnoVcAA5RST2/CIBS/+ylI7wxq6+IMYsyWZVnMLuplN1KeStZCA9TZ
+        bz9atW3Uy07w+/fyeA+2OBU5OoJ1yuh5FD/RCIHOjFR6P4+2m3c8jRZ8xISU
+        FpzjI4SYkvynZCQcDcoq500BFgccMzKEjbxT1nmsRQH80xw0IwOi0XNxRW8G
+        GOlhW9sUpdA1fz2fofqFaETnLYDH185iilbmCHmN1q3AyI2hycDJg5YgO/LL
+        WH/4BRfsd1rbnslErnzNP8BqaUL/HdPIFvZhbny5YuRybdjSOC9yHKYIPJlQ
+        OmFkSJ1fVmlv65bAIi8PYsy36+aB9/xjfxL8y0eB5D6gq7ARlfFpSm8SV2UY
+        ace/1cqDDLMUHhwyO7RsjaLP91uyEExhbh75uoR5JAP0qoCIj2n8jOkU02QT
+        j2dpOktfvkOFLtDmq1L+L98Hws8k3br+AAAA//8DALUieEfMAgAA
     http_version: 
-  recorded_at: Mon, 25 Jul 2016 09:44:53 GMT
+  recorded_at: Wed, 03 Aug 2016 12:44:49 GMT
 - request:
     method: delete
-    uri: https://api.sandbox.braintreegateway.com/merchants/zt9ssvxzppgzdjmn/customers/1/addresses/j2
+    uri: https://api.sandbox.braintreegateway.com/merchants/zt9ssvxzppgzdjmn/customers/1/addresses/kp
     body:
       encoding: US-ASCII
       string: ''
@@ -106,7 +106,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Mon, 25 Jul 2016 09:44:54 GMT
+      - Wed, 03 Aug 2016 12:44:50 GMT
       Content-Type:
       - application/xml
       Transfer-Encoding:
@@ -127,19 +127,19 @@ http_interactions:
       Content-Encoding:
       - gzip
       Etag:
-      - W/"2b77d74d6202d86818b754ad98813049"
+      - W/"b8d0464a5d0041e6175c165733217c9d"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 8c5615b8-e525-4295-b68d-3b3f0752d40a
+      - 998302c5-330a-467b-8f46-28b2e423295e
       X-Runtime:
-      - '0.071932'
+      - '0.030920'
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        H4sIAJbflVcAA1IAAAAA//8DAEXPbOkBAAAA
+        H4sIAELnoVcAA1IAAAAA//8DAEXPbOkBAAAA
     http_version: 
-  recorded_at: Mon, 25 Jul 2016 09:44:54 GMT
+  recorded_at: Wed, 03 Aug 2016 12:44:50 GMT
 recorded_with: VCR 3.0.3

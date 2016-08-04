@@ -29,7 +29,7 @@ http_interactions:
       message: Unauthorized
     headers:
       Date:
-      - Mon, 25 Jul 2016 09:45:19 GMT
+      - Wed, 03 Aug 2016 12:46:29 GMT
       Content-Type:
       - application/xml; charset=utf-8
       Transfer-Encoding:
@@ -50,16 +50,16 @@ http_interactions:
       Cache-Control:
       - no-cache
       X-Request-Id:
-      - e17b21dd-6647-4eed-8c80-5d50cc2670b6
+      - e6aa87fe-2e55-4bfa-bfa6-5d7e42aea772
       X-Runtime:
-      - '0.022153'
+      - '0.021683'
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        H4sIAK/flVcAA/IICQlQcEoszky2UnBMTk4tLlZISc3LTE3R4wIAAAD//wMA
+        H4sIAKXnoVcAA/IICQlQcEoszky2UnBMTk4tLlZISc3LTE3R4wIAAAD//wMA
         aO1LWhsAAAA=
     http_version: 
-  recorded_at: Mon, 25 Jul 2016 09:45:19 GMT
+  recorded_at: Wed, 03 Aug 2016 12:46:29 GMT
 recorded_with: VCR 3.0.3

@@ -23,7 +23,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Mon, 25 Jul 2016 09:46:49 GMT
+      - Wed, 03 Aug 2016 12:44:43 GMT
       Content-Type:
       - application/xml; charset=utf-8
       Transfer-Encoding:
@@ -44,19 +44,19 @@ http_interactions:
       Content-Encoding:
       - gzip
       Etag:
-      - W/"d359039ec629ca2b70b79f5d16c15b53"
+      - W/"34b2562a9448ae278e0cd2c2a45be3ea"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 1e51f1ba-ee2b-4d2a-9f7a-d72c74db5639
+      - 0f8b2281-c755-4dcf-b444-90a6217e1ef3
       X-Runtime:
-      - '0.055162'
+      - '0.090687'
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        H4sIAAnglVcAA6xVTW/bOBC9+1cIuiv6sJUogcwgaFEURdFLmx56CShxbBGh
+        H4sIADvnoVcAA6xVTW/bOBC9+1cIuiv6sJUogcwgaFEURdFLmx56CShxbBGh
         SJWknKi/vkNKthQnAXaxe7L45g1n5vGRLm+fWxEcQBuu5DZML5IwAFkrxuV+
         G97/+BQV4S1ZlbUGxm1UU83IKgjKiguBlIgypsEYhyHKGflzXcacTeu6N1a1
         oCNEsjRJkvwqL+MlOvJ2XBsbSdoC+aIaWcYLYGQIelx/VFDG83IqpNqOyoF8
@@ -75,7 +75,7 @@ http_interactions:
         smqdF5AXye7ykl6t87SucpbRHUsBT+3d1NX/8BocQLYqMuzxHQOc4hNbY+nx
         Crya3t+4+V/zLwAAAP//AwBTLztpawcAAA==
     http_version: 
-  recorded_at: Mon, 25 Jul 2016 09:46:49 GMT
+  recorded_at: Wed, 03 Aug 2016 12:44:43 GMT
 - request:
     method: get
     uri: https://api.sandbox.braintreegateway.com/merchants/zt9ssvxzppgzdjmn/payment_methods/any/8n9bdr
@@ -99,7 +99,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Mon, 25 Jul 2016 09:46:50 GMT
+      - Wed, 03 Aug 2016 12:44:44 GMT
       Content-Type:
       - application/xml; charset=utf-8
       Transfer-Encoding:
@@ -120,19 +120,19 @@ http_interactions:
       Content-Encoding:
       - gzip
       Etag:
-      - W/"00b570588adb16a021a596ee9a078a88"
+      - W/"7c26266cfbbeeb8c8ddf94bc14c5ff1a"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - ed318e66-04a5-4025-a8c9-5da685b4e075
+      - b2a2c117-e948-442c-8db6-89c5b401fc02
       X-Runtime:
-      - '0.059648'
+      - '0.082861'
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        H4sIAArglVcAA6xVTW/bOBC9+1cIuiv6sJUogcwgaFEURdFLmx56CShxbBGh
+        H4sIADznoVcAA6xVTW/bOBC9+1cIuiv6sJUogcwgaFEURdFLmx56CShxbBGh
         SJWknKi/vkNKthQnAXaxe7L45g1n5vGRLm+fWxEcQBuu5DZML5IwAFkrxuV+
         G97/+BQV4S1ZlbUGxm1UU83IKgjKiguBlIgypsEYhyHKGflzXcacTeu6N1a1
         oCNEsjRJkvwqL+MlOvJ2XBsbSdoC+aIaWcYLYGQIelx/VFDG83IqpNqOyoF8
@@ -151,5 +151,5 @@ http_interactions:
         smqdF5AXye7ykl6t87SucpbRHUsBT+3d1NX/8BocQLYqMuzxHQOc4hNbY+nx
         Crya3t+4+V/zLwAAAP//AwBTLztpawcAAA==
     http_version: 
-  recorded_at: Mon, 25 Jul 2016 09:46:50 GMT
+  recorded_at: Wed, 03 Aug 2016 12:44:44 GMT
 recorded_with: VCR 3.0.3
