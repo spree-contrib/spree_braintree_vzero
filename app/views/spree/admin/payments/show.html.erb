@@ -16,10 +16,10 @@
   <li><%= button_link_to Spree.t(:back_to_payments_list), spree.admin_order_payments_url(@order), :icon => 'arrow-left' %></li>
 <% end %>
 
-<% unless @payment.source.is_a?(Spree::Payment) %>
+<% if @payment.source.is_a?(Spree::BraintreeCheckout) %>
   <%= render :partial => "spree/admin/payments/source_views/braintree_vzero", :locals => { :payment => @payment } %>
 <% else %>
-  <%= render :partial => "spree/admin/payments/source_views/#{@payment.payment_method.method_type}", :locals => { :payment => @payment.source } %>
+  <%= render :partial => "spree/admin/payments/source_views/#{@payment.payment_method.method_type}", :locals => { :payment => @payment } %>
 <% end %>
 
 <div data-hook="amount" class="align-center">
