@@ -14,6 +14,7 @@ FactoryGirl.define do
       end
       gateway.preferred_server = :sandbox
       gateway.preferred_store_payments_in_vault = :do_not_store
+      gateway.environment = 'test'
     end
 
     factory :vzero_paypal_gateway, class: Spree::Gateway::BraintreeVzeroPaypalExpress do
