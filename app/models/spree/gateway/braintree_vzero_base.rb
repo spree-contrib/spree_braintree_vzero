@@ -147,7 +147,7 @@ module Spree
     end
 
     def braintree_user(provider, user, order)
-      Gateway::BraintreeVzeroBase::User.new(provider, user, order).user
+      Gateway::BraintreeVzeroBase::BraintreeUser.new(provider, user, order).user
     end
 
     def token_params(provider, user, order)
