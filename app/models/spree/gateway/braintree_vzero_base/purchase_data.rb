@@ -30,7 +30,7 @@ module Spree
           data.merge!(utils.order_data(identifier_hash, money_in_cents.to_f / 100))
           return data unless preferred_pass_billing_and_shipping_address
 
-          data.merge!(utils.get_address('billing')) unless order.shipping_address.same_as?(order.billing_address)
+          data.merge!(utils.get_address('billing'))
           data.merge!(utils.get_address('shipping'))
         end
 
