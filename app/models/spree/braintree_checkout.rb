@@ -7,7 +7,7 @@ module Spree
 
     FINAL_STATES = %w(authorization_expired processor_declined gateway_rejected failed voided settled settlement_declined refunded released)
 
-    has_one :payment, foreign_key: :source_id, inverse_of: :source
+    has_one :payment, foreign_key: :source_id, as: :source
     has_one :order, through: :payment
 
     def self.create_from_params(params)
