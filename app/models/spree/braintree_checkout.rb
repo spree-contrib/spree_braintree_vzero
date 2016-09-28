@@ -97,7 +97,7 @@ module Spree
       when 'completed'
         'complete'
       else
-        'fail'
+        'failure'
       end
     end
   end
