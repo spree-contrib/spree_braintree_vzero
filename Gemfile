@@ -10,6 +10,4 @@ gem 'pg'
 gem 'mysql2'
 gem 'webmock', '~> 1.24.6'
 
-gem 'test_after_commit', group: :test
-
 gemspec
