@@ -1,5 +1,5 @@
 Spree::OrdersController.class_eval do
-  before_filter :process_paypal_express, only: :update
+  before_action :process_paypal_express, only: :update
 
   def process_paypal_express
     if params[:paypal].blank? || params[:paypal][:payment_method_nonce].blank?
