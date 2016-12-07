@@ -3,9 +3,6 @@ dist: trusty
 
 language: ruby
 
-cache:
-  bundler: true
-
 env:
   - DB=postgres
   - DB=mysql
@@ -13,6 +10,8 @@ env:
 gemfile:
   - gemfiles/spree_3_1.gemfile
   - gemfiles/spree_3_1_spree_auth_devise.gemfile
+  - gemfiles/spree_3_2.gemfile
+  - gemfiles/spree_3_2_spree_auth_devise.gemfile
   - gemfiles/spree_master.gemfile
   - gemfiles/spree_master_spree_auth_devise.gemfile
 
