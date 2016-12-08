@@ -11,6 +11,17 @@ appraise 'spree-3-1-spree-auth-devise' do
   gem 'test_after_commit'
 end
 
+appraise 'spree-3-2' do
+  ENV['WITHOUT_SPREE_AUTH_DEVISE'] = 'true'
+
+  gem 'spree', '~> 3.2.0.rc1'
+end
+
+appraise 'spree-3-1-spree-auth-devise' do
+  gem 'spree', '~> 3.2.0.rc1'
+  gem 'spree_auth_devise', '~> 3.2.0.beta'
+end
+
 appraise 'spree-master' do
   ENV['WITHOUT_SPREE_AUTH_DEVISE'] = 'true'
 
