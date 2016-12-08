@@ -2,16 +2,20 @@ FactoryGirl.define do
   factory :vzero_gateway, class: Spree::Gateway::BraintreeVzeroDropInUI do
     name 'Braintree Vzero DropInUI'
 
+    # to write new specs please provide proper credentials to
+    # be recorded on VCR, so they can be safely replaced with
+    # placeholder afterwards
     transient do
-      merchant_id nil
-      public_key nil
-      private_key nil
+      merchant_id 'change me'
+      public_key 'change me'
+      private_key 'change me'
     end
 
     before(:create) do |gateway, s|
       %w(merchant_id private_key public_key).each do |preference|
         gateway.send "preferred_#{preference}=", s.send(preference) || ENV[preference]
       end
+
       gateway.preferred_server = :sandbox
       gateway.preferred_store_payments_in_vault = :do_not_store
       gateway.environment = 'test'
