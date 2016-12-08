@@ -15,6 +15,15 @@ Behind-the-scenes, this extension uses [Braintree Ruby SDK](https://github.com/b
 ## Installation
 
 1. Add this extension to your Gemfile with this line:
+
+  #### Spree >= 3.1
+
+  ```ruby
+  gem 'spree_braintree_vzero', github: 'spree-contrib/spree_braintree_vzero'
+  ```
+
+  #### Spree 3.0 and Spree 2.x
+
   ```ruby
   gem 'spree_braintree_vzero', github: 'spree-contrib/spree_braintree_vzero', branch: 'X-X-stable'
   ```
