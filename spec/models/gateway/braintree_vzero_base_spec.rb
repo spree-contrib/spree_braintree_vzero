@@ -278,6 +278,23 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
       end
     end
 
+    describe '#capture' do
+      # for Spree::Config.auto_capture_on_dispatch = true
+
+      before do
+        gateway.update(auto_capture: false)
+        complete_order!
+      end
+
+      context 'captures authorized amount' do
+        it 'updates Payment state' do
+          expect(payment).to be_pending
+          payment.reload.capture!
+          expect(payment).to be_completed
+        end
+      end
+    end
+
     describe '#credit' do
       let(:refund) { gateway.credit(1317, payment_source.reload.transaction_id, {}) }
       let!(:prepare_gateway) { gateway.preferred_3dsecure = false }
