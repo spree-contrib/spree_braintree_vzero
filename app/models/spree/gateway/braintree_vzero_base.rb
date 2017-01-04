@@ -59,6 +59,11 @@ module Spree
       result
     end
 
+    def capture(amount, transaction_id, _gateway_options)
+      checkout = Spree::BraintreeCheckout.find_by(transaction_id: transaction_id)
+      settle(amount, checkout, _gateway_options)
+    end
+
     def void(transaction_id, _data)
       result = Transaction.new(provider, transaction_id).void
 
