@@ -2,7 +2,7 @@ container: container,
 paypal: {
   singleUse: <%= payment_method.preferred_store_payments_in_vault.eql?('do_not_store') %>,
   amount: <%= @order.total %>,
-  currency: "<%= current_currency %>",
+  currency: "<%= @order.currency %>",
   enableShippingAddress: true,
   shippingAddressOverride: {
     recipientName: '<%= "#{shipping_address.firstname} #{shipping_address.lastname}" %>',
