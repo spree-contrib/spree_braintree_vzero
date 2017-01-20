@@ -10,15 +10,11 @@ SimpleCov.start do
   add_group 'Libraries', 'lib'
 end
 
-# CodeClimate coverage
-require 'codeclimate-test-reporter'
-CodeClimate::TestReporter.start
-
 # Configure Rails Environment
 ENV['RAILS_ENV'] = 'test'
 
 require File.expand_path('../dummy/config/environment.rb',  __FILE__)
-
+require 'codeclimate-test-reporter'
 require 'rspec/rails'
 require 'database_cleaner'
 require 'ffaker'
