@@ -109,13 +109,14 @@ module Spree
       billing_address = order.billing_address
       transaction = response.transaction
 
+      shipping_details_id = transaction.shipping_details.id
       details_id = if shipping_address.same_as?(billing_address)
-                     transaction.shipping_details.id
+                     shipping_details_id ||= transaction.billing_details.id
                    else
                      transaction.billing_details.id
                    end
 
-      shipping_address.update_attribute(:braintree_id, transaction.shipping_details.id)
+      shipping_address.update_attribute(:braintree_id, shipping_details_id)
       billing_address.update_attribute(:braintree_id, details_id)
     end
 
