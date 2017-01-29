@@ -15,6 +15,7 @@ env:
 script:
   - bundle exec rake test_app
   - bundle exec rake spec
+  - bundle exec codeclimate-test-reporter
 
 rvm:
   - 2.3.1
