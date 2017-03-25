@@ -2,7 +2,7 @@ container: container,
 paypal: {
   singleUse: <%= payment_method.preferred_store_payments_in_vault.eql?('do_not_store') %>,
   amount: <%= @order.total %>,
-  currency: "<%= Spree::Config[:currency] %>",
+  currency: "<%= @order.currency %>",
   enableShippingAddress: true,
   shippingAddressOverride: {
     recipientName: '<%= "#{shipping_address.firstname} #{shipping_address.lastname}" %>',
@@ -34,7 +34,7 @@ onPaymentMethodReceived: function (result) {
       $(formId).append("<input type='hidden' name='payment_method_nonce' value=" + data.nonce + ">");
     else
       $(formId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + data.nonce + ">");
-    $(formId).submit();
+    $(formId)[0].submit();
   }
 
   if (SpreeBraintreeVzero.threeDSecure && result.type == "CreditCard") {
