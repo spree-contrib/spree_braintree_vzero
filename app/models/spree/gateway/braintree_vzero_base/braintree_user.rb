@@ -1,7 +1,7 @@
 module Spree
   class Gateway
     class BraintreeVzeroBase
-      class User
+      class BraintreeUser
         attr_reader :user, :spree_user, :request, :utils
 
         delegate :shipping_address, :billing_address, to: :spree_user
