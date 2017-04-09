@@ -1,5 +1,5 @@
 Braintree::SuccessfulResult.class_eval do
-  attr_reader :authorization
+  attr_reader :authorization, :message
 
   def authorization
     transaction.id
