@@ -53,6 +53,19 @@ describe Spree::CheckoutController, :vcr, type: :controller do
         put :update, params
         expect(order.reload.payments.last.source.braintree_last_digits).to eq vaulted_payment_method.last_4
       end
+
+      context 'when user tries to steal other user card' do
+        let(:other_user) { create(:user) }
+        let!(:card) { create(:credit_card, number: '123456', user: other_user) }
+
+        it 'does not create payment' do
+          params[:order].merge!(existing_card: card.id)
+
+          expect(order.payments).to be_empty
+          put :update, params
+          expect(order.reload.payments).to be_empty
+        end
+      end
     end
 
     context 'braintree paypal express payment' do
