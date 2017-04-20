@@ -8,6 +8,6 @@ end
 
 gem 'pg'
 gem 'mysql2'
-gem 'webmock', '~> 1.24.6'
+gem 'webmock', '>= 2.3.1'
 
 gemspec
