@@ -13,7 +13,7 @@ Spree::CheckoutController.class_eval do
     return unless Spree::Auth::Config[:registration_step]
     return if spree_current_user || current_order.email
     store_location
-    redirect_to spree.checkout_registration_path(params)
+    redirect_to spree.checkout_registration_path
   end
 
   def update_source_data
