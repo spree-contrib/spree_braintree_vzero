@@ -1,4 +1,4 @@
-class AddBraintreeLastDigitsAndBraintreeCardTypeToSpreeBraintreeCheckouts < ActiveRecord::Migration
+class AddBraintreeLastDigitsAndBraintreeCardTypeToSpreeBraintreeCheckouts < SpreeExtension::Migration[4.2]
   def change
     add_column :spree_braintree_checkouts, :braintree_last_digits, :string, limit: 4
     add_column :spree_braintree_checkouts, :braintree_card_type, :string

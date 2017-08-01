@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'spree_core', spree_version
   s.add_dependency 'spree_backend', spree_version
   s.add_dependency 'spree_frontend', spree_version
+  s.add_dependency 'spree_extension'
 
   s.add_dependency 'braintree', '>= 2.40.0'
   s.add_dependency 'whenever'

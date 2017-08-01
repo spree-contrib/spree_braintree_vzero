@@ -1,4 +1,4 @@
-class AddPaypalEmailToSpreeBraintreeCheckout < ActiveRecord::Migration
+class AddPaypalEmailToSpreeBraintreeCheckout < SpreeExtension::Migration[4.2]
   def change
     add_column :spree_braintree_checkouts, :paypal_email, :string
   end
