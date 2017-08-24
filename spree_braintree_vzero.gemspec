@@ -42,9 +42,11 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'selenium-webdriver'
   s.add_development_dependency 'simplecov'
   s.add_development_dependency 'sqlite3'
+  s.add_development_dependency 'pg'
+  s.add_development_dependency 'mysql2'
   s.add_development_dependency 'pry'
   s.add_development_dependency 'vcr'
-  s.add_development_dependency 'webmock'
+  s.add_development_dependency 'webmock', '~> 2.3' # https://github.com/bblimke/webmock/issues/683
   s.add_development_dependency 'therubyracer'
   s.add_development_dependency 'codeclimate-test-reporter'
 end
