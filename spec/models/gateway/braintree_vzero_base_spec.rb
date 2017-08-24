@@ -9,7 +9,7 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
     let(:add_payment_to_order!) { order.payments << payment }
     let(:complete_order!) do
       add_payment_to_order!
-      2.times { order.next! }
+      until order.completed? do order.next! end
     end
 
     it 'generates token without User' do
@@ -250,6 +250,7 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
       before do
         gateway.update(auto_capture: false)
         complete_order!
+        payment.reload
       end
 
       context 'settles authorized amount' do
@@ -284,6 +285,7 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
       before do
         gateway.update(auto_capture: false)
         complete_order!
+        payment.reload
       end
 
       context 'captures authorized amount' do
