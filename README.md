@@ -71,7 +71,7 @@ pull request.
 
 ## License
 
-Spree Braintree V.zero is copyright © 2015-2016
+Spree Braintree V.zero is copyright © 2015-2017
 [Spark Solutions Sp. z o.o.][spark]. It is free software,
 and may be redistributed under the terms specified in the
 [LICENCE](LICENSE) file.
