@@ -14,6 +14,7 @@ module Spree
 
     private
 
+    # we cannot have Hosted and DropInUI both active at the same time
     def disable_hosted_gateways
       Spree::Gateway::BraintreeVzeroHostedFields.update_all(active: false)
     end
