@@ -17,7 +17,7 @@ describe Spree::OrdersController, type: :controller do
 
       it 'it should invalidate paypal express payment' do
         expect(order.reload.payments.valid.count).to eq 1
-        spree_put :update, params: {}, order_id: order.id
+        put :update, params: { order_id: order.id }
         expect(order.reload.payments.valid.count).to eq 0
       end
     end
@@ -26,6 +26,7 @@ describe Spree::OrdersController, type: :controller do
       let(:payment_method) { create(:vzero_paypal_gateway) }
       let(:params) do
         {
+          order_id: order.id,
           order: {
             line_items_attributes: {
               '0' => {
@@ -56,7 +57,7 @@ describe Spree::OrdersController, type: :controller do
       end
 
       it 'it should save address both as billing and shipping (even when phone number is not passed)' do
-        spree_put :update, params: params, order_id: order.id
+        put :update, params: params
         data = params.slice(:order)[:order].slice(:ship_address)[:ship_address]
         [order.ship_address, order.bill_address].each do |address|
           expect(address.zipcode).to eq data[:zipcode]
@@ -72,7 +73,7 @@ describe Spree::OrdersController, type: :controller do
       end
 
       it 'it should redirect to address page when address is invalid' do
-        spree_put :update, params: params, order_id: order.id
+        put :update, params: params
 
         [order.ship_address, order.bill_address].each do |address|
           expect(address).to be_invalid
@@ -82,7 +83,7 @@ describe Spree::OrdersController, type: :controller do
 
       it 'it should redirect to address page when address is valid' do
         params[:order][:ship_address][:phone] = '123456789'
-        spree_put :update, params: params, order_id: order.id
+        put :update, params: params
 
         [order.ship_address, order.bill_address].each do |address|
           expect(address).to be_valid
