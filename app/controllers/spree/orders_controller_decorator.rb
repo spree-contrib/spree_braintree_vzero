@@ -13,10 +13,10 @@ Spree::OrdersController.class_eval do
     email = params[:order][:email]
     # when user goes back from checkout, order's state should be resetted to ensure paypal checkout flow
     current_order.state = 'cart'
+    payment_method.push_order_to_state(current_order, 'address', email)
     current_order.save_paypal_payment(payment_params)
 
     manage_paypal_addresses
-    payment_method.push_order_to_state(current_order, 'address', email)
     current_order.remove_phone_number_placeholder
 
     redirect_to checkout_state_path(current_order.state, paypal_email: email)
