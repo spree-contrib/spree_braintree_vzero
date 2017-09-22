@@ -12,6 +12,8 @@ gemfile:
   - gemfiles/spree_3_1_spree_auth_devise.gemfile
   - gemfiles/spree_3_2.gemfile
   - gemfiles/spree_3_2_spree_auth_devise.gemfile
+  - gemfiles/spree_3_3.gemfile
+  - gemfiles/spree_3_3_spree_auth_devise.gemfile
   - gemfiles/spree_master.gemfile
   - gemfiles/spree_master_spree_auth_devise.gemfile
 

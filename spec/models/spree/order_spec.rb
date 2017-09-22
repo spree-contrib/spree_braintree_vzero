@@ -69,6 +69,7 @@ describe Spree::Order, :vcr do
     end
 
     context 'with braintree paypal express payment' do
+      let(:order) { OrderWalkthrough.up_to(:delivery) }
       let(:gateway) { create(:vzero_paypal_gateway, auto_capture: true) }
       before { add_payment_to_order! }
 
