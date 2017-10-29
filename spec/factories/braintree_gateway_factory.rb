@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :vzero_gateway, class: Spree::Gateway::BraintreeVzeroDropInUI do
     name 'Braintree Vzero DropInUI'
 
