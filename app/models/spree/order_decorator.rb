@@ -140,7 +140,7 @@ Spree::Order.class_eval do
       order.errors.add(:base, Spree.t(:no_payment_found))
       false
     else
-      payments.valid.last.update(amount: total)
+      payments.valid.last.update(amount: order_total_after_store_credit)
       process_payments!
     end
   end

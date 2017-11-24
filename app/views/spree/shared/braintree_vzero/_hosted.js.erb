@@ -50,7 +50,7 @@ onPaymentMethodReceived: function (result) {
     });
 
     client.verify3DS({
-      amount: <%= @order.total %>,
+      amount: <%= @order.order_total_after_store_credit %>,
       creditCard: result.nonce
     }, function (error, response) {
       if (!error) {
