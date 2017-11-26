@@ -1,7 +1,7 @@
 container: container,
 paypal: {
   singleUse: <%= payment_method.preferred_store_payments_in_vault.eql?('do_not_store') %>,
-  amount: <%= @order.total %>,
+  amount: <%= @order.order_total_after_store_credit %>,
   currency: "<%= current_currency %>",
   enableShippingAddress: true,
   shippingAddressOverride: {
@@ -43,7 +43,7 @@ onPaymentMethodReceived: function (result) {
     });
 
     client.verify3DS({
-      amount: <%= @order.total %>,
+      amount: <%= @order.order_total_after_store_credit %>,
       creditCard: result.nonce
     }, function (error, response) {
       if (!error) {

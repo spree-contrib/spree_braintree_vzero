@@ -78,7 +78,7 @@ describe Spree::CheckoutController, :vcr, type: :controller do
       it 'amount in payment should be updated' do
         expect(order.reload.payments.sum(:amount)).to eq 0
         put :update, params: { state: 'confirm' }
-        expect(order.reload.payments.last.amount).to eq order.total
+        expect(order.reload.payments.last.amount).to eq order.order_total_after_store_credit
       end
     end
   end
