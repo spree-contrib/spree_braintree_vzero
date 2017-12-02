@@ -90,7 +90,22 @@
         document.querySelector(paypalSubmitId).addEventListener(
           "click",
           function () {
-            checkout.paypal.initAuthFlow();
+            input = {
+              couponCodeField: $('#order_coupon_code'),
+              couponStatus: $('#coupon_status')
+            };
+            if ($.trim(input.couponCodeField.val()).length > 0) {
+              if (new CouponManager(input).applyCoupon()) {
+                submit();
+                return true;
+              } else {
+                Spree.enableSave();
+                event.preventDefault();
+                return false;
+              }
+            } else {
+              checkout.paypal.initAuthFlow();
+            }
           },
           false
         );
