@@ -96,7 +96,7 @@
             };
             if ($.trim(input.couponCodeField.val()).length > 0) {
               if (new CouponManager(input).applyCoupon()) {
-                submit();
+                location.reload();
                 return true;
               } else {
                 Spree.enableSave();
