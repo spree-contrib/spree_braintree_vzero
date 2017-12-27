@@ -16,7 +16,7 @@ en:
     error:
       three_d_secure: There was a problem with processing your credit card!
       fraud: There was a problem with processing your credit card!
-      dupliacte: Duplicated transaction, please try again!
+      duplicate: Duplicated transaction, please try again!
       cvv: Wrong CVV!
       avs_and_cvv: Wrong AVS and CVV!
       avs: Wrong AVS!
