@@ -1,8 +1,9 @@
 Spree::Admin::PaymentsController.class_eval do
-  create.before :initBraintree
+  create.before :init_braintree
 
   private
-  def initBraintree
+  
+  def init_braintree
     unless @payment_method.store_credit?
       @payment ||= @order.payments.build(object_params)
       if @payment.payment_method.source_required? && @payment.payment_source.is_a?(Spree::Gateway::BraintreeVzeroBase)
