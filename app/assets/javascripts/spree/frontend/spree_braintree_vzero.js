@@ -61,15 +61,6 @@ $(document).ready(function() {
     $('#saved_payment_methods_for_' + SpreeBraintreeVzero.paymentMethodID).val('')
     SpreeBraintreeVzero.updateSaveAndContinueVisibility();
   });
-  $('[name="commit"]:not(.braintree-submit)').click(function (e) {
-    if($('#checkout-step-payment').length) {
-      e.preventDefault();
-      token = $('#saved_payment_methods_for_' + SpreeBraintreeVzero.paymentMethodID).val()
-      if(token)
-        $(SpreeBraintreeVzero.checkoutFormId).append("<input type='hidden' name='order[payments_attributes][][braintree_token]' value=" + token + ">");
-      $('#checkout_form_payment').submit();
-    }
-  });
   $('.braintree-submit, [name="commit"]').click(function(e) {
     SpreeBraintreeVzero.addDeviceData();
   });
