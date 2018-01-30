@@ -8,14 +8,14 @@ module Spree
           @order = order
           begin
             @customer = gateway.provider::Customer.find(order.user.id) if order.user
-          rescue
+          rescue Braintree::NotFoundError
           end
           @gateway = gateway
         end
 
         def get_address(address_type)
           if order.user && (address = order.user.send("#{address_type}_address"))
-            braintree_address = BraintreeVzeroBase::Address.new(gateway.provider, order)
+            braintree_address = BraintreeVzeroBase::Address.new(gateway, order)
             vaulted_duplicate = Spree::Address.vaulted_duplicates(address).first
 
             if vaulted_duplicate && braintree_address.find(vaulted_duplicate.braintree_id)
