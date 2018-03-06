@@ -4,6 +4,7 @@ appraise 'spree-3-1' do
   gem 'spree', '~> 3.1.0'
   gem 'test_after_commit'
   gem "rails_test_params_backport", group: :test
+  gem "rails", "~> 4.2.10"
 end
 
 appraise 'spree-3-1-spree-auth-devise' do
@@ -11,6 +12,7 @@ appraise 'spree-3-1-spree-auth-devise' do
   gem 'spree_auth_devise', '~> 3.1.0'
   gem 'test_after_commit'
   gem "rails_test_params_backport", group: :test
+  gem "rails", "~> 4.2.10"
 end
 
 appraise 'spree-3-2' do
