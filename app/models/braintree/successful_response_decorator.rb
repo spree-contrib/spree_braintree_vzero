@@ -6,7 +6,7 @@ Braintree::SuccessfulResult.class_eval do
   end
 
   def avs_result
-    { code: transaction.avs_street_address_response_code }
+    { code: transaction.avs_street_address_response_code }.with_indifferent_access
   end
 
   def cvv_result
