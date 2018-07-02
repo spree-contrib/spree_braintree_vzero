@@ -8,12 +8,12 @@ env:
   - DB=mysql
 
 gemfile:
-  - gemfiles/spree_3_1.gemfile
-  - gemfiles/spree_3_1_spree_auth_devise.gemfile
   - gemfiles/spree_3_2.gemfile
   - gemfiles/spree_3_2_spree_auth_devise.gemfile
-  - gemfiles/spree_3_3.gemfile
-  - gemfiles/spree_3_3_spree_auth_devise.gemfile
+  - gemfiles/spree_3_5.gemfile
+  - gemfiles/spree_3_5_spree_auth_devise.gemfile
+  - gemfiles/spree_3_6.gemfile
+  - gemfiles/spree_3_6_spree_auth_devise.gemfile
   - gemfiles/spree_master.gemfile
   - gemfiles/spree_master_spree_auth_devise.gemfile
 
@@ -23,8 +23,9 @@ script:
   - bundle exec codeclimate-test-reporter
 
 rvm:
-  - 2.3.1
-  - 2.2.7
+  - 2.3.7
+  - 2.4.4
+  - 2.5.1
 
 matrix:
     allow_failures:
