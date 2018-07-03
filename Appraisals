@@ -1,20 +1,3 @@
-appraise 'spree-3-1' do
-  ENV['WITHOUT_SPREE_AUTH_DEVISE'] = 'true'
-
-  gem 'spree', '~> 3.1.0'
-  gem 'test_after_commit'
-  gem "rails_test_params_backport", group: :test
-  gem "rails", "~> 4.2.10"
-end
-
-appraise 'spree-3-1-spree-auth-devise' do
-  gem 'spree', '~> 3.1.0'
-  gem 'spree_auth_devise', '~> 3.1.0'
-  gem 'test_after_commit'
-  gem "rails_test_params_backport", group: :test
-  gem "rails", "~> 4.2.10"
-end
-
 appraise 'spree-3-2' do
   ENV['WITHOUT_SPREE_AUTH_DEVISE'] = 'true'
 
@@ -26,14 +9,25 @@ appraise 'spree-3-2-spree-auth-devise' do
   gem 'spree_auth_devise', '~> 3.2.0'
 end
 
-appraise 'spree-3-3' do
+appraise 'spree-3-5' do
   ENV['WITHOUT_SPREE_AUTH_DEVISE'] = 'true'
 
-  gem 'spree', '~> 3.3.0'
+  gem 'spree', '~> 3.5.0'
 end
 
-appraise 'spree-3-3-spree-auth-devise' do
-  gem 'spree', '~> 3.3.0'
+appraise 'spree-3-5-spree-auth-devise' do
+  gem 'spree', '~> 3.5.0'
+  gem 'spree_auth_devise', '~> 3.3.0'
+end
+
+appraise 'spree-3-6' do
+  ENV['WITHOUT_SPREE_AUTH_DEVISE'] = 'true'
+
+  gem 'spree', '~> 3.6.1'
+end
+
+appraise 'spree-3-6-spree-auth-devise' do
+  gem 'spree', '~> 3.6.1'
   gem 'spree_auth_devise', '~> 3.3.0'
 end
 
