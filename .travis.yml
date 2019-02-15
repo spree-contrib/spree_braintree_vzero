@@ -30,6 +30,7 @@ rvm:
 matrix:
     allow_failures:
           - gemfile: gemfiles/spree_master.gemfile
+          - gemfile: gemfiles/spree_master_spree_auth_devise.gemfile
 
 addons:
   apt:
