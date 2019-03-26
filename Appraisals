@@ -20,10 +20,10 @@ appraise 'spree-3-5-spree-auth-devise' do
   gem 'spree_auth_devise', '~> 3.3.0'
 end
 
-appraise 'spree-3-6' do
+appraise 'spree-3-7' do
   ENV['WITHOUT_SPREE_AUTH_DEVISE'] = 'true'
 
-  gem 'spree', '~> 3.6.1'
+  gem 'spree', '~> 3.7.1'
 end
 
 appraise 'spree-3-6-spree-auth-devise' do
