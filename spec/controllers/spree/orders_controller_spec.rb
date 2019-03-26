@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe Spree::OrdersController, type: :controller do
   let(:user) { create(:user) }
+  let!(:country) { create(:country, iso: 'US') }
+  let!(:state) { create(:state, country: country) }
 
   context '#update' do
     let(:order) { OrderWalkthrough.up_to(:payment) }
