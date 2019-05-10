@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'spree_extension'
 
   s.add_dependency 'braintree', '>= 2.40.0'
+  s.add_dependency 'deface', '~> 1.0'
   s.add_dependency 'whenever'
 
   s.add_development_dependency 'appraisal'
