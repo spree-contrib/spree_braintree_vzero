@@ -1,6 +1,8 @@
 module Spree
-  Address.class_eval do
-    scope :vaulted_duplicates, -> (address) { where.not(id: address.id, braintree_id: nil).where(address.attributes.except('id', 'updated_at', 'created_at', 'braintree_id')) }
+  module AddressDecorator
+    def self.prepended(base)
+      base.scope :vaulted_duplicates, -> (address) { where.not(id: address.id, braintree_id: nil).where(address.attributes.except('id', 'updated_at', 'created_at', 'braintree_id')) }
+    end
 
     def same_as?(other)
       return false if other.nil?
@@ -8,3 +10,5 @@ module Spree
     end
   end
 end
+
+::Spree::Address.prepend(Spree::AddressDecorator)

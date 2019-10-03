@@ -7,4 +7,4 @@ module Spree
   end
 end
 
-Spree::Payment.prepend Spree::PaymentDecorator
+::Spree::Payment.prepend(Spree::PaymentDecorator)
