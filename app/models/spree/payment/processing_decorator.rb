@@ -1,5 +1,5 @@
 module Spree
-  module Payment
+  class Payment
     module ProcessingDecorator
       def self.prepended(base)
         base.delegate :settle, to: :provider
