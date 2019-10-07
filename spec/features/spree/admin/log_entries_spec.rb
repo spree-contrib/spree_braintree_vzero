@@ -22,7 +22,12 @@ describe 'Log entries', :vcr, type: :feature do
       expect(message).to be_blank
 
       visit spree.admin_order_payments_path(order)
-      find("#payment_#{payment.id} a").click
+      if Spree.version.to_f < 4.0
+        find("#payment_#{payment.id} a").click
+      else
+        find_all("#payment_#{payment.id} a")[0].click
+      end
+
       click_link 'Logs'
       within('#listing_log_entries') do
         expect(page).to have_css('.log_entry.success')
