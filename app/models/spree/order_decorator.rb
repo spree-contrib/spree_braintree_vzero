@@ -60,7 +60,7 @@ module Spree
           end
         end
 
-        success = update_attributes(attributes)
+        success = update(attributes)
         set_shipments_cost if shipments.any?
       end
 
