@@ -102,7 +102,11 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
       end
 
       context 'using Vault' do
-        before { gateway.preferred_store_payments_in_vault = :store_all }
+        let(:user) { create(:user) }
+        before do
+          order.user = user
+          gateway.preferred_store_payments_in_vault = :store_all
+        end
 
         it 'stores Transaction' do
           card_vault_token = purchase.transaction.credit_card_details.token
