@@ -38,12 +38,16 @@ matrix:
         gemfile: gemfiles/spree_4_0_spree_auth_devise.gemfile
       - rvm: 2.3.8
         gemfile: gemfiles/spree_master.gemfile
+      - rvm: 2.3.8
+        gemfile: gemfiles/spree_master_spree_auth_devise.gemfile
       - rvm: 2.4.4
         gemfile: gemfiles/spree_4_0.gemfile
       - rvm: 2.4.4
-        gemfile: gemfiles/spree_master_spree_auth_devise.gemfile
+        gemfile: gemfiles/spree_4_0_spree_auth_devise.gemfile
       - rvm: 2.4.4
         gemfile: gemfiles/spree_master.gemfile
+      - rvm: 2.4.4
+        gemfile: gemfiles/spree_master_spree_auth_devise.gemfile
       - rvm: 2.5.1
         gemfile: gemfiles/spree_3_5.gem
       - rvm: 2.5.1
@@ -56,3 +60,4 @@ addons:
     - mysql-server-5.6
     - mysql-client-core-5.6
     - mysql-client-5.6
+  postgresql: 9.4
