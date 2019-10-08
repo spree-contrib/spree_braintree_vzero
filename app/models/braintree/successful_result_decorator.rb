@@ -1,7 +1,7 @@
 module Braintree
   module SuccessfulResultDecorator
     def self.prepended(base)
-      base.attr_reader :authorization, :message
+      base.mattr_reader :authorization, :message
     end
 
     def authorization
