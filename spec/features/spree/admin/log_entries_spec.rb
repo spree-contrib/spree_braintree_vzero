@@ -32,7 +32,7 @@ describe 'Log entries', :vcr, type: :feature do
       within('#listing_log_entries') do
         expect(page).to have_css('.log_entry.success')
         expect(page).not_to have_css('.log_entry.fail')
-        expect(page).to have_content(pretty_time(entry.created_at))
+        expect(page).to have_content(pretty_time(entry.created_at).gsub('  ', ' '))
       end
     end
   end
@@ -55,7 +55,7 @@ describe 'Log entries', :vcr, type: :feature do
       within('#listing_log_entries') do
         expect(page).not_to have_css('.log_entry.success')
         expect(page).to have_css('.log_entry.fail')
-        expect(page).to have_content(pretty_time(entry.created_at))
+        expect(page).to have_content(pretty_time(entry.created_at).gsub('  ', ' '))
         expect(page).to have_content(message)
       end
     end
