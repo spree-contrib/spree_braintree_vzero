@@ -2,8 +2,11 @@
 
 source "https://rubygems.org"
 
-gem "spree",  "~> 4.0.0.rc3"
+gem "spree", "~> 4.0.0.rc3"
+gem "pg"
+gem "mysql2"
+gem "webmock", ">= 2.3.1"
+gem "rails-controller-testing"
 gem "spree_auth_devise", "~> 4.0.0"
-gem 'rails-controller-testing'
 
-gemspec :path => "../"
+gemspec path: "../"
