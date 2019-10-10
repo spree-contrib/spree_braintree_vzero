@@ -22,7 +22,7 @@ module Spree
     private
 
     def disable_dropin_gateways
-      Spree::Gateway::BraintreeVzeroDropInUI.update_all(active: false)
+      Spree::Gateway::BraintreeVzeroDropInUi.update_all(active: false)
     end
   end
 end

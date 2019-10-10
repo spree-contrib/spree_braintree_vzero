@@ -1,11 +1,6 @@
 module Spree
   module Admin
-    module PreferenceFieldsHelper
-      def self.prepended(base)
-        base.helper_method :braintree_basic_preference_fields
-        base.helper_method :braintree_advanced_preference_fields
-      end
-
+    module PaymentMethodsHelper
       def preference_field_for(form, field, options)
         case options[:type]
         when :integer
@@ -95,5 +90,3 @@ module Spree
     end
   end
 end
-
-::Spree::Admin::PaymentMethodsController.prepend(Spree::Admin::PreferenceFieldsHelper)

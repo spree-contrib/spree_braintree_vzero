@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :vzero_gateway, class: Spree::Gateway::BraintreeVzeroDropInUI do
+  factory :vzero_gateway, class: Spree::Gateway::BraintreeVzeroDropInUi do
     name { 'Braintree Vzero DropInUI' }
 
     # to write new specs please provide proper credentials
@@ -24,7 +24,7 @@ FactoryBot.define do
       name { 'Braintree Vzero PayPal Express' }
     end
 
-    factory :vzero_dropin_ui_gateway, class: Spree::Gateway::BraintreeVzeroDropInUI do
+    factory :vzero_dropin_ui_gateway, class: Spree::Gateway::BraintreeVzeroDropInUi do
       name { 'Braintree Vzero DropIn UI' }
     end
 
