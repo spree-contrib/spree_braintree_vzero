@@ -1,6 +1,8 @@
 module Spree
   module CheckoutControllerDecorator
     def self.prepended(base)
+      base.include Spree::BraintreeHelper
+      base.helper_method [:asset_available?, :options_from_braintree_payments]
       base.after_action :allow_braintree_iframe
       base.after_action :update_source_data, only: :update, if: proc { params[:state].eql?('payment') }
     end

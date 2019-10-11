@@ -1,6 +1,8 @@
 module Spree
   module OrdersControllerDecorator
     def self.prepended(base)
+      base.include Spree::BraintreeHelper
+      base.helper_method [:asset_available?, :options_from_braintree_payments]
       base.before_action :process_paypal_express, only: :update
     end
 

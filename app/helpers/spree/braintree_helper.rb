@@ -1,5 +1,5 @@
 module Spree
-  module OrderHelperDecorator
+  module BraintreeHelper
     def options_from_braintree_payments(payment_methods, include_empty = false)
       additional_options = if include_empty
                              ["<option value=''>#{t('braintree.checkout.blank_saved_payment_method')}</option>"]
@@ -25,5 +25,3 @@ module Spree
     end
   end
 end
-
-::Spree::OrdersHelper.prepend(Spree::OrderHelperDecorator)
