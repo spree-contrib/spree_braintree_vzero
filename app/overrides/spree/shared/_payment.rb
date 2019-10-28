@@ -1,5 +1,5 @@
 Deface::Override.new(
-  virtual_path: 'spree/payments/_payment',
+  virtual_path: 'spree/shared/_payment',
   name: 'Displays payment data for PayPal Express payment methods',
   replace: 'erb[silent]:contains("else")',
   text: %{

@@ -8,5 +8,6 @@ gem "pg"
 gem "mysql2"
 gem "webmock", ">= 2.3.1"
 gem "rails-controller-testing"
+gem "spree_auth_devise", "~> 3.5.2"
 
 gemspec path: "../"

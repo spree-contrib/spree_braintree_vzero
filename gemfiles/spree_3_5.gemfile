@@ -3,6 +3,10 @@
 source "https://rubygems.org"
 
 gem "spree", "~> 3.5.0"
-gem 'rails-controller-testing'
+gem "pg"
+gem "mysql2"
+gem "webmock", ">= 2.3.1"
+gem "rails-controller-testing"
+gem 'sprockets', '~> 3.7'
 
-gemspec :path => "../"
+gemspec path: "../"

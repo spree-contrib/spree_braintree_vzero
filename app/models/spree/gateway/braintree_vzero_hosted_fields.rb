@@ -12,8 +12,7 @@ module Spree
     preference :'3dsecure', :boolean_select, default: false
 
     after_save :disable_dropin_gateways, if: proc {
-      changed_attributes = changes.keys + previous_changes.keys
-      active? && (changed_attributes & %w[active id]).any?
+      active? && (saved_changes.keys & %w[active id]).any?
     }
 
     def method_type
@@ -23,7 +22,7 @@ module Spree
     private
 
     def disable_dropin_gateways
-      Spree::Gateway::BraintreeVzeroDropInUI.update_all(active: false)
+      Spree::Gateway::BraintreeVzeroDropInUi.update_all(active: false)
     end
   end
 end

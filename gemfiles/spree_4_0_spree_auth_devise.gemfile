@@ -2,11 +2,11 @@
 
 source "https://rubygems.org"
 
-gem 'sassc-rails'
-gem "spree", "~> 3.7.1"
+gem "spree", "~> 4.0.0"
 gem "pg"
 gem "mysql2"
 gem "webmock", ">= 2.3.1"
 gem "rails-controller-testing"
+gem "spree_auth_devise", "~> 4.0.0"
 
 gemspec path: "../"
