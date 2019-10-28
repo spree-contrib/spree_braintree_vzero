@@ -6,14 +6,14 @@ module Spree
                            else
                              []
                            end
-      (additional_options + payment_methods.map do |method|
+      additional_options + payment_methods.map do |method|
         text = if method.is_a?(Braintree::CreditCard)
                  Spree.t('admin.vaulted_payments.credit_card', card_type: method.card_type, last_4: method.last_4)
                elsif method.is_a?(Braintree::PayPalAccount)
                  Spree.t('admin.vaulted_payments.paypal', email: method.email)
                end
         "<option value='#{method.token}'>#{text}</option>"
-      end).join.html_safe
+      end.join.html_safe
     end
 
     def asset_available?(logical_path)
