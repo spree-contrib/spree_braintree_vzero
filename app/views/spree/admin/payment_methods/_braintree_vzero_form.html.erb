@@ -1,72 +1,80 @@
 <div data-hook="admin_payment_method_form_fields">
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h1 class="panel-title"><%= Spree.t(:general_settings)%></h1>
+  <div class="card mb-3">
+    <div class="card-header">
+      <h1 class="card-title h5 mb-0">
+        <%= Spree.t(:general_settings)%>
+      </h1>
     </div>
 
-    <div class="panel-body">
-      <div class="col-md-4">
-        <%= f.field_container :provider, class: ['form-group'] do %>
-          <%= f.label :type, Spree.t(:provider) %>
-          <%= collection_select(:payment_method, :type, @providers, :to_s, :name, {}, {:id => 'gtwy-type', :class => 'select2'}) %>
-        <% end %>
-
-        <% unless @object.new_record? %>
-          <%= braintree_basic_preference_fields(@object, f) %>
-
-          <% if @object.respond_to?(:preferences) %>
-            <div id="gateway-settings-warning" class="info warning"><%= Spree.t(:provider_settings_warning) %></div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-4">
+          <%= f.field_container :provider, class: ['form-group'] do %>
+            <%= f.label :type, Spree.t(:provider) %>
+            <%= collection_select(:payment_method, :type, @providers, :to_s, :name, {}, {id: 'gtwy-type', class: 'select2'}) %>
           <% end %>
-        <% end %>
 
-        <%= f.field_container :payment_method_display_on, class: ['form-group'] do %>
-          <%= label_tag :payment_method_display_on, Spree.t(:display) %>
-          <%= select(:payment_method, :display_on, Spree::PaymentMethod::DISPLAY.collect { |display| [Spree.t(display), display.to_s] }, {}, {:class => 'select2'}) %>
-        <% end %>
+          <% unless @object.new_record? %>
+            <%= braintree_basic_preference_fields(@object, f) %>
 
-        <%= f.field_container :payment_method_auto_capture, class: ['form-group'] do %>
-          <%= label_tag :payment_method_auto_capture, Spree.t(:auto_capture) %>
-          <%= select(:payment_method, :auto_capture, [["#{Spree.t(:use_app_default)} (#{Spree::Config[:auto_capture]})", ''], [Spree.t(:say_yes), true], [Spree.t(:say_no), false]], {}, {:class => 'select2'}) %>
-        <% end %>
-
-        <%= f.field_container :payment_method_active, class: ['form-group'] do %>
-          <strong><%= Spree.t(:active) %></strong>
-          <div class="radio">
-            <%= label_tag :payment_method_active_true do %>
-              <%= radio_button :payment_method, :active, true %>
-              <%= Spree.t(:say_yes) %>
+            <% if @object.respond_to?(:preferences) %>
+              <div id="gateway-settings-warning" class="info warning">
+                <%= Spree.t(:provider_settings_warning) %>
+              </div>
             <% end %>
-          </div>
+          <% end %>
 
-          <div class="radio">
-            <%= label_tag :payment_method_active_false do %>
-              <%= radio_button :payment_method, :active, false %>
-              <%= Spree.t(:say_no) %>
-            <% end %>
-          </div>
-        <% end %>
-      </div>
+          <%= f.field_container :payment_method_display_on, class: ['form-group'] do %>
+            <%= label_tag :payment_method_display_on, Spree.t(:display) %>
+            <%= select(:payment_method, :display_on, Spree::PaymentMethod::DISPLAY.collect { |display| [Spree.t(display), display.to_s] }, {}, {:class => 'select2'}) %>
+          <% end %>
 
-      <div class="col-md-8">
-        <%= f.field_container :payment_method_name, class: ['form-group'] do %>
-          <%= label_tag :payment_method_name, Spree.t(:name) %>
-          <%= text_field :payment_method, :name, :class => 'form-control' %>
-        <% end %>
-        <%= f.field_container :payment_method_description, class: ['form-group'] do %>
-          <%= label_tag :payment_method_description, Spree.t(:description) %>
-          <%= text_area :payment_method, :description, { :cols => 60, :rows => 6, :class => 'form-control' } %>
-        <% end %>
+          <%= f.field_container :payment_method_auto_capture, class: ['form-group'] do %>
+            <%= label_tag :payment_method_auto_capture, Spree.t(:auto_capture) %>
+            <%= select(:payment_method, :auto_capture, [["#{Spree.t(:use_app_default)} (#{Spree::Config[:auto_capture]})", ''], [Spree.t(:say_yes), true], [Spree.t(:say_no), false]], {}, {:class => 'select2'}) %>
+          <% end %>
+
+          <%= f.field_container :payment_method_active, class: ['form-group'] do %>
+            <strong><%= Spree.t(:active) %></strong>
+            <div class="radio">
+              <%= label_tag :payment_method_active_true do %>
+                <%= radio_button :payment_method, :active, true %>
+                <%= Spree.t(:say_yes) %>
+              <% end %>
+            </div>
+
+            <div class="radio">
+              <%= label_tag :payment_method_active_false do %>
+                <%= radio_button :payment_method, :active, false %>
+                <%= Spree.t(:say_no) %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="col-lg-8">
+          <%= f.field_container :payment_method_name, class: ['form-group'] do %>
+            <%= label_tag :payment_method_name, Spree.t(:name) %>
+            <%= text_field :payment_method, :name, :class => 'form-control' %>
+          <% end %>
+          <%= f.field_container :payment_method_description, class: ['form-group'] do %>
+            <%= label_tag :payment_method_description, Spree.t(:description) %>
+            <%= text_area :payment_method, :description, { :cols => 60, :rows => 6, :class => 'form-control' } %>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="panel panel-default">
-    <div class="panel-heading" id="advanced-preferences-heading" style="cursor: pointer;">
-      <h1 class="panel-title"><span class="icon icon-chevron-right"></span> <%= Spree.t(:advanced_settings)%></h1>
+  <div class="card mb-3">
+    <div class="card-header" id="advanced-preferences-heading" style="cursor: pointer;">
+      <h1 class="card-title h5 mb-0">
+        <span class="icon icon-chevron-right"></span>
+        <%= Spree.t(:advanced_settings)%></h1>
     </div>
 
-    <div class="panel-body collapsed" id="advanced-preferences" style="display: none;">
+    <div class="card-body collapsed" id="advanced-preferences" style="display: none;">
       <% unless @object.new_record? %>
         <%= braintree_advanced_preference_fields(@object, f) %>
       <% end %>
