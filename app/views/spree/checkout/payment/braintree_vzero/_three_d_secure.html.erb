@@ -1,0 +1,218 @@
+<script type="text/javascript">
+  $('#order_payments_attributes__payment_method_id_<%= payment_method.id %>').click(function (e) {
+    var threeDSecure;
+    var checkoutFormId = "<%= payment_method.preferred_checkout_form_id %>"
+    var formId = "#" + checkoutFormId;
+
+    var clientToken = "<%= payment_method.client_token(@order) %>";
+
+    <% if hosted %>
+    var hf, threeDS;
+    var hostedFieldsContainer = document.getElementById('hosted-fields');
+    <% elsif dropin%>
+    var dropin;
+    <% end %>
+
+    var payBtn = document.getElementsByName('commit')[0];
+    var payGroup = $('.pay-group');
+    var billingFields = [
+      'email',
+    ].reduce(function (fields, fieldName) {
+      var field = fields[fieldName] = {
+        input: document.getElementById(fieldName),
+        help: document.getElementById('help-' + fieldName)
+      };
+
+      field.input.addEventListener('focus', function() {
+        clearFieldValidations(field);
+      });
+
+      return fields;
+    }, {});
+
+    function clearFieldValidations (field) {
+      field.help.innerText = '';
+      field.help.parentNode.classList.remove('has-error');
+    }
+
+    function validateBillingFields() {
+      var isValid = true;
+
+      Object.keys(billingFields).forEach(function (fieldName) {
+        var fieldEmpty = false;
+        var field = billingFields[fieldName];
+
+        if (field.optional) {
+          return;
+        }
+
+        fieldEmpty = field.input.value.trim() === '';
+
+        if (fieldEmpty) {
+          isValid = false;
+          field.help.innerText = "<%= Spree.t(:required) %>";
+          field.help.parentNode.classList.add('has-error');
+        } else {
+          clearFieldValidations(field);
+        }
+      });
+
+      return isValid;
+    }
+
+    function start() {
+      getClientToken();
+    }
+
+    function getClientToken() {
+      onFetchClientToken(clientToken);
+    }
+
+    function setupComponents (clientToken) {
+      return Promise.all([
+        braintree.hostedFields.create({
+          authorization: clientToken,
+          styles: {
+            input: {
+              'font-size': '14px',
+              'font-family': 'monospace'
+            }
+          },
+          fields: {
+            number: {
+              selector: '#hosted-fields-number'
+            },
+            cvv: {
+              selector: '#hosted-fields-cvv'
+            },
+            expirationDate: {
+              selector: '#hosted-fields-expiration-date'
+            }
+          }
+        }),
+        braintree.threeDSecure.create({
+          authorization: clientToken,
+          version: 2
+        })
+      ]);
+    }
+
+    function setupDropin (clientToken) {
+      return braintree.dropin.create({
+        authorization: clientToken,
+        container: '#drop-in',
+        threeDSecure: true
+      })
+    }
+
+    function onFetchClientToken(clientToken) {
+      <% if hosted %>
+      return setupComponents(clientToken).then(function(instances) {
+        hf = instances[0];
+        threeDS = instances[1];
+        <% elsif dropin %>
+        return setupDropin(clientToken).then(function(instance) {
+          dropin = instance;
+          <% end %>
+
+          setupForm();
+        }).catch(function (err) {
+          console.log('component error:', err);
+        });
+      }
+
+      function setupForm() {
+        enablePayNow();
+      }
+
+      function enablePayNow() {
+        payBtn.value = "<%= Spree.t(:save_and_continue) %>";
+        payBtn.removeAttribute('disabled');
+      }
+
+      function showErrors() {
+        payGroup.addClass('hidden');
+        payGroup.css('display', 'none');
+        $('.credit-card-pay-success').addClass('hidden')
+        $('.credit-card-pay-errors').removeClass('hidden')
+      }
+
+      function showSuccess() {
+        payGroup.addClass('hidden');
+        payGroup.css('display', 'none');
+        <% if hosted %>
+        hostedFieldsContainer.style.display = 'none';
+        <% end %>
+        $('.credit-card-pay-errors').addClass('hidden')
+        $('.credit-card-pay-success').removeClass('hidden')
+      }
+
+      payBtn.addEventListener('click', function(event) {
+        event.preventDefault()
+        payBtn.setAttribute('disabled', 'disabled');
+        payBtn.value = "<%= Spree.t(:processing_credit_card) %>";
+
+        var billingIsValid = validateBillingFields();
+
+        if (!billingIsValid) {
+          enablePayNow();
+
+          return;
+        }
+        <% if hosted %>
+        hf.tokenize().then(function (payload) {
+          return threeDS.verifyCard({
+            onLookupComplete: function (data, next) {
+              next();
+            },
+            nonce: payload.nonce,
+            bin: payload.details.bin,
+            <% elsif dropin %>
+            dropin.requestPaymentMethod({
+              threeDSecure: {
+                <% end %>
+                amount: "<%= @order.total %>",
+                email: billingFields.email.input.value,
+                <% if hosted %>
+              })
+          }).then(function (payload) {
+            <% elsif dropin %>
+          }
+        }, function(err, payload) {
+          if (err) {
+            console.log('tokenization error:');
+            console.log(err);
+            dropin.clearSelectedPaymentMethod();
+            enablePayNow();
+
+            return;
+          }
+          <% end %>
+
+          if (!payload.liabilityShifted) {
+            console.log('Liability did not shift', payload);
+            showErrors();
+            return;
+          }
+
+          console.log('verification success:', payload);
+          showSuccess();
+          $(formId).append("<input type='hidden' name='braintree_last_two' value=" + payload.details.lastTwo + ">");
+          $(formId).append("<input type='hidden' name='braintree_card_type' value=" + payload.details.cardType.replace(/\s/g, "") + ">");
+          $(formId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + payload.nonce + ">");
+          $(formId).append("<input type='hidden' name='payment_method_nonce' value=" + payload.nonce + ">");
+          setTimeout(function () {
+            $('.checkout-btn').attr("disabled", false)
+            $('form.edit_order').submit()
+          }, 200);
+          <% if hosted %>
+        }).catch(function (err) {
+          enablePayNow();
+          showErrors();
+          <% end %>
+        });
+      });
+
+      start();
+    });
+</script>

@@ -65,10 +65,15 @@ en:
     number_placeholder: Number Placeholder
     numner_selector: Number Selector
     pass_billing_and_shipping_address: Pass Billing and Shipping Address
+    verify_card: Verify card
+    verify_credit_card_failed: Verify credit card failed
+    credit_card_veryfied_successfully: Credit Card verified successfully.
     paypal_display_name: PayPal Display Name
     paypal_display_on_cart: PayPal Display on Cart
     private_key: Private Key
+    processing_credit_card: Processing Credit Card
     public_key: Public Key
+    required: Required
     store_payments_in_vault: Store Payments In Vault
     settle: Settle
     what_is_paypal: What is PayPal?
