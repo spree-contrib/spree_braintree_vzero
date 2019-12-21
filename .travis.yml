@@ -49,7 +49,7 @@ matrix:
       - rvm: 2.4.4
         gemfile: gemfiles/spree_master_spree_auth_devise.gemfile
       - rvm: 2.5.1
-        gemfile: gemfiles/spree_3_5.gem
+        gemfile: gemfiles/spree_3_5.gemfile
       - rvm: 2.5.1
         gemfile: gemfiles/spree_3_5_spree_auth_devise.gemfile
 
