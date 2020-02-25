@@ -17,7 +17,7 @@ Behind-the-scenes, this extension uses [Braintree Ruby SDK](https://github.com/b
   #### Spree >= 3.1
 
   ```ruby
-  gem 'spree_braintree_vzero', github: 'spree-contrib/spree_braintree_vzero'
+  gem 'spree_braintree_vzero', '~> 3.5'
   ```
 
   #### Spree 3.0 and Spree 2.x
