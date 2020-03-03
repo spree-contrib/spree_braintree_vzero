@@ -43,7 +43,9 @@ Behind-the-scenes, this extension uses [Braintree Ruby SDK](https://github.com/b
 
     If your server was running, restart it so that it can find the assets properly.
 
+## Documentation
 
+See [wiki](https://github.com/spree-contrib/spree_braintree_vzero/wiki) for more detailed documentation.
 
 ## Heroku installation (optional)
 
