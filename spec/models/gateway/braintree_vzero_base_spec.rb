@@ -102,7 +102,11 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
       end
 
       context 'using Vault' do
-        before { gateway.preferred_store_payments_in_vault = :store_all }
+        let(:user) { create(:user) }
+        before do
+          order.user = user
+          gateway.preferred_store_payments_in_vault = :store_all
+        end
 
         it 'stores Transaction' do
           card_vault_token = purchase.transaction.credit_card_details.token
@@ -112,8 +116,9 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
         it 'saves Braintree::Address id to Spree::Address when address is being saved' do
           gateway.preferred_pass_billing_and_shipping_address = true
           address = create(:address)
-          order.update_attribute(:ship_address_id, address.id)
-          order.update_attribute(:bill_address_id, address.id)
+          order.ship_address = address
+          order.bill_address = address
+          order.save
           purchase
           order.reload
 
@@ -126,8 +131,11 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
 
         it 'saves unique Braintree::Addresses ids' do
           gateway.preferred_pass_billing_and_shipping_address = true
-          order.update_attribute(:ship_address_id, create(:address, first_name: 'foo').id)
-          order.update_attribute(:bill_address_id, create(:address, first_name: 'bar').id)
+          ship_address = create(:address, first_name: 'foo')
+          bill_address = create(:address, first_name: 'bar')
+          order.ship_address = ship_address
+          order.bill_address = bill_address
+          order.save
           purchase
           order.reload
 
@@ -142,8 +150,9 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
           gateway.preferred_pass_billing_and_shipping_address = true
           ship_address = create(:address, first_name: 'foo')
           bill_address = create(:address, first_name: 'bar')
-          order.update_attribute(:ship_address_id, ship_address.id)
-          order.update_attribute(:bill_address_id, bill_address.id)
+          order.ship_address = ship_address
+          order.bill_address = bill_address
+          order.save
 
           utils = Spree::Gateway::BraintreeVzeroBase::Utils.new(gateway, order)
           data = gateway.send('set_basic_purchase_data', {}, order, utils, order.total * 100)
@@ -160,14 +169,16 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
           old_ship_address = create(:address, first_name: 'foo')
           user = create(:user, bill_address_id: old_bill_address.id, ship_address_id: old_ship_address.id)
           order.update(user_id: user.id)
-          order.update_attribute(:ship_address_id, old_ship_address.id)
-          order.update_attribute(:bill_address_id, old_bill_address.id)
+          order.ship_address = old_ship_address
+          order.bill_address = old_bill_address
+          order.save
           purchase
 
           ship_address = create(:address, old_ship_address.attributes.except('id', 'updated_at', 'created_at', 'braintree_id'))
           bill_address = create(:address, old_bill_address.attributes.except('id', 'updated_at', 'created_at', 'braintree_id'))
-          other_order.update_attribute(:ship_address_id, ship_address.id)
-          other_order.update_attribute(:bill_address_id, bill_address.id)
+          other_order.ship_address = ship_address
+          other_order.bill_address = bill_address
+          other_order.save
           user.update(bill_address_id: bill_address.id, ship_address_id: ship_address.id)
           other_order.update(user_id: user.id)
 

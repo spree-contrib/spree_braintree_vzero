@@ -2,7 +2,8 @@
 
 source "https://rubygems.org"
 
-gem "spree", github: "spree/spree", branch: "master"
+gem 'sassc-rails'
+gem "spree", "~> 3.7.1"
 gem "pg"
 gem "mysql2"
 gem "webmock", ">= 2.3.1"

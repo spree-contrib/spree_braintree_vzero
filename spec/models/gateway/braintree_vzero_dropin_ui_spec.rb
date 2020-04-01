@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Spree::Gateway::BraintreeVzeroDropInUI, :vcr do
+describe Spree::Gateway::BraintreeVzeroDropInUi, :vcr do
   subject { create(:vzero_dropin_ui_gateway) }
 
   describe 'after_save' do

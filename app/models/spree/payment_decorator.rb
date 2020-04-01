@@ -1,9 +1,10 @@
-Spree::Payment.class_eval do
-  alias_method :original_update_order, :update_order
-
-  def update_order
-    # without reload order was updated with inaccurate data
-    order.reload
-    original_update_order
+module Spree
+  module PaymentDecorator
+    def update_order
+      # without reload order was updated with inaccurate data
+      order.reload && super
+    end
   end
 end
+
+::Spree::Payment.prepend(Spree::PaymentDecorator)

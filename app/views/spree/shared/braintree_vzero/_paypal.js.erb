@@ -1,6 +1,6 @@
 container: "paypal-container",
 singleUse: <%= payment_method.preferred_store_payments_in_vault.eql?('do_not_store') %>,
-amount: <%= @order.total %>,
+amount: <%= @order.order_total_after_store_credit %>,
 currency: "<%= current_currency %>",
 locale: "en_us",
 displayName: "<%= payment_method.preferred_paypal_display_name %>",

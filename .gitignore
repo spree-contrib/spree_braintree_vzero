@@ -16,3 +16,4 @@ spec/dummy
 .ruby-gemset
 .ruby-version
 gemfiles/*.gemfile.lock
+.byebug_history
