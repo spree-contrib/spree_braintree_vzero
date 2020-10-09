@@ -3,9 +3,7 @@
 source "https://rubygems.org"
 
 gem "spree", github: "spree/spree", branch: "master"
-gem "pg"
-gem "mysql2"
-gem "webmock", ">= 2.3.1"
+gem "spree_auth_devise", github: "spree/spree_auth_devise", branch: "master"
 gem "rails-controller-testing"
 
 gemspec path: "../"
