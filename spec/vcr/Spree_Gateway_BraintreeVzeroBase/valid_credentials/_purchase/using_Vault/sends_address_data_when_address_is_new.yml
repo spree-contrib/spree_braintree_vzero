@@ -1,0 +1,42 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.sandbox.braintreegateway.com/merchants/change%20me/customers/31
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip
+      Accept:
+      - application/xml
+      User-Agent:
+      - Braintree Ruby Gem 3.1.0
+      X-Apiversion:
+      - '6'
+      Content-Type:
+      - application/xml
+      Authorization:
+      - Basic Y2hhbmdlIG1lOmNoYW5nZSBtZQ==
+  response:
+    status:
+      code: 400
+      message: Bad request
+    headers:
+      Content-Length:
+      - '90'
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - text/html
+      Connection:
+      - close
+    body:
+      encoding: UTF-8
+      string: |
+        <html><body><h1>400 Bad request</h1>
+        Your browser sent an invalid request.
+        </body></html>
+  recorded_at: Thu, 12 Nov 2020 08:10:37 GMT
+recorded_with: VCR 6.0.0
