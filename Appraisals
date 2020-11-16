@@ -1,3 +1,13 @@
+appraise 'spree-3-5' do
+  gem 'sassc-rails'
+  gem 'spree', '~> 3.5.0'
+  gem 'pg'
+  gem 'mysql2'
+  gem 'webmock', '>= 2.3.1'
+  gem 'rails-controller-testing'
+  gem 'spree_auth_devise', '~> 3.4'
+end
+
 appraise 'spree-3-7' do
   gem 'sassc-rails'
   gem 'spree', '~> 3.7.1'
