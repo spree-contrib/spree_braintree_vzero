@@ -11,15 +11,18 @@ module Spree
     preference :store_payments_in_vault, :select, default: -> { { values: [:do_not_store, :store_only_on_success, :store_all] } }
     preference :'3dsecure', :boolean_select, default: false
 
-    after_save :disable_dropin_gateways, if: proc {
-      active? && (saved_changes.keys & %w[active id]).any?
-    }
+    after_save :disable_dropin_gateways, if: :should_disable_dropin_gateways?
 
     def method_type
       'braintree_vzero_hosted_fields'
     end
 
     private
+
+    def should_disable_dropin_gateways?
+      changed_attributes = Rails.version.to_f >= 5.2 ? saved_changes.keys : changes.keys + previous_changes.keys
+      active? && (changed_attributes & %w[active id]).any?
+    end
 
     def disable_dropin_gateways
       Spree::Gateway::BraintreeVzeroDropInUi.update_all(active: false)
