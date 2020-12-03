@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://api.sandbox.braintreegateway.com/merchants/change%20me/customers/31
+    uri: https://api.sandbox.braintreegateway.com/merchants/6g9mpsybnt3htx2t/customers/2
     body:
       encoding: US-ASCII
       string: ''
@@ -18,25 +18,55 @@ http_interactions:
       Content-Type:
       - application/xml
       Authorization:
-      - Basic Y2hhbmdlIG1lOmNoYW5nZSBtZQ==
+      - Basic djY2MjhraHNoYjVrOW52dDpkN2FhYzU0NDRmMzdhMTY5ZTVhMWVlOTkzYmI1MmY1Mw==
   response:
     status:
-      code: 400
-      message: Bad request
+      code: 200
+      message: ''
     headers:
-      Content-Length:
-      - '90'
-      Cache-Control:
-      - no-cache
+      Date:
+      - Thu, 03 Dec 2020 13:28:35 GMT
       Content-Type:
-      - text/html
-      Connection:
-      - close
+      - application/xml; charset=utf-8
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      X-Authentication:
+      - basic_auth
+      X-User:
+      - c97s5s74wf6cmypv
+      Vary:
+      - Accept-Encoding, Origin
+      Content-Encoding:
+      - gzip
+      Etag:
+      - W/"cdc2dd1286ed5b9f9b8282c940bd6f87"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Runtime:
+      - '0.104716'
+      X-Request-Id:
+      - 95722415-01a2-4bee-b287-f6fa5bb5d9dc
+      Content-Security-Policy:
+      - frame-ancestors 'self'
+      X-Broxyid:
+      - 95722415-01a2-4bee-b287-f6fa5bb5d9dc
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
     body:
-      encoding: UTF-8
-      string: |
-        <html><body><h1>400 Bad request</h1>
-        Your browser sent an invalid request.
-        </body></html>
-  recorded_at: Thu, 12 Nov 2020 08:10:37 GMT
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAPoyF8AA5RSy07DMBC89ysi313nISFauSkSCKRK3AoCbtt4m1j4Edkuafh64qYvqScutmZmxztrmy/3WiU/6Ly0ZkGyaUoSNJUV0tQL8rZ+pvdkWU54tfPBanTlJEm4FGXO2bBGMJBVAybQAd/VM936fmNC0YR9Hji7VmP1VjofqAGN5co2hrMrIuoKTujJImcXGMXK6hZMXz6OO2cnIoqoQapSS4dKwdR3YCR0/ls+dICqauQ0HsPZWBYNbWMNJkaqBQluh4SNAWF/w3W48TLc1lYOIaCgEJLQt7ggYoBBaiRlnuYpzTJapOssnefFPE2/hrxnw8G/a8X//BfD2P/wKHQrUQk/RqqV3YCKt/1ZvP+Kl1n4+lhtX2vOLsoxupCBVuCEPzYH56A/TgZCOPQeb7RhhvNP+AMAAP//AwAWVZ08PAIAAA==
+  recorded_at: Thu, 03 Dec 2020 13:28:35 GMT
 recorded_with: VCR 6.0.0
