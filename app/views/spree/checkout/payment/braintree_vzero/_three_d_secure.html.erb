@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    window.addEventListener('load', function() {
+    window.addEventListener('DOMContentLoaded', function() {
         $('#order_payments_attributes__payment_method_id_<%= payment_method.id %>').click(function (e) {
             var threeDSecure;
             var checkoutFormId = "<%= payment_method.preferred_checkout_form_id %>"
@@ -203,8 +203,8 @@
                         $(formId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + payload.nonce + ">");
                         $(formId).append("<input type='hidden' name='payment_method_nonce' value=" + payload.nonce + ">");
                         setTimeout(function () {
-                            $('.checkout-btn').attr("disabled", false)
-                            $('form.edit_order').submit()
+                            $(payBtn).attr("disabled", false)
+                            $('#checkout form').submit()
                         }, 200);
                         <% if hosted %>
                     }).catch(function (err) {
