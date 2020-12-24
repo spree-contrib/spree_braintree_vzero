@@ -55,6 +55,29 @@ module Spree
         current_state
       end
     end
+
+    def handle_payment_preconditions
+      unless block_given?
+        raise ArgumentError, 'handle_payment_preconditions must be called with a block'
+      end
+
+      if payment_method&.source_required?
+        if source
+          unless processing?
+            if payment_method.supports?(source) || token_based?
+              yield
+            else
+              invalidate!
+              raise Core::GatewayError, Spree.t(:payment_method_not_supported)
+            end
+          end
+        else
+          raise Core::GatewayError, Spree.t(:payment_processing_failed)
+        end
+      else
+        yield
+      end
+    end
   end
 end
 
