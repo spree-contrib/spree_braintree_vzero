@@ -57,6 +57,7 @@ module Spree
     end
 
     def handle_payment_preconditions
+      return unless payment_method
       unless block_given?
         raise ArgumentError, 'handle_payment_preconditions must be called with a block'
       end
