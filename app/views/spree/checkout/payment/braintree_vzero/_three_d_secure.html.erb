@@ -16,6 +16,10 @@
 
       var payBtn = document.getElementsByName('commit')[0];
       var payGroup = $('.pay-group');
+
+      $('.credit-card-pay-success').css('display', 'none');
+      $('.credit-card-pay-errors').css('display', 'none');
+
       var billingFields = [
         'email',
       ].reduce(function (fields, fieldName) {
@@ -134,8 +138,8 @@
         function showErrors() {
           payGroup.addClass('hidden');
           payGroup.css('display', 'none');
-          $('.credit-card-pay-success').addClass('hidden')
-          $('.credit-card-pay-errors').removeClass('hidden')
+          $('.credit-card-pay-success').css('display', 'none');
+          $('.credit-card-pay-errors').css('display', 'block');
         }
 
         function showSuccess() {
@@ -144,8 +148,8 @@
           <% if hosted %>
           hostedFieldsContainer.style.display = 'none';
           <% end %>
-          $('.credit-card-pay-errors').addClass('hidden')
-          $('.credit-card-pay-success').removeClass('hidden')
+          $('.credit-card-pay-success').css('display', 'block');
+          $('.credit-card-pay-errors').css('display', 'none');
         }
 
         payBtn.addEventListener('click', function(event) {
