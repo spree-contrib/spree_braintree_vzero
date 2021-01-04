@@ -198,7 +198,7 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
         gateway.preferred_3dsecure = false
         payment.update(amount: order.reload.total)
         complete_order!
-        order.payments.first.source.update_attributes(transaction_id: 'dw49zp', state: 'authorized') # use already settled transaction
+        order.payments.first.source.update_attribute(:transaction_id, 'dw49zp') # use already settled transaction
       end
 
       let!(:result) { Spree::BraintreeCheckout.update_states }
@@ -244,7 +244,6 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
         before do
           payment.update(braintree_nonce: 'fake-paypal-one-time-nonce')
           complete_order!
-          order.payments.first.source.update_attribute(:state, 'settling')
           void
         end
 
@@ -263,7 +262,6 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
         gateway.update(auto_capture: false)
         complete_order!
         payment.reload
-        payment.source.update_attributes(transaction_id: 'dw49zp', state: 'authorized')
       end
 
       context 'settles authorized amount' do
@@ -280,9 +278,9 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
         end
 
         it 'submits Transaction for settlement' do
-          expect(gateway.provider::Transaction.find(payment.source.transaction_id).status).to eq 'authorized'
+          expect(gateway.provider::Transaction.find(payment.response_code).status).to eq 'authorized'
           payment.reload.settle!
-          expect(gateway.provider::Transaction.find(payment.source.transaction_id).status).to eq 'submitted_for_settlement'
+          expect(gateway.provider::Transaction.find(payment.response_code).status).to eq 'submitted_for_settlement'
         end
 
         it 'prepares Checkout for status updating' do
