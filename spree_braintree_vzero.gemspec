@@ -48,5 +48,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'simplecov'
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'vcr'
-  s.add_development_dependency 'webmock', '~> 2.3' # https://github.com/bblimke/webmock/issues/683
+  s.add_development_dependency 'webmock', '~> 3.11' # https://github.com/bblimke/webmock/issues/683
 end
