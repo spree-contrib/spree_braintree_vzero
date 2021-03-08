@@ -147,7 +147,23 @@
           payBtn.removeAttribute('disabled');
         }
 
-        function showErrors() {
+        function showErrors(err) {
+          if (err) {
+            if (err.details && err.details.invalidFields) {
+              const invalidFields = []
+              Object.keys(err.details.invalidFields).forEach(function (key) {
+                if (key === "expirationDate") {
+                  invalidFields.push("expiration")
+                } else {
+                  invalidFields.push(key)
+                }
+              })
+              const errorString = invalidFields.join(", ")
+              const linkingVerb = invalidFields.length > 1 ? "are" : "is"
+
+              $('.credit-card-pay-errors').text("Card " + errorString + " " + linkingVerb + " incorrect.")
+            }
+          }
           payGroup.addClass('hidden');
           payGroup.css('display', 'none');
           $('.credit-card-pay-success').css('display', 'none');
@@ -225,7 +241,7 @@
             <% if hosted %>
           }).catch(function (err) {
             enablePayNow();
-            showErrors();
+            showErrors(err);
             <% end %>
           });
         });
