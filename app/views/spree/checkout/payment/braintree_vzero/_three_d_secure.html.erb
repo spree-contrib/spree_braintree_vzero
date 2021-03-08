@@ -85,13 +85,25 @@
             },
             fields: {
               number: {
-                selector: '#hosted-fields-number'
+                <% unless payment_method&.preferred_number_selector&.strip.empty? %>
+                  selector: "<%= payment_method.preferred_number_selector %>"
+                <% else %>
+                  selector: '#hosted-fields-number'
+                <% end %>
               },
               cvv: {
-                selector: '#hosted-fields-cvv'
+                <% unless payment_method&.preferred_cvv_selector&.strip.empty? %>
+                  selector: "<%= payment_method.preferred_cvv_selector %>"
+                <% else %>
+                  selector: '#hosted-fields-cvv'
+                <% end %>
               },
               expirationDate: {
-                selector: '#hosted-fields-expiration-date'
+                <% unless payment_method&.preferred_expiration_date_selector&.strip.empty? %>
+                  selector: "<%= payment_method.preferred_expiration_date_selector %>"
+                <% else %>
+                  selector: '#hosted-fields-expiration-date'
+                <% end %>
               }
             }
           }),
