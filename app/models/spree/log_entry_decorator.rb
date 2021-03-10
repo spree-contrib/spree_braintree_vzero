@@ -34,7 +34,8 @@ module Spree
                                     Braintree::Transaction::GooglePayDetails,
                                     Braintree::Transaction::VenmoAccountDetails,
                                     Braintree::Transaction::VisaCheckoutCardDetails,
-                                    Braintree::Transaction::SamsungPayCardDetails
+                                    Braintree::Transaction::SamsungPayCardDetails,
+                                    Thread::Mutex,
                                   ])
     end
   end
