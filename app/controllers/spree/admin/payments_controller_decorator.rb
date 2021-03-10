@@ -1,6 +1,10 @@
 module Spree
   module Admin
     module PaymentsControllerDecorator
+      def self.prepended(base)
+        base.helper_method [:asset_available?, :options_from_braintree_payments]
+      end
+
       def create
         invoke_callbacks(:create, :before)
         @payment ||= @order.payments.build(object_params)
