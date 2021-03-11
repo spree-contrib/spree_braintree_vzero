@@ -1,5 +1,6 @@
 module Spree::Admin::UniqPaymentsControllerDecorator
   def self.prepended(base)
+    base.include Spree::BraintreeHelper
     base.helper_method [:asset_available?, :options_from_braintree_payments]
   end
 
