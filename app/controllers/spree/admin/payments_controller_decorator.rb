@@ -2,6 +2,7 @@ module Spree
   module Admin
     module PaymentsControllerDecorator
       def self.prepended(base)
+        base.include Spree::BraintreeHelper
         base.helper_method [:asset_available?, :options_from_braintree_payments]
       end
 
