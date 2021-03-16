@@ -87,6 +87,10 @@ module Spree
       provider::PaymentMethod.find(token)
     end
 
+    def source_required?
+      false
+    end
+
     private
 
     def sale(data, order, source = nil)

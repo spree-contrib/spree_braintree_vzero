@@ -55,6 +55,18 @@ module Spree
         current_state
       end
     end
+
+    def handle_payment_preconditions
+      unless block_given?
+        raise ArgumentError, 'handle_payment_preconditions must be called with a block'
+      end
+
+      braintree_payment_method? ? yield : super
+    end
+
+    def braintree_payment_method?
+      payment_method.provider == Braintree
+    end
   end
 end
 

@@ -8,78 +8,80 @@
   <script src="https://js.braintreegateway.com/js/braintree-2.32.1.min.js"></script>
 
   <script type="text/javascript">
-    var checkoutFormId = '#update-cart';
-    var checkout;
-    SpreeBraintreeVzero.checkoutFormId = '#update-cart';
+    // TODO: Investiagate what kind of checkout (if any) steps should be included during paypal express payment
+    window.addEventListener('DOMContentLoaded', function() {
+      var checkoutFormId = '#update-cart';
+      var checkout;
+      SpreeBraintreeVzero.checkoutFormId = '#update-cart';
 
-    braintree.setup("<%= payment_method.client_token(current_order) %>", "paypal", {
-      container: "paypal-container",
-      singleUse: <%= payment_method.preferred_store_payments_in_vault.eql?('do_not_store') %>,
-      amount: <%= @order.total %>,
-      currency: "<%= current_currency %>",
-      locale: "en_us",
-      enableShippingAddress: true,
-      enableBillingAddress: true,
-      displayName: "<%= payment_method.preferred_paypal_display_name %>",
-      <% if payment_method.preferred_advanced_fraud_tools %>
+      braintree.setup("<%= payment_method.client_token(current_order) %>", "paypal", {
+        container: "paypal-container",
+        singleUse: <%= payment_method.preferred_store_payments_in_vault.eql?('do_not_store') %>,
+        amount: <%= @order.total %>,
+        currency: "<%= current_currency %>",
+        locale: "en_us",
+        enableShippingAddress: true,
+        enableBillingAddress: true,
+        displayName: "<%= payment_method.preferred_paypal_display_name %>",
+        <% if payment_method.preferred_advanced_fraud_tools %>
         dataCollector: {
           kount: {
             environment: "<%= payment_method.preferred_server %>"
             <% if (kount_id = payment_method.preferred_kount_merchant_id).present? %>
-              ,
-              merchantId: "<%= kount_id %>"
+            ,
+            merchantId: "<%= kount_id %>"
             <% end %>
           }
         },
-      <% end %>
+        <% end %>
 
-      onReady: function (integration) {
-        SpreeBraintreeVzero.deviceData = integration.deviceData;
-        checkout = integration;
-      },
-      headless: true,
+        onReady: function (integration) {
+          SpreeBraintreeVzero.deviceData = integration.deviceData;
+          checkout = integration;
+        },
+        headless: true,
 
-      onPaymentMethodReceived: function (result) {
-        $('#paypal-container').hide()
-        $('#checkout-link').prop("disabled", true);
-        phone = result.details.phone
-        SpreeBraintreeVzero.addDeviceData();
+        onPaymentMethodReceived: function (result) {
+          $('#paypal-container').hide()
+          $('#checkout-link').prop("disabled", true);
+          phone = result.details.phone
+          SpreeBraintreeVzero.addDeviceData();
 
-        if(shippingAddress = result.details.shippingAddress) {
-          $(checkoutFormId).append("<input type='hidden' name='order[ship_address][zipcode]' value='" + shippingAddress.postalCode + "'>");
-          $(checkoutFormId).append("<input type='hidden' name='order[ship_address][full_name]' value='" + shippingAddress.recipientName + "'>");
-          $(checkoutFormId).append("<input type='hidden' name='order[ship_address][firstname]' value='" + result.details.firstName + "'>");
-          $(checkoutFormId).append("<input type='hidden' name='order[ship_address][lastname]' value='" + result.details.lastName + "'>");
-          $(checkoutFormId).append("<input type='hidden' name='order[ship_address][address1]' value='" + shippingAddress.streetAddress + "'>");
-          $(checkoutFormId).append("<input type='hidden' name='order[ship_address][address2]' value='" + shippingAddress.extendedAddress + "'>");
-          $(checkoutFormId).append("<input type='hidden' name='order[ship_address][city]' value='" + shippingAddress.locality + "'>");
-          $(checkoutFormId).append("<input type='hidden' name='order[ship_address][country]' value='" + shippingAddress.countryCodeAlpha2 + "'>");
-          $(checkoutFormId).append("<input type='hidden' name='order[ship_address][state]' value='" + shippingAddress.region + "'>");
-          if(phone)
-            $(checkoutFormId).append("<input type='hidden' name='order[ship_address][phone]' value='" + phone + "'>");
+          if (shippingAddress = result.details.shippingAddress) {
+            $(checkoutFormId).append("<input type='hidden' name='order[ship_address][zipcode]' value='" + shippingAddress.postalCode + "'>");
+            $(checkoutFormId).append("<input type='hidden' name='order[ship_address][full_name]' value='" + shippingAddress.recipientName + "'>");
+            $(checkoutFormId).append("<input type='hidden' name='order[ship_address][firstname]' value='" + result.details.firstName + "'>");
+            $(checkoutFormId).append("<input type='hidden' name='order[ship_address][lastname]' value='" + result.details.lastName + "'>");
+            $(checkoutFormId).append("<input type='hidden' name='order[ship_address][address1]' value='" + shippingAddress.streetAddress + "'>");
+            $(checkoutFormId).append("<input type='hidden' name='order[ship_address][address2]' value='" + shippingAddress.extendedAddress + "'>");
+            $(checkoutFormId).append("<input type='hidden' name='order[ship_address][city]' value='" + shippingAddress.locality + "'>");
+            $(checkoutFormId).append("<input type='hidden' name='order[ship_address][country]' value='" + shippingAddress.countryCodeAlpha2 + "'>");
+            $(checkoutFormId).append("<input type='hidden' name='order[ship_address][state]' value='" + shippingAddress.region + "'>");
+            if (phone)
+              $(checkoutFormId).append("<input type='hidden' name='order[ship_address][phone]' value='" + phone + "'>");
+          }
+
+          if (billingAddress = result.details.billingAddress) {
+            $(checkoutFormId).append("<input type='hidden' name='order[bill_address][zipcode]' value='" + billingAddress.postalCode + "'>");
+            $(checkoutFormId).append("<input type='hidden' name='order[bill_address][firstname]' value='" + result.details.firstName + "'>");
+            $(checkoutFormId).append("<input type='hidden' name='order[bill_address][lastname]' value='" + result.details.lastName + "'>");
+            $(checkoutFormId).append("<input type='hidden' name='order[bill_address][address1]' value='" + billingAddress.streetAddress + "'>");
+            $(checkoutFormId).append("<input type='hidden' name='order[bill_address][address2]' value='" + billingAddress.extendedAddress + "'>");
+            $(checkoutFormId).append("<input type='hidden' name='order[bill_address][city]' value='" + billingAddress.locality + "'>");
+            $(checkoutFormId).append("<input type='hidden' name='order[bill_address][country]' value='" + billingAddress.countryCodeAlpha2 + "'>");
+            $(checkoutFormId).append("<input type='hidden' name='order[bill_address][state]' value='" + billingAddress.region + "'>");
+            if (phone)
+              $(checkoutFormId).append("<input type='hidden' name='order[bill_address][phone]' value='" + phone + "'>");
+          }
+
+          $(checkoutFormId).append("<input type='hidden' name='order[email]' value=" + result.details.email + ">");
+          $(checkoutFormId).append("<input type='hidden' name='paypal[payment_method_nonce]' value=" + result.nonce + ">");
+          $(checkoutFormId).append("<input type='hidden' name='checkout' value=true>");
+
+          $(checkoutFormId).submit();
         }
-
-        if(billingAddress = result.details.billingAddress) {
-          $(checkoutFormId).append("<input type='hidden' name='order[bill_address][zipcode]' value='" + billingAddress.postalCode + "'>");
-          $(checkoutFormId).append("<input type='hidden' name='order[bill_address][firstname]' value='" + result.details.firstName + "'>");
-          $(checkoutFormId).append("<input type='hidden' name='order[bill_address][lastname]' value='" + result.details.lastName + "'>");
-          $(checkoutFormId).append("<input type='hidden' name='order[bill_address][address1]' value='" + billingAddress.streetAddress + "'>");
-          $(checkoutFormId).append("<input type='hidden' name='order[bill_address][address2]' value='" + billingAddress.extendedAddress + "'>");
-          $(checkoutFormId).append("<input type='hidden' name='order[bill_address][city]' value='" + billingAddress.locality + "'>");
-          $(checkoutFormId).append("<input type='hidden' name='order[bill_address][country]' value='" + billingAddress.countryCodeAlpha2 + "'>");
-          $(checkoutFormId).append("<input type='hidden' name='order[bill_address][state]' value='" + billingAddress.region + "'>");
-          if(phone)
-            $(checkoutFormId).append("<input type='hidden' name='order[bill_address][phone]' value='" + phone + "'>");
-        }
-
-        $(checkoutFormId).append("<input type='hidden' name='order[email]' value=" + result.details.email + ">");
-        $(checkoutFormId).append("<input type='hidden' name='paypal[payment_method_nonce]' value=" + result.nonce + ">");
-        $(checkoutFormId).append("<input type='hidden' name='checkout' value=true>");
-
-        $(checkoutFormId).submit();
-      }
+      });
+      document.querySelector('#btnOpenFlow').addEventListener('click', function () { checkout.paypal.initAuthFlow(); }, false);
     });
-
-    document.querySelector('#btnOpenFlow').addEventListener('click', function () { checkout.paypal.initAuthFlow(); }, false);
   </script>
 <% end %>
