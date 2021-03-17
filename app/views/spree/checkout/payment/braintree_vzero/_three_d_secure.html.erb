@@ -85,21 +85,21 @@
             },
             fields: {
               number: {
-                <% if payment_method&.preferred_number_selector&.present? %>
+                <% if payment_method.respond_to?(:preferred_number_selector) && payment_method.preferred_number_selector.present? %>
                   selector: "<%= payment_method.preferred_number_selector %>"
                 <% else %>
                   selector: '#hosted-fields-number'
                 <% end %>
               },
               cvv: {
-                <% if payment_method&.preferred_cvv_selector&.present? %>
+                <% if payment_method.respond_to?(:preferred_cvv_selector) && payment_method.preferred_cvv_selector.present? %>
                   selector: "<%= payment_method.preferred_cvv_selector %>"
                 <% else %>
                   selector: '#hosted-fields-cvv'
                 <% end %>
               },
               expirationDate: {
-                <% if payment_method&.preferred_expiration_date_selector&.present? %>
+                <% if payment_method.respond_to?(:preferred_expiration_date_selector) && payment_method.preferred_expiration_date_selector.present? %>
                   selector: "<%= payment_method.preferred_expiration_date_selector %>"
                 <% else %>
                   selector: '#hosted-fields-expiration-date'
