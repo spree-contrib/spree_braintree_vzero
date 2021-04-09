@@ -9,7 +9,7 @@
 
   <script type="text/javascript">
     // TODO: Investiagate what kind of checkout (if any) steps should be included during paypal express payment
-    window.addEventListener('DOMContentLoaded', function() {
+    function setupBraintreePayPal() {
       var checkoutFormId = '#update-cart';
       var checkout;
       SpreeBraintreeVzero.checkoutFormId = '#update-cart';
@@ -82,6 +82,22 @@
         }
       });
       document.querySelector('#btnOpenFlow').addEventListener('click', function () { checkout.paypal.initAuthFlow(); }, false);
-    });
+    }
+
+    if(document.readyState !== 'loading') {
+      initBraintreePayPal()
+    } else {
+      window.addEventListener('DOMContentLoaded', initBraintreePayPal);
+    }
+
+    function initBraintreePayPal() {
+      if (typeof SpreeBraintreeVzero === "undefined") {
+        window.addEventListener('spreebraintree:ready', setupBraintreePayPal)
+      }
+      else {
+        setupBraintreePayPal()
+      }
+    }
+
   </script>
 <% end %>
