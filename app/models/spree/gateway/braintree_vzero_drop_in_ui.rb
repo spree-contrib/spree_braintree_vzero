@@ -1,6 +1,6 @@
 module Spree
   class Gateway::BraintreeVzeroDropInUi < Spree::Gateway::BraintreeVzeroBase
-    include BraintreeVzero::LegacyRailsPatch
+    include ::Spree::Gateway::BraintreeVzero::LegacyRailsPatch
 
     preference :dropin_container, :string, default: 'payment-form'
     preference :checkout_form_id, :string, default: 'checkout_form_payment'
