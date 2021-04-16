@@ -46,7 +46,8 @@ SpreeBraintreeVzero = {
   }
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
+  var event = new Event('spreebraintree:ready');
   paymentMethods = $('div[data-hook="checkout_payment_step"] input[type="radio"]').click(function (e) {
     SpreeBraintreeVzero.setSaveAndContinueVisibility();
   });
@@ -65,4 +66,5 @@ $(document).ready(function() {
     SpreeBraintreeVzero.addDeviceData();
   });
   SpreeBraintreeVzero.setSaveAndContinueVisibility();
+  window.dispatchEvent(event);
 })
