@@ -84,11 +84,17 @@ module Spree
         keys.reject { |k| k == :currency_merchant_accounts }.map do |key|
           next unless object.has_preference?(key)
 
-          content_tag(:div, class: 'form-group', 'data-hook' => "preferred_#{key}") do
-            form.label("preferred_#{key}", Spree.t(key) + ': ') +
-              preference_field_for(form, "preferred_#{key}", type: object.preference_type(key),
-                                 values: object.send("preferred_#{key}_default").is_a?(Hash) ? object.send("preferred_#{key}_default")[:values] : nil,
-                                 selected: object.preferences[key])
+          if object.preference_type(key) == :boolean
+            content_tag(:div, preference_field_for(form, "preferred_#{key}", type: object.preference_type(key)) +
+              form.label("preferred_#{key}", Spree.t(key), class: 'form-check-label'),
+                        class: 'form-group form-check', id: [object.class.to_s.parameterize, 'preference', key].join('-'))
+          else
+            content_tag(:div, class: 'form-group', 'data-hook' => "preferred_#{key}") do
+              form.label("preferred_#{key}", Spree.t(key) + ': ') +
+                preference_field_for(form, "preferred_#{key}", type: object.preference_type(key),
+                                   values: object.send("preferred_#{key}_default").is_a?(Hash) ? object.send("preferred_#{key}_default")[:values] : nil,
+                                   selected: object.preferences[key])
+            end
           end
         end.join(' ').html_safe
       end
