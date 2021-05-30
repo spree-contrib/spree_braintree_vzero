@@ -38,15 +38,26 @@
         <div id="hosted-fields">
           <%= label_tag 'card_number_label', (payment_method&.preferred_number_placeholder || 'Card Number') %>
           <span class="required">*</span><br />
-          <p id="hosted-fields-number" class="form-control"></p>
-
+          <% if payment_method&.preferred_number_selector&.present? %>
+            <p id="<%= payment_method.preferred_number_selector.sub("#", "") %>" class="form-control"></p>
+          <% else %>
+            <p id="hosted-fields-number" class="form-control"></p>
+          <% end %>
           <%= label_tag 'cvv_label', payment_method.try(:preferred_cvv_placeholder) || 'Cvv code' %>
           <span class="required">*</span><br />
-          <p id="hosted-fields-cvv" class="form-control"></p>
+          <% if payment_method&.preferred_cvv_selector&.present? %>
+            <p id="<%= payment_method.preferred_cvv_selector.sub("#", "") %>" class="form-control"></p>
+          <% else %>
+            <p id="hosted-fields-cvv" class="form-control"></p>
+          <% end %>
 
           <%= label_tag 'expiration_date_label', payment_method.try(:preferred_expiration_date_placeholder) || 'Card Expiration Date' %>
           <span class="required">*</span><br />
-          <p id="hosted-fields-expiration-date" class="form-control"></p>
+          <% if payment_method&.preferred_expiration_date_selector&.present? %>
+            <p id="<%= payment_method.preferred_expiration_date_selector.sub("#", "") %>" class="form-control"></p>
+          <% else %>
+            <p id="hosted-fields-expiration-date" class="form-control"></p>
+          <% end %>
 
       <% elsif dropin %>
         <div class="input-group pay-group bt-drop-in-container">

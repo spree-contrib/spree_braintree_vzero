@@ -1,5 +1,7 @@
 module Spree
   class Gateway::BraintreeVzeroDropInUi < Spree::Gateway::BraintreeVzeroBase
+    include ::Spree::Gateway::BraintreeVzero::LegacyRailsPatch
+
     preference :dropin_container, :string, default: 'payment-form'
     preference :checkout_form_id, :string, default: 'checkout_form_payment'
     preference :error_messages_container_id, :string, default: 'content'
@@ -7,7 +9,7 @@ module Spree
     preference :'3dsecure', :boolean_select, default: false
 
     after_save :disable_hosted_gateways, if: proc {
-      active? && (saved_changes.keys & %w[active id]).any?
+      active? && (attributes_after_save.keys & %w[active id]).any?
     }
 
     def method_type

@@ -1,6 +1,11 @@
 module Spree
   module Admin
     module PaymentsControllerDecorator
+      def self.prepended(base)
+        base.include Spree::BraintreeHelper
+        base.helper_method [:asset_available?, :options_from_braintree_payments]
+      end
+
       def create
         invoke_callbacks(:create, :before)
         @payment ||= @order.payments.build(object_params)
@@ -8,11 +13,11 @@ module Spree
         if @payment.payment_method.source_required?
           if params[:card].present? && params[:card] != 'new'
             @payment.source = @payment.payment_method.payment_source_class.find_by_id(params[:card])
-          elsif @payment.payment_source.is_a?(Spree::Gateway::BraintreeVzeroBase)
-            @payment.braintree_token = params[:payment_method_token]
-            @payment.braintree_nonce = params[:payment_method_nonce]
-            @payment.source = Spree::BraintreeCheckout.create!(admin_payment: true)
           end
+        elsif @payment.payment_source.is_a?(Spree::Gateway::BraintreeVzeroBase)
+          @payment.braintree_token = params[:payment_method_token]
+          @payment.braintree_nonce = params[:payment_method_nonce]
+          @payment.source = Spree::BraintreeCheckout.create!(admin_payment: true)
         end
 
         begin

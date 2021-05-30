@@ -1,5 +1,12 @@
 <script type="text/javascript">
-  $('#order_payments_attributes__payment_method_id_<%= payment_method.id %>').click(function (e) {
+  if(document.readyState !== 'loading') {
+    setupThreeDSecure()
+  } else {
+    window.addEventListener('DOMContentLoaded', setupThreeDSecure);
+  }
+
+  function setupThreeDSecure() {
+    $('#order_payments_attributes__payment_method_id_<%= payment_method.id %>').click(function (e) {
     var threeDSecure;
     var checkoutFormId = "<%= payment_method.preferred_checkout_form_id %>"
     var formId = "#" + checkoutFormId;
@@ -9,12 +16,16 @@
     <% if hosted %>
     var hf, threeDS;
     var hostedFieldsContainer = document.getElementById('hosted-fields');
-    <% elsif dropin%>
+    <% elsif dropin %>
     var dropin;
     <% end %>
 
     var payBtn = document.getElementsByName('commit')[0];
     var payGroup = $('.pay-group');
+
+    $('.credit-card-pay-success').css('display', 'none');
+    $('.credit-card-pay-errors').css('display', 'none');
+
     var billingFields = [
       'email',
     ].reduce(function (fields, fieldName) {
@@ -80,13 +91,25 @@
           },
           fields: {
             number: {
-              selector: '#hosted-fields-number'
+              <% if payment_method.respond_to?(:preferred_number_selector) && payment_method.preferred_number_selector.present? %>
+                selector: "<%= payment_method.preferred_number_selector %>"
+              <% else %>
+                selector: '#hosted-fields-number'
+              <% end %>
             },
             cvv: {
-              selector: '#hosted-fields-cvv'
+              <% if payment_method.respond_to?(:preferred_cvv_selector) && payment_method.preferred_cvv_selector.present? %>
+                selector: "<%= payment_method.preferred_cvv_selector %>"
+              <% else %>
+                selector: '#hosted-fields-cvv'
+              <% end %>
             },
             expirationDate: {
-              selector: '#hosted-fields-expiration-date'
+              <% if payment_method.respond_to?(:preferred_expiration_date_selector) && payment_method.preferred_expiration_date_selector.present? %>
+                selector: "<%= payment_method.preferred_expiration_date_selector %>"
+              <% else %>
+                selector: '#hosted-fields-expiration-date'
+              <% end %>
             }
           }
         }),
@@ -130,11 +153,27 @@
         payBtn.removeAttribute('disabled');
       }
 
-      function showErrors() {
+      function showErrors(err) {
+        if (err) {
+          if (err.details && err.details.invalidFields) {
+            const invalidFields = []
+            Object.keys(err.details.invalidFields).forEach(function (key) {
+              if (key === "expirationDate") {
+                invalidFields.push("expiration")
+              } else {
+                invalidFields.push(key)
+              }
+            })
+            const errorString = invalidFields.join(", ")
+            const linkingVerb = invalidFields.length > 1 ? "are" : "is"
+
+            $('.credit-card-pay-errors').text("Card " + errorString + " " + linkingVerb + " incorrect.")
+          }
+        }
         payGroup.addClass('hidden');
         payGroup.css('display', 'none');
-        $('.credit-card-pay-success').addClass('hidden')
-        $('.credit-card-pay-errors').removeClass('hidden')
+        $('.credit-card-pay-success').css('display', 'none');
+        $('.credit-card-pay-errors').css('display', 'block');
       }
 
       function showSuccess() {
@@ -143,8 +182,8 @@
         <% if hosted %>
         hostedFieldsContainer.style.display = 'none';
         <% end %>
-        $('.credit-card-pay-errors').addClass('hidden')
-        $('.credit-card-pay-success').removeClass('hidden')
+        $('.credit-card-pay-success').css('display', 'block');
+        $('.credit-card-pay-errors').css('display', 'none');
       }
 
       payBtn.addEventListener('click', function(event) {
@@ -202,17 +241,18 @@
           $(formId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + payload.nonce + ">");
           $(formId).append("<input type='hidden' name='payment_method_nonce' value=" + payload.nonce + ">");
           setTimeout(function () {
-            $('.checkout-btn').attr("disabled", false)
-            $('form.edit_order').submit()
+            $(payBtn).attr("disabled", false)
+            $('#checkout form').submit()
           }, 200);
           <% if hosted %>
         }).catch(function (err) {
           enablePayNow();
-          showErrors();
+          showErrors(err);
           <% end %>
         });
       });
 
       start();
     });
+  }
 </script>
