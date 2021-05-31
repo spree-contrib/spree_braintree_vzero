@@ -81,9 +81,11 @@ module Spree
 
         def payment_in_vault(data = {})
           store_ship_address = data['shipping_address_id'].blank?
-          if gateway.preferred_store_payments_in_vault == 'store_only_on_success'
+
+          case gateway.preferred_store_payments_in_vault.to_s
+          when 'store_only_on_success'
             { store_in_vault_on_success: true, store_shipping_address_in_vault: store_ship_address }
-          elsif gateway.preferred_store_payments_in_vault == 'store_all'
+          when 'store_all'
             { store_in_vault: true, store_shipping_address_in_vault: store_ship_address }
           else
             { store_in_vault: false }
