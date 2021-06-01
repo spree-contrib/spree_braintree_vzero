@@ -25,13 +25,15 @@
       <div class="<%= display_payment_methods_list ? 'new-braintree-payment-method' : '' %>">
     <% end %>
 
-    <div class="col-xs-12" >
-      <div class="form-group">
-        <label for="email">Email address</label>
-        <%= email_field_tag :email, @order.email, class: 'form-control' %>
-        <span id="help-email" class="help-block"></span>
+    <% if payment_method.try(:preferred_3dsecure) == "true" %>
+      <div class="col-xs-12" >
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <%= email_field_tag :email, @order.email, class: 'form-control' %>
+          <span id="help-email" class="help-block"></span>
+        </div>
       </div>
-    </div>
+    <% end %>
 
     <% if hosted || dropin %>
       <% if hosted %>
@@ -90,6 +92,12 @@
   <script src='https://js.braintreegateway.com/web/dropin/1.20.4/js/dropin.min.js'></script>
 <% end %>
 
-<%= render partial: 'spree/checkout/payment/braintree_vzero/three_d_secure',
-           locals: { payment_method: payment_method, hosted: hosted, dropin: dropin }
-%>
+<% if payment_method.try(:preferred_3dsecure) == "true" %>
+  <%= render partial: 'spree/checkout/payment/braintree_vzero/three_d_secure',
+             locals: { payment_method: payment_method, hosted: hosted, dropin: dropin }
+  %>
+<% else %>
+  <%= render partial: 'spree/checkout/payment/braintree_vzero/non_three_d_secure',
+             locals: { payment_method: payment_method, hosted: hosted, dropin: dropin }
+  %>
+<% end %>

@@ -1,11 +1,11 @@
 <script type="text/javascript">
   if(document.readyState !== 'loading') {
-    setupThreeDSecure()
+    setupPayment()
   } else {
-    window.addEventListener('DOMContentLoaded', setupThreeDSecure);
+    window.addEventListener('DOMContentLoaded', setupPayment);
   }
 
-  function setupThreeDSecure() {
+  function setupPayment() {
     $('#order_payments_attributes__payment_method_id_<%= payment_method.id %>').click(function (e) {
     var threeDSecure;
     var checkoutFormId = "<%= payment_method.preferred_checkout_form_id %>"
@@ -14,10 +14,10 @@
     var clientToken = "<%= payment_method.client_token(@order) %>";
 
     <% if hosted %>
-    var hf, threeDS;
-    var hostedFieldsContainer = document.getElementById('hosted-fields');
+      var hf, threeDS;
+      var hostedFieldsContainer = document.getElementById('hosted-fields');
     <% elsif dropin %>
-    var dropin;
+      var dropin;
     <% end %>
 
     var payBtn = document.getElementsByName('commit')[0];
@@ -25,51 +25,6 @@
 
     $('.credit-card-pay-success').css('display', 'none');
     $('.credit-card-pay-errors').css('display', 'none');
-
-    var billingFields = [
-      'email',
-    ].reduce(function (fields, fieldName) {
-      var field = fields[fieldName] = {
-        input: document.getElementById(fieldName),
-        help: document.getElementById('help-' + fieldName)
-      };
-
-      field.input.addEventListener('focus', function() {
-        clearFieldValidations(field);
-      });
-
-      return fields;
-    }, {});
-
-    function clearFieldValidations (field) {
-      field.help.innerText = '';
-      field.help.parentNode.classList.remove('has-error');
-    }
-
-    function validateBillingFields() {
-      var isValid = true;
-
-      Object.keys(billingFields).forEach(function (fieldName) {
-        var fieldEmpty = false;
-        var field = billingFields[fieldName];
-
-        if (field.optional) {
-          return;
-        }
-
-        fieldEmpty = field.input.value.trim() === '';
-
-        if (fieldEmpty) {
-          isValid = false;
-          field.help.innerText = "<%= Spree.t(:required) %>";
-          field.help.parentNode.classList.add('has-error');
-        } else {
-          clearFieldValidations(field);
-        }
-      });
-
-      return isValid;
-    }
 
     function start() {
       getClientToken();
@@ -112,10 +67,6 @@
               <% end %>
             }
           }
-        }),
-        braintree.threeDSecure.create({
-          authorization: clientToken,
-          version: 2
         })
       ]);
     }
@@ -123,8 +74,7 @@
     function setupDropin (clientToken) {
       return braintree.dropin.create({
         authorization: clientToken,
-        container: '#drop-in',
-        threeDSecure: true
+        container: '#drop-in'
       })
     }
 
@@ -191,68 +141,38 @@
         payBtn.setAttribute('disabled', 'disabled');
         payBtn.value = "<%= Spree.t(:processing_credit_card) %>";
 
-        var billingIsValid = validateBillingFields();
-
-        if (!billingIsValid) {
-          enablePayNow();
-
-          return;
-        }
         <% if hosted %>
-        hf.tokenize().then(function (payload) {
-          return threeDS.verifyCard({
-            onLookupComplete: function (data, next) {
-              next();
-            },
-            nonce: payload.nonce,
-            bin: payload.details.bin,
-            <% elsif dropin %>
-            dropin.requestPaymentMethod({
-              threeDSecure: {
-                <% end %>
-                amount: "<%= @order.total %>",
-                email: billingFields.email.input.value,
-                <% if hosted %>
-              })
-          }).then(function (payload) {
-            <% elsif dropin %>
-          }
-        }, function(err, payload) {
-          if (err) {
-            console.log('tokenization error:');
-            console.log(err);
-            dropin.clearSelectedPaymentMethod();
-            enablePayNow();
+          hf.tokenize().then(function (payload) {
+        <% elsif dropin %>
+          dropin.requestPaymentMethod(
+          function(err, payload) {
+            if (err) {
+              console.log('tokenization error:');
+              console.log(err);
+              dropin.clearSelectedPaymentMethod();
+              enablePayNow();
 
-            return;
-          }
-          <% end %>
+              return;
+            }
+        <% end %>
 
-          if (!payload.liabilityShifted) {
-            console.log('Liability did not shift', payload);
-            showErrors();
-            return;
-          }
-          
-          console.log('verification success:', payload);
-          showSuccess();
-          $(formId).append("<input type='hidden' name='braintree_last_two' value=" + payload.details.lastTwo + ">");
-          $(formId).append("<input type='hidden' name='braintree_card_type' value=" + payload.details.cardType.replace(/\s/g, "") + ">");
-          $(formId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + payload.nonce + ">");
-          $(formId).append("<input type='hidden' name='payment_method_nonce' value=" + payload.nonce + ">");
-          setTimeout(function () {
-            $(payBtn).attr("disabled", false)
-            $('#checkout form').submit()
-          }, 200);
-          <% if hosted %>
-        }).catch(function (err) {
-          enablePayNow();
-          showErrors(err);
-          <% end %>
-        });
+            $(formId).append("<input type='hidden' name='braintree_last_two' value=" + payload.details.lastTwo + ">");
+            $(formId).append("<input type='hidden' name='braintree_card_type' value=" + payload.details.cardType.replace(/\s/g, "") + ">");
+            $(formId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + payload.nonce + ">");
+            $(formId).append("<input type='hidden' name='payment_method_nonce' value=" + payload.nonce + ">");
+            setTimeout(function () {
+              $(payBtn).attr("disabled", false)
+              $('#checkout form').submit()
+            }, 200);
+            <% if hosted %>
+              }).catch(function (err) {
+                enablePayNow();
+                showErrors(err);
+            <% end %>
+              });
+          });
+
+          start();
       });
-
-      start();
-    });
-  }
+    }
 </script>
