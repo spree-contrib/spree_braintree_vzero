@@ -28,7 +28,7 @@
     <% if payment_method.try(:preferred_3dsecure) == "true" %>
       <div class="col-xs-12" >
         <div class="form-group">
-          <label for="email">Email address</label>
+          <label for="email"><%= Spree.t(:email) %></label>
           <%= email_field_tag :email, @order.email, class: 'form-control' %>
           <span id="help-email" class="help-block"></span>
         </div>
