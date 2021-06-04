@@ -65,7 +65,7 @@ module Spree
     end
 
     def braintree_payment_method?
-      payment_method.provider == Braintree
+      payment_method.try(:provider) == Braintree
     end
   end
 end
