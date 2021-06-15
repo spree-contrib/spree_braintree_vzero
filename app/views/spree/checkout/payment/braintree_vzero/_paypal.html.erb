@@ -1,0 +1,52 @@
+<script type="text/javascript">
+  if(document.readyState !== 'loading') {
+    setupBraintreePayPal()
+  } else {
+    window.addEventListener('DOMContentLoaded', setupBraintreePayPal);
+  }
+
+  function setupBraintreePayPal() {
+    var payButton = document.getElementsByClassName('checkout-content-save-continue-button')[0];
+
+    braintree.setup("<%= payment_method.client_token(current_order) %>", "paypal", {
+      headless: true,
+      container: "paypal-container",
+      singleUse: <%= payment_method.preferred_store_payments_in_vault.eql?('do_not_store') %>,
+      amount: <%= @order.total %>,
+      currency: "<%= current_currency %>",
+      locale: "en_us",
+      enableShippingAddress: false,
+      enableBillingAddress: false,
+      shippingAddressOverride: {}, //TODO: pass shipping address to PayPal
+      displayName: "<%= payment_method.preferred_paypal_display_name %>",
+      <% if payment_method.preferred_advanced_fraud_tools %>
+      dataCollector: {
+        kount: {
+          environment: "<%= payment_method.preferred_server %>"
+          <% if (kount_id = payment_method.preferred_kount_merchant_id).present? %>
+          ,
+          merchantId: "<%= kount_id %>"
+          <% end %>
+        }
+      },
+      <% end %>
+
+      onReady: function (integration) {
+        SpreeBraintreeVzero.deviceData = integration.deviceData;
+
+        payButton.addEventListener('click', function(event) {
+          event.preventDefault();
+          payButton.setAttribute('disabled', 'disabled');
+
+          integration.paypal.initAuthFlow();
+        });
+      },
+
+      onPaymentMethodReceived: function (result) {
+        SpreeBraintreeVzero.addDeviceData();
+
+        //TODO: handle result - save nonce
+      }
+    });
+  }
+</script>

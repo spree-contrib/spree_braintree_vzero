@@ -88,8 +88,15 @@
   <script src="https://js.braintreegateway.com/web/3.54.1/js/three-d-secure.min.js"></script>
 <% elsif dropin %>
   <script src='https://js.braintreegateway.com/web/dropin/1.20.4/js/dropin.min.js'></script>
+<% elsif paypal%>
+  <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
+  <script src="https://js.braintreegateway.com/js/braintree-2.32.1.min.js"></script>
+
+  <%= render partial: 'spree/checkout/payment/braintree_vzero/paypal', locals: { payment_method: payment_method } %>
 <% end %>
 
-<%= render partial: 'spree/checkout/payment/braintree_vzero/three_d_secure',
-           locals: { payment_method: payment_method, hosted: hosted, dropin: dropin }
-%>
+<% if hosted || dropin %>
+  <%= render partial: 'spree/checkout/payment/braintree_vzero/three_d_secure',
+            locals: { payment_method: payment_method, hosted: hosted, dropin: dropin }
+  %>
+<% end %>
