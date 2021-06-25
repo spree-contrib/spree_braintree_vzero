@@ -7,6 +7,8 @@ module Spree
     end
 
     def process_paypal_express
+      return false if current_order.blank?
+
       if params[:paypal].blank? || params[:paypal][:payment_method_nonce].blank?
         # when user goes back from checkout, paypal express payments should be invalidated  to ensure standard checkout flow
         current_order.invalidate_paypal_express_payments
