@@ -25,6 +25,11 @@
             <% end %>
           <% end %>
 
+          <%= f.field_container :payment_method_stores, class: ['form-group'] do %>
+            <%= label_tag :payment_method_stores, Spree.t(:stores) %>
+            <%= collection_select(:payment_method, :store_ids, @stores, :id, :unique_name, {}, { multiple: true, class: 'select2' }) %>
+          <% end %>
+
           <%= f.field_container :payment_method_display_on, class: ['form-group'] do %>
             <%= label_tag :payment_method_display_on, Spree.t(:display) %>
             <%= select(:payment_method, :display_on, Spree::PaymentMethod::DISPLAY.collect { |display| [Spree.t(display), display.to_s] }, {}, {:class => 'select2'}) %>

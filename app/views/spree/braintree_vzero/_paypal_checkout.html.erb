@@ -4,9 +4,6 @@
     <img src="https://www.paypalobjects.com/en_US/i/btn/btn_xpressCheckout.gif" id="btnOpenFlow">
   </div>
 
-  <script src="https://js.braintreegateway.com/v2/braintree.js" onload="braintreeLoaded()"></script>
-  <script src="https://js.braintreegateway.com/js/braintree-2.32.1.min.js"></script>
-
   <script type="text/javascript">
     // TODO: Investiagate what kind of checkout (if any) steps should be included during paypal express payment
     function setupBraintreePayPal() {
@@ -102,4 +99,7 @@
     }
 
   </script>
+
+  <script src="https://js.braintreegateway.com/v2/braintree.js" onload="braintreeLoaded()"></script>
+  <script src="https://js.braintreegateway.com/js/braintree-2.32.1.min.js"></script>
 <% end %>
