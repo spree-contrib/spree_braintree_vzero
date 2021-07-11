@@ -2,16 +2,21 @@ module Spree
   class Gateway
     class BraintreeVzeroBase
       class Address
-        attr_reader :user, :utils, :request
+        attr_reader :user, :request
 
-        def initialize(provider, order)
-          @utils = Utils.new(provider, order)
+        def initialize(gateway, order)
+          @gateway = gateway
+          @order = order
           @user = order.user
-          @request = provider::Address
+          @request = gateway.provider::Address
+        end
+
+        def utils
+          @_utils ||= Utils.new(@gateway, @order)
         end
 
         def create
-          @request.create(@utils.address_data('billing', utils.order).merge!(customer_id: user.id.to_s))
+          @request.create(utils.address_data('billing', utils.order).merge!(customer_id: user.id.to_s))
         end
 
         def find(braintree_address)
