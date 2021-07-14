@@ -1,0 +1,11 @@
+return setupPaypal(clientToken).then(function(paypalInstance) {
+  paypalInstance.loadPayPalSDK({
+    vault: false
+  }, function() {
+    paypal.Buttons({
+      fundingSource: paypal.FUNDING.PAYPAL,
+      createBillingAgreement: function () {
+        return paypalInstance.createPayment({
+          flow: 'vault' // Required
+        });
+      },

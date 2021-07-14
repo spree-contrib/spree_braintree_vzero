@@ -74,7 +74,26 @@
     function setupDropin (clientToken) {
       return braintree.dropin.create({
         authorization: clientToken,
-        container: '#drop-in'
+        container: '#drop-in',
+        paypal: {
+          flow: 'vault',
+          buttonStyle: {
+            label: 'paypal',
+            tagline: false,
+            size: 'medium'
+          }
+        }
+      })
+    }
+
+    function setupPaypal (clientToken) {
+      return braintree.dropin.create({
+        authorization: clientToken,
+        container: '#paypal-container',
+        card: false,
+        paypal: {
+          flow: 'vault'
+        }
       })
     }
 
@@ -86,8 +105,10 @@
         <% elsif dropin %>
         return setupDropin(clientToken).then(function(instance) {
           dropin = instance;
-          <% end %>
-
+        <% elsif paypal %>
+        return setupPaypal(clientToken).then(function(instance) {
+          paypal = instance;
+        <% end %>
           setupForm();
         }).catch(function (err) {
           console.log('component error:', err);
@@ -143,7 +164,7 @@
 
         <% if hosted %>
           hf.tokenize().then(function (payload) {
-        <% elsif dropin %>
+        <% elsif dropin || paypal %>
           dropin.requestPaymentMethod(
           function(err, payload) {
             if (err) {
@@ -156,10 +177,15 @@
             }
         <% end %>
 
-            $(formId).append("<input type='hidden' name='braintree_last_two' value=" + payload.details.lastTwo + ">");
-            $(formId).append("<input type='hidden' name='braintree_card_type' value=" + payload.details.cardType.replace(/\s/g, "") + ">");
-            $(formId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + payload.nonce + ">");
-            $(formId).append("<input type='hidden' name='payment_method_nonce' value=" + payload.nonce + ">");
+            if (payload.type == "CreditCard") {
+              $(formId).append("<input type='hidden' name='braintree_last_two' value=" + payload.details.lastTwo + ">");
+              $(formId).append("<input type='hidden' name='braintree_card_type' value=" + payload.details.cardType.replace(/\s/g, "") + ">");
+              $(formId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + payload.nonce + ">");
+              $(formId).append("<input type='hidden' name='payment_method_nonce' value=" + payload.nonce + ">");
+            } else if (payload.type == "PayPalAccount") {
+              $(formId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + payload.nonce + ">");
+              $(formId).append("<input type='hidden' name='paypal_email' value=" + payload.details.email + ">");
+            }
             setTimeout(function () {
               $(payBtn).attr("disabled", false)
               $('#checkout form').submit()

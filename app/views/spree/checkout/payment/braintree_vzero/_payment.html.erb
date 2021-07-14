@@ -17,7 +17,6 @@
         </div>
       <% end %>
     <% end %>
-    <br/>
 
     <% if paypal %>
       <div id="paypal-container">
@@ -89,15 +88,19 @@
   <script src="https://js.braintreegateway.com/web/3.54.1/js/hosted-fields.min.js"></script>
   <script src="https://js.braintreegateway.com/web/3.54.1/js/three-d-secure.min.js"></script>
 <% elsif dropin %>
-  <script src='https://js.braintreegateway.com/web/dropin/1.20.4/js/dropin.min.js'></script>
+  <script src='https://js.braintreegateway.com/web/dropin/1.30.1/js/dropin.min.js'></script>
+<% elsif paypal %>
+  <script src="https://js.braintreegateway.com/web/3.54.1/js/client.min.js"></script>
+  <script src="https://js.braintreegateway.com/web/3.54.1/js/paypal-checkout.min.js"></script>
+  <script src="https://js.braintreegateway.com/web/3.54.1/js/data-collector.min.js"></script>
 <% end %>
 
 <% if payment_method.try(:preferred_3dsecure) == "true" %>
   <%= render partial: 'spree/checkout/payment/braintree_vzero/three_d_secure',
-             locals: { payment_method: payment_method, hosted: hosted, dropin: dropin }
+             locals: { payment_method: payment_method, hosted: hosted, dropin: dropin, paypal: paypal }
   %>
 <% else %>
   <%= render partial: 'spree/checkout/payment/braintree_vzero/non_three_d_secure',
-             locals: { payment_method: payment_method, hosted: hosted, dropin: dropin }
+             locals: { payment_method: payment_method, hosted: hosted, dropin: dropin, paypal: paypal }
   %>
 <% end %>

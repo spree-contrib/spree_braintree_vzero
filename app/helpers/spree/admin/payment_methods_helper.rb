@@ -81,7 +81,7 @@ module Spree
       end
 
       def get_preference_fields(object, keys, form)
-        keys.reject { |k| k == :currency_merchant_accounts }.map do |key|
+        keys.map do |key|
           next unless object.has_preference?(key)
 
           if object.preference_type(key) == :boolean
