@@ -75,6 +75,7 @@
       return braintree.dropin.create({
         authorization: clientToken,
         container: '#drop-in',
+        dataCollector: true,
         paypal: {
           flow: 'vault',
           buttonStyle: {
@@ -177,13 +178,14 @@
             }
         <% end %>
 
+            $(formId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + payload.nonce + ">");
+            $(formId).append("<input type='hidden' name='device_data' value=" + payload.deviceData + ">");
+
             if (payload.type == "CreditCard") {
               $(formId).append("<input type='hidden' name='braintree_last_two' value=" + payload.details.lastTwo + ">");
               $(formId).append("<input type='hidden' name='braintree_card_type' value=" + payload.details.cardType.replace(/\s/g, "") + ">");
-              $(formId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + payload.nonce + ">");
               $(formId).append("<input type='hidden' name='payment_method_nonce' value=" + payload.nonce + ">");
             } else if (payload.type == "PayPalAccount") {
-              $(formId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + payload.nonce + ">");
               $(formId).append("<input type='hidden' name='paypal_email' value=" + payload.details.email + ">");
             }
             setTimeout(function () {
