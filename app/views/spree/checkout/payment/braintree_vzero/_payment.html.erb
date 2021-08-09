@@ -34,6 +34,8 @@
       </div>
     <% end %>
 
+    <%= recaptcha_tags %>
+
     <% if hosted || dropin %>
       <% if hosted %>
         <div id="hosted-fields">
@@ -61,10 +63,7 @@
           <% end %>
 
       <% elsif dropin %>
-      <!-- Add in recaptcha v2 to prevent fraud -->
-      <script src="https://www.google.com/recaptcha/api.js" async defer></script>
         <div class="input-group pay-group bt-drop-in-container">
-          <div class="g-recaptcha" data-sitekey="6LekJ-YbAAAAAJU-rm4wq6Xw8TPAvL2_Df7sVZNl"></div>
           <div id="drop-in"></div>
       <% end %>
 
