@@ -7,11 +7,15 @@
 
   function setupPayment() {
     $('#order_payments_attributes__payment_method_id_<%= payment_method.id %>').click(function (e) {
-    var threeDSecure;
-    var checkoutFormId = "<%= payment_method.preferred_checkout_form_id %>"
-    var formId = "#" + checkoutFormId;
+      var checkoutFormId = "<%= payment_method.preferred_checkout_form_id %>"
+      SpreeBraintreeVzero.advancedFraudTools = <%= payment_method.preferred_advanced_fraud_tools %>;
+      SpreeBraintreeVzero.paymentMethodID = "<%= payment_method.id %>";
+      SpreeBraintreeVzero.checkoutFormId = "#" + checkoutFormId;
+      SpreeBraintreeVzero.threeDSecure = <%= payment_method.try(:preferred_3dsecure) || false %>;
 
-    var clientToken = "<%= payment_method.client_token(@order) %>";
+      var formId = "#" + checkoutFormId;
+
+      var clientToken = "<%= payment_method.client_token(@order) %>";
 
     <% if hosted %>
       var hf, threeDS;
@@ -20,7 +24,7 @@
       var dropin;
     <% end %>
 
-    var payBtn = document.getElementsByName('commit')[0];
+    var payBtn = document.getElementsByClassName('braintree-submit')[0];
     var payGroup = $('.pay-group');
 
     $('.credit-card-pay-success').css('display', 'none');
