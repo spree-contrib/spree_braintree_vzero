@@ -44,9 +44,7 @@
       <p id="hosted-fields-expiration-date" class="form-control"></p>
       <br/>
     <% elsif dropin %>
-      <br/>
       <div id="payment-form"/>
-      <br/>
     <% end %>
   </div>
 
@@ -55,8 +53,17 @@
   <% end %>
 </div>
 
-<script src="https://js.braintreegateway.com/v2/braintree.js"></script>
-<script src="https://js.braintreegateway.com/v1/braintree-data.js" async=true></script>
+<% if hosted %>
+  <script src="https://js.braintreegateway.com/web/3.54.1/js/client.min.js"></script>
+  <script src="https://js.braintreegateway.com/web/3.54.1/js/hosted-fields.min.js"></script>
+  <script src="https://js.braintreegateway.com/web/3.54.1/js/three-d-secure.min.js"></script>
+<% elsif dropin %>
+  <script src='https://js.braintreegateway.com/web/dropin/1.30.1/js/dropin.min.js'></script>
+<% elsif paypal %>
+  <script src="https://js.braintreegateway.com/web/3.54.1/js/client.min.js"></script>
+  <script src="https://js.braintreegateway.com/web/3.54.1/js/paypal-checkout.min.js"></script>
+  <script src="https://js.braintreegateway.com/web/3.54.1/js/data-collector.min.js"></script>
+<% end %>
 
 <script type="text/javascript">
   $('#payment_payment_method_id_<%= payment_method.id %>').click(function (e) {
@@ -73,15 +80,11 @@
     var clientToken = "<%= payment_method.client_token(@order) %>";
     var errorMessagesContainer = "col-md-12";
 
-    <% if dropin %>
-      var container = "payment-form";
-      $('#' + container).empty();
-    <% end %>
+    var container = "payment-form";
+    $('#' + container).empty();
     var checkout;
 
-    braintree.setup(clientToken, '<%= payment_method_type %>', {
-      <%= render(partial: 'spree/shared/braintree_vzero/dropin', locals: { shipping_address: shipping_address, payment_method: payment_method }, formats: [:js]) if dropin %>
-      <%= render(partial: 'spree/shared/braintree_vzero/hosted', locals: { payment_method: payment_method }, formats: [:js]) if hosted %>
-    });
+    <%= render(partial: 'spree/shared/braintree_vzero/dropin', locals: { shipping_address: shipping_address, payment_method: payment_method }, formats: [:js]) if dropin %>
+    <%= render(partial: 'spree/shared/braintree_vzero/hosted', locals: { payment_method: payment_method }, formats: [:js]) if hosted %>
   });
 </script>

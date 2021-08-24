@@ -1,70 +1,109 @@
-container: container,
-paypal: {
-  singleUse: <%= payment_method.preferred_store_payments_in_vault.eql?('do_not_store') %>,
-  amount: <%= @order.order_total_after_store_credit %>,
-  currency: "<%= current_currency %>",
-  enableShippingAddress: true,
-  shippingAddressOverride: {
-    recipientName: '<%= "#{shipping_address.firstname} #{shipping_address.lastname}" %>',
-    streetAddress: '<%= shipping_address.address1 %>',
-    extendedAddress: '<%= shipping_address.address2 %>',
-    locality: '<%= shipping_address.city %>',
-    countryCodeAlpha2: '<%= shipping_address.country.try(:iso) %>',
-    postalCode: '<%= shipping_address.zipcode %>',
-    region: '<%= shipping_address.state.try(:abbr) %>',
-    phone: '<%= shipping_address.phone %>',
-    editable: false
-  }
-},
-
-onPaymentMethodReceived: function (result) {
-  var formId = "#" + checkoutFormId;
-
-  function submitWithAttributes(data) {
-    switch (data.type) {
-      case "CreditCard":
-        $(formId).append("<input type='hidden' name='braintree_last_two' value=" + result.details.lastTwo + ">");
-        $(formId).append("<input type='hidden' name='braintree_card_type' value=" + result.details.cardType.replace(/\s/g, "") + ">");
-        break;
-      case "PayPalAccount":
-        $(formId).append("<input type='hidden' name='paypal_email' value=" + (result.details.email)+ ">");
-        break;
-    }
-    if(SpreeBraintreeVzero.admin)
-      $(formId).append("<input type='hidden' name='payment_method_nonce' value=" + data.nonce + ">");
-    else
-      $(formId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + data.nonce + ">");
-    $(formId)[0].submit();
-  }
-
-  if (SpreeBraintreeVzero.threeDSecure && result.type == "CreditCard") {
-    var client = new braintree.api.Client({
-      clientToken: clientToken
-    });
-
-    client.verify3DS({
-      amount: <%= @order.order_total_after_store_credit %>,
-      creditCard: result.nonce
-    }, function (error, response) {
-      if (!error) {
-        submitWithAttributes(response);
-      } else {
-        $(errorMessagesContainer).prepend("<div class='alert alert-error'><%= I18n.t(:gateway_error, scope: 'braintree.error') %></div>")
-      }
-    });
-  } else {
-      submitWithAttributes(result);
-  }
-},
-
-onReady: function (integration) {
-  if(!SpreeBraintreeVzero.admin)
-    SpreeBraintreeVzero.deviceData = integration.deviceData;
-  <%= render partial: 'spree/checkout/payment/braintree_vzero/dropin_on_ready_callback', formats: [:js] %>
-},
-
-onError: function (error) {
-  SpreeBraintreeVzero.enableSubmitButton();
-  <%= render partial: 'spree/checkout/payment/braintree_vzero/dropin_on_error_callback', formats: [:js] %>
+if(document.readyState !== 'loading') {
+  setupPayment()
+} else {
+  window.addEventListener('DOMContentLoaded', setupPayment);
 }
 
+function setupPayment() {
+    var formId = "#" + checkoutFormId;
+    var dropin;
+    var payBtn = document.getElementsByClassName('braintree-submit')[0];
+    var payGroup = $('.pay-group');
+
+  function start() {
+    getClientToken();
+  }
+
+  function getClientToken() {
+    onFetchClientToken(clientToken);
+  }
+
+  function setupDropin (clientToken) {
+    return braintree.dropin.create({
+      authorization: clientToken,
+      container: '#' + container
+    })
+  }
+
+  function onFetchClientToken(clientToken) {
+    return setupDropin(clientToken).then(function(instance) {
+      dropin = instance;
+      setupForm();
+    }).catch(function (err) {
+      console.log('component error:', err);
+    });
+    }
+
+    function setupForm() {
+      enablePayNow();
+    }
+
+    function enablePayNow() {
+      payBtn.value = "<%= Spree.t(:save_and_continue) %>";
+      payBtn.removeAttribute('disabled');
+    }
+
+    function showErrors(err) {
+      if (err) {
+        if (err.details && err.details.invalidFields) {
+          const invalidFields = []
+          Object.keys(err.details.invalidFields).forEach(function (key) {
+            if (key === "expirationDate") {
+              invalidFields.push("expiration")
+            } else {
+              invalidFields.push(key)
+            }
+          })
+          const errorString = invalidFields.join(", ")
+          const linkingVerb = invalidFields.length > 1 ? "are" : "is"
+
+          $('.credit-card-pay-errors').text("Card " + errorString + " " + linkingVerb + " incorrect.")
+        }
+      }
+      payGroup.addClass('hidden');
+      payGroup.css('display', 'none');
+      $('.credit-card-pay-success').css('display', 'none');
+      $('.credit-card-pay-errors').css('display', 'block');
+    }
+
+    function showSuccess() {
+      payGroup.addClass('hidden');
+      payGroup.css('display', 'none');
+      $('.credit-card-pay-success').css('display', 'block');
+      $('.credit-card-pay-errors').css('display', 'none');
+    }
+
+    payBtn.addEventListener('click', function(event) {
+      event.preventDefault()
+      payBtn.setAttribute('disabled', 'disabled');
+      payBtn.value = "<%= Spree.t(:processing_credit_card) %>";
+
+        dropin.requestPaymentMethod(
+        function(err, payload) {
+          if (err) {
+            console.log('tokenization error:');
+            console.log(err);
+            dropin.clearSelectedPaymentMethod();
+            enablePayNow();
+
+            return;
+          }
+
+          $(formId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + payload.nonce + ">");
+
+          if (payload.type == "CreditCard") {
+            $(formId).append("<input type='hidden' name='braintree_last_two' value=" + payload.details.lastTwo + ">");
+            $(formId).append("<input type='hidden' name='braintree_card_type' value=" + payload.details.cardType.replace(/\s/g, "") + ">");
+            $(formId).append("<input type='hidden' name='payment_method_nonce' value=" + payload.nonce + ">");
+          } else if (payload.type == "PayPalAccount") {
+            $(formId).append("<input type='hidden' name='paypal_email' value=" + payload.details.email + ">");
+          }
+          setTimeout(function () {
+            $(payBtn).attr("disabled", false)
+            $(formId).submit()
+          }, 200);
+            });
+        });
+
+        start();
+    }
