@@ -42,37 +42,7 @@ function setupPayment() {
       payBtn.value = "<%= Spree.t(:save_and_continue) %>";
       payBtn.removeAttribute('disabled');
     }
-
-    function showErrors(err) {
-      if (err) {
-        if (err.details && err.details.invalidFields) {
-          const invalidFields = []
-          Object.keys(err.details.invalidFields).forEach(function (key) {
-            if (key === "expirationDate") {
-              invalidFields.push("expiration")
-            } else {
-              invalidFields.push(key)
-            }
-          })
-          const errorString = invalidFields.join(", ")
-          const linkingVerb = invalidFields.length > 1 ? "are" : "is"
-
-          $('.credit-card-pay-errors').text("Card " + errorString + " " + linkingVerb + " incorrect.")
-        }
-      }
-      payGroup.addClass('hidden');
-      payGroup.css('display', 'none');
-      $('.credit-card-pay-success').css('display', 'none');
-      $('.credit-card-pay-errors').css('display', 'block');
-    }
-
-    function showSuccess() {
-      payGroup.addClass('hidden');
-      payGroup.css('display', 'none');
-      $('.credit-card-pay-success').css('display', 'block');
-      $('.credit-card-pay-errors').css('display', 'none');
-    }
-
+    
     payBtn.addEventListener('click', function(event) {
       event.preventDefault()
       payBtn.setAttribute('disabled', 'disabled');
