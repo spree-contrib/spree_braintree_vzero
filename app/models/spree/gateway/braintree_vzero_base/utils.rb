@@ -39,7 +39,8 @@ module Spree
         def order_data(identifier, amount)
           identifier.merge(
             amount: amount,
-            order_id: order.number
+            order_id: order.number,
+            line_items: collect_line_items
           )
         end
 
@@ -103,6 +104,29 @@ module Spree
           else
             'failed'
           end
+        end
+
+        private
+
+        PAYPAL_MAX_LINEITEMS = 249
+
+        def collect_line_items
+          @order
+            .line_items
+            .reject { |li| li.price.zero? || li.quantity.zero? }
+            .map do |li|
+            {
+              name: li.name.truncate(127, omission: ''),
+              kind: 'debit',
+              quantity: li.quantity.to_s,
+              unit_amount: li.price.to_s,
+              unit_of_measure: 'unit',
+              product_code: li.sku,
+              total_amount: li.pre_tax_amount.to_s,
+              tax_amount: li.additional_tax_total.to_s
+              # discount_amount: '0.00'
+            }
+          end.take(PAYPAL_MAX_LINEITEMS)
         end
       end
     end
