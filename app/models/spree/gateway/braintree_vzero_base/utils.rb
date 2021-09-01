@@ -124,8 +124,8 @@ module Spree
               unit_of_measure: 'unit',
               product_code: li.sku,
               total_amount: li.pre_tax_amount.to_s,
-              tax_amount: li.additional_tax_total.to_s
-              # discount_amount: '0.00'
+              tax_amount: li.additional_tax_total.to_s,
+              discount_amount: li.adjustment_total.abs.to_s
             }
           end.take(PAYPAL_MAX_LINEITEMS)
         end
