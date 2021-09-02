@@ -39,6 +39,7 @@ module Spree
         def order_data(identifier, amount)
           identifier.merge(
             amount: amount,
+            discount_amount: order_discount,
             order_id: order.number,
             line_items: collect_line_items,
             shipping_amount: order_shipping
@@ -132,6 +133,17 @@ module Spree
 
         def order_shipping
           @order.shipment_total.to_s
+        end
+
+        def order_discount
+          @order
+            .line_item_adjustments
+            .nonzero
+            .promotion
+            .eligible
+            .reject { |a| a.source.promotion.discount? }
+            .sum(&:amount)
+            .to_s
         end
       end
     end
