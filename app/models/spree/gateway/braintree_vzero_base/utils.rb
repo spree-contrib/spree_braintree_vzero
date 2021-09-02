@@ -136,14 +136,7 @@ module Spree
         end
 
         def order_discount
-          @order
-            .line_item_adjustments
-            .nonzero
-            .promotion
-            .eligible
-            .reject { |a| a.source.promotion.discount? }
-            .sum(&:amount)
-            .to_s
+          @order.adjustment_total.abs.to_s
         end
       end
     end
