@@ -39,7 +39,6 @@ module Spree
         def order_data(identifier, amount)
           identifier.merge(
             amount: amount,
-            discount_amount: order_discount,
             order_id: order.number,
             line_items: collect_line_items,
             shipping_amount: order_shipping
@@ -112,8 +111,9 @@ module Spree
 
         PAYPAL_MAX_LINEITEMS = 249
 
-        def collect_line_items
-          @order
+        def collect_line_items # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+          items =
+            @order
             .line_items
             .reject { |li| li.price.zero? || li.quantity.zero? }
             .map do |li|
@@ -124,19 +124,25 @@ module Spree
               unit_amount: li.price.to_s,
               unit_of_measure: 'unit',
               product_code: li.sku,
-              total_amount: li.pre_tax_amount.to_s,
-              tax_amount: li.additional_tax_total.to_s,
-              discount_amount: li.adjustment_total.abs.to_s
+              total_amount: (li.price * li.quantity).to_s,
+              tax_amount: li.additional_tax_total.to_s
             }
-          end.take(PAYPAL_MAX_LINEITEMS)
+          end.
+            take(PAYPAL_MAX_LINEITEMS - 1)
+          total = @order.adjustment_total.abs
+          return items if total.zero?
+
+          items.append({
+                         name: 'discount',
+                         kind: 'credit',
+                         quantity: '1',
+                         unit_amount: total.to_s,
+                         total_amount: total.to_s
+                       })
         end
 
         def order_shipping
           @order.shipment_total.to_s
-        end
-
-        def order_discount
-          @order.adjustment_total.abs.to_s
         end
       end
     end
