@@ -111,6 +111,11 @@ module Spree
 
         PAYPAL_MAX_LINEITEMS = 249
 
+        # Because of strange PayPal behaviour with accepting discounts
+        # the only solution to add needed discount (if it exist) to
+        # create a virtual Line Item with discount amount and with 'credit'
+        # and name it as 'discount' to be reflected in PayPal email to customer
+        #
         def collect_line_items # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
           items =
             @order
