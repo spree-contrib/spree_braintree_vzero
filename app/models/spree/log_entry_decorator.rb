@@ -38,12 +38,12 @@ module Spree
     ].freeze
 
     def parsed_details
-      @details ||= YAML.safe_load(details, aliases: true, permitted_classes: return_permitted_classes)
+      @details ||= YAML.safe_load(details, aliases: true, permitted_classes: permitted_classes)
     end
 
     private
 
-    def return_permitted_classes
+    def permitted_classes
       PERMITTED_CLASSES
     end
   end
