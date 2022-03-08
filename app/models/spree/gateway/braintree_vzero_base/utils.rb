@@ -128,7 +128,7 @@ module Spree
               quantity: li.quantity.to_s,
               unit_amount: li.price.to_s,
               unit_of_measure: 'unit',
-              product_code: li.sku,
+              product_code: nil,
               total_amount: (li.price * li.quantity).to_s,
               tax_amount: li.additional_tax_total.to_s
             }
