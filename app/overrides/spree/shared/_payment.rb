@@ -5,13 +5,16 @@ Deface::Override.new(
   text: %{
         <% elsif payment.payment_method.kind_of?(Spree::Gateway::BraintreeVzeroBase) %>
           <% if (last_digits = payment.source.braintree_last_digits) %>
-            <% cc_type = payment.source.braintree_card_type %>
-            <p><%= cc_type %></p>
-            <p><%= Spree.t(:ending_in) + " " + last_digits %></p>
+            <p>
+              <%= payment.source.braintree_card_type.capitalize %><br>
+              <%= Spree.t(:ending_in) + " " + last_digits %>
+            </p>
           <% end %>
           <% if (paypal_email = payment.source.paypal_email) %>
-            <p>Paypal</p>
-            <p><%= paypal_email %></p>
+            <p>
+              Paypal<br>
+              <%= paypal_email %>
+            </p>
           <% end %>
         <% else %>
         }
