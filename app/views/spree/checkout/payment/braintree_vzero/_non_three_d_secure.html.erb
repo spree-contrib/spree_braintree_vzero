@@ -7,15 +7,11 @@
 
   function setupPayment() {
     $('#order_payments_attributes__payment_method_id_<%= payment_method.id %>').click(function (e) {
-      var checkoutFormId = "<%= payment_method.preferred_checkout_form_id %>"
-      SpreeBraintreeVzero.advancedFraudTools = <%= payment_method.preferred_advanced_fraud_tools %>;
-      SpreeBraintreeVzero.paymentMethodID = "<%= payment_method.id %>";
-      SpreeBraintreeVzero.checkoutFormId = "#" + checkoutFormId;
-      SpreeBraintreeVzero.threeDSecure = <%= payment_method.try(:preferred_3dsecure) || false %>;
+    var threeDSecure;
+    var checkoutFormId = "<%= payment_method.preferred_checkout_form_id %>"
+    var formId = "#" + checkoutFormId;
 
-      var formId = "#" + checkoutFormId;
-
-      var clientToken = "<%= payment_method.client_token(@order) %>";
+    var clientToken = "<%= payment_method.client_token(@order) %>";
 
     <% if hosted %>
       var hf, threeDS;
@@ -24,7 +20,7 @@
       var dropin;
     <% end %>
 
-    var payBtn = document.getElementsByClassName('braintree-submit')[0];
+    var payBtn = document.getElementsByName('commit')[0];
     var payGroup = $('.pay-group');
 
     $('.credit-card-pay-success').css('display', 'none');
@@ -78,27 +74,7 @@
     function setupDropin (clientToken) {
       return braintree.dropin.create({
         authorization: clientToken,
-        container: '#drop-in',
-        dataCollector: true,
-        paypal: {
-          flow: 'vault',
-          buttonStyle: {
-            label: 'paypal',
-            tagline: false,
-            size: 'medium'
-          }
-        }
-      })
-    }
-
-    function setupPaypal (clientToken) {
-      return braintree.dropin.create({
-        authorization: clientToken,
-        container: '#paypal-container',
-        card: false,
-        paypal: {
-          flow: 'vault'
-        }
+        container: '#drop-in'
       })
     }
 
@@ -110,10 +86,8 @@
         <% elsif dropin %>
         return setupDropin(clientToken).then(function(instance) {
           dropin = instance;
-        <% elsif paypal %>
-        return setupPaypal(clientToken).then(function(instance) {
-          paypal = instance;
-        <% end %>
+          <% end %>
+
           setupForm();
         }).catch(function (err) {
           console.log('component error:', err);
@@ -169,7 +143,7 @@
 
         <% if hosted %>
           hf.tokenize().then(function (payload) {
-        <% elsif dropin || paypal %>
+        <% elsif dropin %>
           dropin.requestPaymentMethod(
           function(err, payload) {
             if (err) {
@@ -182,16 +156,10 @@
             }
         <% end %>
 
+            $(formId).append("<input type='hidden' name='braintree_last_two' value=" + payload.details.lastTwo + ">");
+            $(formId).append("<input type='hidden' name='braintree_card_type' value=" + payload.details.cardType.replace(/\s/g, "") + ">");
             $(formId).append("<input type='hidden' name='order[payments_attributes][][braintree_nonce]' value=" + payload.nonce + ">");
-            $(formId).append("<input type='hidden' name='device_data' value=" + payload.deviceData + ">");
-
-            if (payload.type == "CreditCard") {
-              $(formId).append("<input type='hidden' name='braintree_last_two' value=" + payload.details.lastTwo + ">");
-              $(formId).append("<input type='hidden' name='braintree_card_type' value=" + payload.details.cardType.replace(/\s/g, "") + ">");
-              $(formId).append("<input type='hidden' name='payment_method_nonce' value=" + payload.nonce + ">");
-            } else if (payload.type == "PayPalAccount") {
-              $(formId).append("<input type='hidden' name='paypal_email' value=" + payload.details.email + ">");
-            }
+            $(formId).append("<input type='hidden' name='payment_method_nonce' value=" + payload.nonce + ">");
             setTimeout(function () {
               $(payBtn).attr("disabled", false)
               $('#checkout form').submit()

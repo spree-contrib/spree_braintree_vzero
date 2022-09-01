@@ -6,6 +6,6 @@
       <%= Spree.t(:save_and_continue) %>
     </span>
   <% else %>
-    <%= submit_tag Spree.t(submit_label_key), class: 'btn btn-primary text-uppercase font-weight-bold w-100 checkout-content-save-continue-button braintree-submit', style: 'display: none;', method_id: method.id %>
+    <%= submit_tag Spree.t(:save_and_continue), class: 'btn btn-lg btn-success primary braintree-submit', style: 'display: none;', method_id: method.id %>
   <% end %>
 <% end %>

@@ -5,17 +5,24 @@ Deface::Override.new(
   text: %{
         <% elsif payment.payment_method.kind_of?(Spree::Gateway::BraintreeVzeroBase) %>
           <% if (last_digits = payment.source.braintree_last_digits) %>
-            <p>
-              <%= payment.source.braintree_card_type.capitalize %><br>
-              <%= Spree.t(:ending_in) + " " + last_digits %>
-            </p>
+            <%
+              cc_type = payment.source.braintree_card_type
+              img = "credit_cards/icons/" + cc_type.downcase + ".png"
+            %>
+            <% if asset_available?(img) %>
+              <%= image_tag img %>
+            <% else %>
+              <p><%= Spree.t(:cc_type) + ": " + cc_type %></p>
+              </br>
+            <% end %>
+            <p><%= Spree.t(:ending_in) + " " + last_digits %></p>
           <% end %>
+
           <% if (paypal_email = payment.source.paypal_email) %>
-            <p>
-              Paypal<br>
-              <%= paypal_email %>
-            </p>
+            <!-- PayPal Logo --><img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg" border="0" alt="PayPal Logo"><!-- PayPal Logo -->
+            <%= paypal_email %>
           <% end %>
+          
         <% else %>
         }
 )

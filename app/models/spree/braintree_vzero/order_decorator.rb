@@ -116,9 +116,7 @@ module Spree
 
 
       def braintree_confirmation_required?
-        # Updated so only Paypal Express payments require confirmation
-        #paid_with_braintree? && state.eql?('payment')
-        paid_with_paypal_express?
+        paid_with_braintree? && state.eql?('payment')
       end
 
       def prepare_address_hash(hash)
