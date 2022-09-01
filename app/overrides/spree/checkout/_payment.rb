@@ -13,7 +13,7 @@ Deface::Override.new(
 )
 
 Deface::Override.new(
-  virtual_path: 'spree/checkout/edit',
+  virtual_path: 'spree/checkout/_payment',
   name: 'Adds necessary buttons for Braintree payment methods',
   insert_after: 'erb[loud]:contains("submit_tag")',
   partial: 'spree/checkout/payment/braintree_vzero/buttons'

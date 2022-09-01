@@ -80,7 +80,6 @@
     var checkout;
 
     braintree.setup(clientToken, '<%= payment_method_type %>', {
-
       <%= render(partial: 'spree/shared/braintree_vzero/dropin', locals: { shipping_address: shipping_address, payment_method: payment_method }, formats: [:js]) if dropin %>
       <%= render(partial: 'spree/shared/braintree_vzero/hosted', locals: { payment_method: payment_method }, formats: [:js]) if hosted %>
     });

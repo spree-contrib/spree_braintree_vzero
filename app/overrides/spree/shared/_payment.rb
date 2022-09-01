@@ -22,7 +22,7 @@ Deface::Override.new(
             <!-- PayPal Logo --><img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg" border="0" alt="PayPal Logo"><!-- PayPal Logo -->
             <%= paypal_email %>
           <% end %>
-          
+  
         <% else %>
         }
 )

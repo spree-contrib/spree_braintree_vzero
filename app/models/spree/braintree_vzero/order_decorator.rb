@@ -114,7 +114,6 @@ module Spree
 
       private
 
-
       def braintree_confirmation_required?
         paid_with_braintree? && state.eql?('payment')
       end
