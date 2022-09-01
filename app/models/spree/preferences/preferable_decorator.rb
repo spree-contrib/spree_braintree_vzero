@@ -10,7 +10,7 @@ module Spree
         when :password
           value.to_s
         when :decimal
-          BigDecimal.new(value.to_s)
+          value.to_d
         when :integer
           value.to_i
         when :boolean, :boolean_select

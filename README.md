@@ -1,8 +1,8 @@
-# Braintree v.zero extension for Spree Commerce
+# Official Braintree + PayPal integration for Spree Commerce
 
-[![Build Status](https://travis-ci.org/spree-contrib/spree_braintree_vzero.svg?branch=master)](https://travis-ci.org/spree-contrib/spree_braintree_vzero) [![Code Climate](https://codeclimate.com/repos/560308aa6956801375000a4e/badges/9874199a656054d613cd/gpa.svg)](https://codeclimate.com/repos/560308aa6956801375000a4e/feed)
+[![Build Status](https://travis-ci.com/spree-contrib/spree_braintree_vzero.svg?branch=master)](https://travis-ci.com/spree-contrib/spree_braintree_vzero) [![Code Climate](https://codeclimate.com/repos/560308aa6956801375000a4e/badges/9874199a656054d613cd/gpa.svg)](https://codeclimate.com/repos/560308aa6956801375000a4e/feed)
 
-This is the official Braintree v.zero extension for [Spree](https://spreecommerce.org). It supports:
+This is the official Braintree + PayPal extension for [Spree Commerce](https://spreecommerce.org). It supports:
 * [Braintree Hosted Fields](https://github.com/spree-contrib/spree_braintree_vzero/wiki/1.-Hosted-Fields) -  style the credit card form to match your UI with full PCI compliance
 * [PayPal Express Checkout](https://github.com/spree-contrib/spree_braintree_vzero/wiki/2.-PayPal-Express) - the fastest way for buyers to pay with PayPal - available on Spree for the first time
 * [Braintree Drop-in UI](http://github.com/spree-contrib/spree_braintree_vzero/wiki/3.-Drop-in-UI) - start accepting payments ASAP
@@ -66,7 +66,7 @@ pull request.
 
 ## License
 
-Spree Braintree V.zero is copyright © 2015-2020
+Spree Braintree V.zero is copyright © 2015-2021
 [Spark Solutions Sp. z o.o.][spark]. It is free software,
 and may be redistributed under the terms specified in the
 [LICENCE](LICENSE) file.

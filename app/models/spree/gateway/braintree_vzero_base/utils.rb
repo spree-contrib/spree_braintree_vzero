@@ -39,7 +39,9 @@ module Spree
         def order_data(identifier, amount)
           identifier.merge(
             amount: amount,
-            order_id: order.number
+            order_id: order.number,
+            line_items: collect_line_items,
+            shipping_amount: order_shipping
           )
         end
 
@@ -81,9 +83,11 @@ module Spree
 
         def payment_in_vault(data = {})
           store_ship_address = data['shipping_address_id'].blank?
-          if gateway.preferred_store_payments_in_vault == 'store_only_on_success'
+
+          case gateway.preferred_store_payments_in_vault.to_s
+          when 'store_only_on_success'
             { store_in_vault_on_success: true, store_shipping_address_in_vault: store_ship_address }
-          elsif gateway.preferred_store_payments_in_vault == 'store_all'
+          when 'store_all'
             { store_in_vault: true, store_shipping_address_in_vault: store_ship_address }
           else
             { store_in_vault: false }
@@ -101,6 +105,49 @@ module Spree
           else
             'failed'
           end
+        end
+
+        private
+
+        PAYPAL_MAX_LINEITEMS = 249
+
+        # Because of strange PayPal behaviour with accepting discounts
+        # the only solution to add needed discount (if it exist) to
+        # create a virtual Line Item with discount amount and with 'credit'
+        # and name it as 'discount' to be reflected in PayPal email to customer
+        #
+        def collect_line_items # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+          items =
+            @order
+            .line_items
+            .reject { |li| li.price.zero? || li.quantity.zero? }
+            .map do |li|
+            {
+              name: li.name.truncate(127, omission: ''),
+              kind: 'debit',
+              quantity: li.quantity.to_s,
+              unit_amount: li.price.to_s,
+              unit_of_measure: 'unit',
+              product_code: li.sku,
+              total_amount: (li.price * li.quantity).to_s,
+              tax_amount: li.additional_tax_total.to_s
+            }
+          end.
+            take(PAYPAL_MAX_LINEITEMS - 1)
+          total = @order.adjustment_total.abs
+          return items if total.zero?
+
+          items.append({
+                         name: 'discount',
+                         kind: 'credit',
+                         quantity: '1',
+                         unit_amount: total.to_s,
+                         total_amount: total.to_s
+                       })
+        end
+
+        def order_shipping
+          @order.shipment_total.to_s
         end
       end
     end

@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'spree_braintree_vzero'
   s.version     = SpreeBraintreeVzero.version
-  s.summary     = 'Spree Braintree v.zero'
-  s.description = 'Braintree v.zero extension for Spree Commerce'
+  s.summary     = 'Official Braintree + PayPal for Spree Commerce'
+  s.description = 'Official Braintree + PayPal for Spree Commerce'
   s.required_ruby_version = '>= 2.0.0'
 
   s.author    = 'Spark Solutions'
@@ -29,7 +29,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'spree_extension'
   s.add_dependency 'braintree', '>= 2.40.0'
   s.add_dependency 'deface', '~> 1.0'
-  s.add_dependency 'whenever'
 
   s.add_development_dependency 'appraisal'
   s.add_development_dependency 'capybara'

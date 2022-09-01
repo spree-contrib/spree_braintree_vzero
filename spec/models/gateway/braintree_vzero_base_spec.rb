@@ -116,9 +116,10 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
         it 'saves Braintree::Address id to Spree::Address when address is being saved' do
           gateway.preferred_pass_billing_and_shipping_address = true
           address = create(:address)
-          order.ship_address = address
-          order.bill_address = address
-          order.save
+
+          order.update!(ship_address: address, bill_address: address)
+          user.update!(ship_address: address, bill_address: address)
+
           purchase
           order.reload
 
@@ -133,8 +134,10 @@ describe Spree::Gateway::BraintreeVzeroBase, :vcr do
           gateway.preferred_pass_billing_and_shipping_address = true
           ship_address = create(:address, first_name: 'foo')
           bill_address = create(:address, first_name: 'bar')
-          order.ship_address = ship_address
-          order.bill_address = bill_address
+
+          order.update!(ship_address: ship_address, bill_address: bill_address)
+          user.update!(ship_address: ship_address, bill_address: bill_address)
+
           order.save
           purchase
           order.reload
