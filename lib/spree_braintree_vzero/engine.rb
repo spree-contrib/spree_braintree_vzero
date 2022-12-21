@@ -1,3 +1,5 @@
+require 'braintree'
+
 module SpreeBraintreeVzero
   class Engine < Rails::Engine
     require 'spree/core'
@@ -17,7 +19,7 @@ module SpreeBraintreeVzero
 
     config.to_prepare &method(:activate).to_proc
 
-    initializer 'spree.braintree_vzero.payment_methods', after: 'spree.register.payment_methods' do |app|
+    config.after_initialize do |app|
       app.config.spree.payment_methods += [
         Spree::Gateway::BraintreeVzeroDropInUi,
         Spree::Gateway::BraintreeVzeroPaypalExpress,
