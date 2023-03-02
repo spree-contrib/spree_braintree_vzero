@@ -156,13 +156,13 @@ module Spree
       Braintree::ErrorResult.new(:transaction, params: data, errors: { transaction: errors }, message: message)
     end
 
-    def braintree_user(provider, user, order)
-      Gateway::BraintreeVzeroBase::BraintreeUser.new(provider, user, order).user
+    def braintree_user(user, order)
+      Gateway::BraintreeVzeroBase::BraintreeUser.new(self, user, order).user
     end
 
     def token_params(provider, user, order)
       token_params = {}
-      token_params[:customer_id] = user.id if braintree_user(provider, user, order)
+      token_params[:customer_id] = user.id if braintree_user(user, order)
       currency = order.try(:currency)
       merchant_account_id = currency ? get_merchant_account(currency) : nil
       token_params[:merchant_account_id] = merchant_account_id if merchant_account_id
