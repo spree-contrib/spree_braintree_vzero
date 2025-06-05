@@ -1,6 +1,7 @@
-# Official Braintree + PayPal integration for Spree Commerce
+# Official Braintree integration for Spree Commerce
 
-[![Build Status](https://travis-ci.com/spree-contrib/spree_braintree_vzero.svg?branch=master)](https://travis-ci.com/spree-contrib/spree_braintree_vzero) [![Code Climate](https://codeclimate.com/repos/560308aa6956801375000a4e/badges/9874199a656054d613cd/gpa.svg)](https://codeclimate.com/repos/560308aa6956801375000a4e/feed)
+> [!NOTE]  
+> For **PayPal** support head over to [Spree PayPal Checkout](https://github.com/spree/spree_paypal_checkout) which uses the newest PayPal APIs and supports Spree 5
 
 This is the official Braintree + PayPal extension for [Spree Commerce](https://spreecommerce.org). It supports:
 * [Braintree Hosted Fields](https://github.com/spree-contrib/spree_braintree_vzero/wiki/1.-Hosted-Fields) -  style the credit card form to match your UI with full PCI compliance
