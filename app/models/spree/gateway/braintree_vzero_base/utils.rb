@@ -2,20 +2,22 @@ module Spree
   class Gateway
     class BraintreeVzeroBase
       class Utils
-        attr_reader :order, :customer, :gateway
+        attr_reader :order, :gateway
 
         def initialize(gateway, order)
           @order = order
-          begin
-            @customer = gateway.provider::Customer.find(order.user.id) if order.user
-          rescue
-          end
           @gateway = gateway
+        end
+
+        def customer
+          @customer ||= gateway.provider::Customer.find(order.user.id) if order.user
+        rescue Braintree::NotFoundError
+          nil
         end
 
         def get_address(address_type)
           if order.user && (address = order.user.send("#{address_type}_address"))
-            braintree_address = BraintreeVzeroBase::Address.new(gateway.provider, order)
+            braintree_address = BraintreeVzeroBase::Address.new(gateway, order)
             vaulted_duplicate = Spree::Address.vaulted_duplicates(address).first
 
             if vaulted_duplicate && braintree_address.find(vaulted_duplicate.braintree_id)
@@ -29,8 +31,8 @@ module Spree
         end
 
         def get_customer
-          if @customer
-            { customer_id: @customer.id }
+          if customer
+            { customer_id: customer.id }
           else
             { customer: (payment_in_vault[:store_shipping_address_in_vault] && order.user) ? customer_data(order.user) : {} }
           end
@@ -70,7 +72,7 @@ module Spree
         end
 
         def customer_payment_methods(payment_method_type)
-          payment_methods = @customer.try(:payment_methods) || []
+          payment_methods = customer.try(:payment_methods) || []
 
           if payment_method_type.eql?('custom')
             payment_methods.select { |pm| pm.is_a?(Braintree::CreditCard) }
